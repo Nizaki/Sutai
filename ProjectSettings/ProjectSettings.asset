@@ -676,7 +676,22 @@ PlayerSettings:
   webGLLinkerTarget: 1
   webGLThreadsSupport: 0
   webGLDecompressionFallback: 0
-  scriptingDefineSymbols: {}
+  scriptingDefineSymbols:
+    1: EASY_MOBILE;EASY_MOBILE_PRO;EM_URP;UNITY_MONETIZATION;EM_UNITY_ADS
+    4: EASY_MOBILE;EASY_MOBILE_PRO;EM_URP;UNITY_MONETIZATION;EM_UNITY_ADS
+    7: EASY_MOBILE;EASY_MOBILE_PRO;EM_URP;UNITY_MONETIZATION;EM_UNITY_ADS
+    13: EASY_MOBILE;EASY_MOBILE_PRO;EM_URP;UNITY_MONETIZATION;EM_UNITY_ADS
+    14: EASY_MOBILE;EASY_MOBILE_PRO;EM_URP;UNITY_MONETIZATION;EM_UNITY_ADS
+    19: EASY_MOBILE;EASY_MOBILE_PRO;EM_URP;UNITY_MONETIZATION;EM_UNITY_ADS
+    21: EASY_MOBILE;EASY_MOBILE_PRO;EM_URP;UNITY_MONETIZATION;EM_UNITY_ADS
+    25: EASY_MOBILE;EASY_MOBILE_PRO;EM_URP;UNITY_MONETIZATION;EM_UNITY_ADS
+    27: EASY_MOBILE;EASY_MOBILE_PRO;EM_URP;UNITY_MONETIZATION;EM_UNITY_ADS
+    28: EASY_MOBILE;EASY_MOBILE_PRO;EM_URP;UNITY_MONETIZATION;EM_UNITY_ADS
+    29: EASY_MOBILE;EASY_MOBILE_PRO;EM_URP;UNITY_MONETIZATION;EM_UNITY_ADS
+    30: EASY_MOBILE;EASY_MOBILE_PRO;EM_URP;UNITY_MONETIZATION;EM_UNITY_ADS
+    31: EASY_MOBILE;EASY_MOBILE_PRO;EM_URP;UNITY_MONETIZATION;EM_UNITY_ADS
+    32: EASY_MOBILE;EASY_MOBILE_PRO;EM_URP;UNITY_MONETIZATION;EM_UNITY_ADS
+    33: EASY_MOBILE;EASY_MOBILE_PRO;EM_URP;UNITY_MONETIZATION;EM_UNITY_ADS
   additionalCompilerArguments: {}
   platformArchitecture: {}
   scriptingBackend:
@@ -753,7 +768,14 @@ PlayerSettings:
   XboxOneOverrideIdentityPublisher: 
   vrEditorSettings: {}
   cloudServicesEnabled:
+    Analytics: 1
+    Build: 0
+    Collab: 0
+    Game Performance: 0
+    Purchasing: 0
+    UDP: 0
     UNet: 1
+    Unity Ads: 1
   luminIcon:
     m_Name: 
     m_ModelFolderPath: 
@@ -767,11 +789,11 @@ PlayerSettings:
     m_VersionName: 
   apiCompatibilityLevel: 6
   activeInputHandler: 0
-  cloudProjectId: 
+  cloudProjectId: 865edf6f-dd2d-4760-9147-6d5706310799
   framebufferDepthMemorylessMode: 0
   qualitySettingsNames: []
-  projectName: 
-  organizationId: 
+  projectName: Sutai
+  organizationId: nizakifx
   cloudEnabled: 0
   legacyClampBlendShapeWeights: 0
   virtualTexturingSupportEnabled: 0
