@@ -8,6 +8,7 @@ TagManager:
   - Wall
   - Template
   - RoomSpawnPoint
+  - RootRoom
   layers:
   - Default
   - TransparentFX

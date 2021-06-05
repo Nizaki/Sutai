@@ -43,7 +43,6 @@ namespace EasyMobile
         #region MoPub Events
 
 #if EM_MOPUB
-
         /// <summary>
         /// Fired when the SDK has finished initializing
         /// </summary>
@@ -235,7 +234,7 @@ namespace EasyMobile
 
 #endif
 
-        #endregion  // MoPub-Specific Events
+        #endregion // MoPub-Specific Events
 
         #region Singleton
 
@@ -251,10 +250,7 @@ namespace EasyMobile
         /// <returns>The client.</returns>
         public static MoPubClientImpl CreateClient()
         {
-            if (sInstance == null)
-            {
-                sInstance = new MoPubClientImpl();
-            }
+            if (sInstance == null) sInstance = new MoPubClientImpl();
             return sInstance;
         }
 
@@ -262,13 +258,13 @@ namespace EasyMobile
 
         #region AdClient Overrides
 
-        public override AdNetwork Network { get { return AdNetwork.MoPub; } }
+        public override AdNetwork Network => AdNetwork.MoPub;
 
-        public override bool IsBannerAdSupported { get { return true; } }
+        public override bool IsBannerAdSupported => true;
 
-        public override bool IsInterstitialAdSupported { get { return true; } }
+        public override bool IsInterstitialAdSupported => true;
 
-        public override bool IsRewardedAdSupported { get { return true; } }
+        public override bool IsRewardedAdSupported => true;
 
         public override bool IsInitialized
         {
@@ -362,12 +358,11 @@ namespace EasyMobile
             }
         }
 
-        protected override string NoSdkMessage { get { return NO_SDK_MESSAGE; } }
+        protected override string NoSdkMessage => NO_SDK_MESSAGE;
 
         protected override void InternalInit()
         {
 #if EM_MOPUB
-
             if (!mIsInitialized)
             {
                 mIsInitialized = true;
@@ -388,7 +383,8 @@ namespace EasyMobile
 #endif
         }
 
-        protected override void InternalShowBannerAd(AdPlacement placement, BannerAdPosition position, BannerAdSize size)
+        protected override void InternalShowBannerAd(AdPlacement placement, BannerAdPosition position,
+            BannerAdSize size)
         {
 #if EM_MOPUB
             string id = placement == AdPlacement.Default ?
@@ -618,7 +614,7 @@ namespace EasyMobile
 
         private const string DATA_PRIVACY_CONSENT_KEY = "EM_Ads_MoPub_DataPrivacyConsent";
 
-        protected override string DataPrivacyConsentSaveKey { get { return DATA_PRIVACY_CONSENT_KEY; } }
+        protected override string DataPrivacyConsentSaveKey => DATA_PRIVACY_CONSENT_KEY;
 
         protected override void ApplyDataPrivacyConsent(ConsentStatus consent)
         {
@@ -644,7 +640,6 @@ namespace EasyMobile
         #endregion
 
 #if EM_MOPUB
-
         #region Ad Event Handlers
 
         private void OnBannerAdClicked(string adUnitId)
@@ -905,8 +900,10 @@ namespace EasyMobile
         protected void LoadAllAdUnits()
         {
             string[] allBannerIds = GetAllIds(mAdSettings.DefaultBannerId.Id, mAdSettings.CustomBannerIds);
-            string[] allInterstitialIds = GetAllIds(mAdSettings.DefaultInterstitialAdId.Id, mAdSettings.CustomInterstitialAdIds);
-            string[] allRewardedVideoIds = GetAllIds(mAdSettings.DefaultRewardedAdId.Id, mAdSettings.CustomRewardedAdIds);
+            string[] allInterstitialIds =
+ GetAllIds(mAdSettings.DefaultInterstitialAdId.Id, mAdSettings.CustomInterstitialAdIds);
+            string[] allRewardedVideoIds =
+ GetAllIds(mAdSettings.DefaultRewardedAdId.Id, mAdSettings.CustomRewardedAdIds);
 
             MoPub.LoadBannerPluginsForAdUnits(allBannerIds);
             MoPub.LoadInterstitialPluginsForAdUnits(allInterstitialIds);
@@ -1073,7 +1070,8 @@ namespace EasyMobile
         /// <param name="adUnitId">Id of the ad unit.</param>
         /// <param name="adNotFoundMessage">Message to display when we couldn't find any ad with given id.</param>
         protected void SetInterstitialAdLoadedState(bool loadedStatus, string adUnitId,
-                                                    string adNotFoundMessage = "SetInterstitialAdLoadedState. Error: ad not found.")
+                                                    string adNotFoundMessage =
+ "SetInterstitialAdLoadedState. Error: ad not found.")
         {
             /// If the interstitial ad is the default one.
             if (adUnitId.Equals(mAdSettings.DefaultInterstitialAdId.Id))
@@ -1320,6 +1318,5 @@ namespace EasyMobile
         #endregion
 
 #endif
-
     }
 }

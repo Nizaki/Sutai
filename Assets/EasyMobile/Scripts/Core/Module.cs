@@ -13,6 +13,6 @@ namespace EasyMobile
         Notifications,
         Privacy,
         Sharing,
-        Utilities,
+        Utilities
     }
 }

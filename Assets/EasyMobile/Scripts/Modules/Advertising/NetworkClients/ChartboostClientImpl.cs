@@ -6,24 +6,23 @@ using System.Collections.Generic;
 
 namespace EasyMobile
 {
-    #if EM_CHARTBOOST
+#if EM_CHARTBOOST
     using ChartboostSDK;
-    #endif
+#endif
 
     public class ChartboostClientImpl : AdClientImpl
     {
         private const string NO_SDK_MESSAGE = "SDK missing. Please import the Chartboost plugin.";
         private const string BANNER_UNSUPPORTED_MESSAGE = "Chartboost does not support banner ad format.";
 
-        #if EM_CHARTBOOST
+#if EM_CHARTBOOST
         private ChartboostSettings mAdSettings;
         private bool mIsCBRewardedAdCompleted;
-        #endif
+#endif
 
         #region Chartboost Events
 
-        #if EM_CHARTBOOST
-        
+#if EM_CHARTBOOST
         /// <summary>
         /// Called after an interstitial has been loaded from the Chartboost API
         /// servers and cached locally. Implement to be notified of when an interstitial has
@@ -211,9 +210,9 @@ namespace EasyMobile
             remove { Chartboost.willDisplayVideo -= value; }
         }
 
-        #endif
+#endif
 
-        #endregion  // Chartboost Events
+        #endregion // Chartboost Events
 
         #region Singleton
 
@@ -229,34 +228,31 @@ namespace EasyMobile
         /// <returns>The client.</returns>
         public static ChartboostClientImpl CreateClient()
         {
-            if (sInstance == null)
-            {
-                sInstance = new ChartboostClientImpl();
-            }
+            if (sInstance == null) sInstance = new ChartboostClientImpl();
             return sInstance;
         }
 
-        #endregion  // Object Creators
+        #endregion // Object Creators
 
         #region AdClient Overrides
 
-        public override AdNetwork Network { get { return AdNetwork.Chartboost; } }
+        public override AdNetwork Network => AdNetwork.Chartboost;
 
-        public override bool IsBannerAdSupported { get { return false; } }
+        public override bool IsBannerAdSupported => false;
 
-        public override bool IsInterstitialAdSupported { get { return true; } }
+        public override bool IsInterstitialAdSupported => true;
 
-        public override bool IsRewardedAdSupported { get { return true; } }
+        public override bool IsRewardedAdSupported => true;
 
         public override bool IsSdkAvail
         {
             get
             {
-                #if EM_CHARTBOOST
+#if EM_CHARTBOOST
                 return true;
-                #else
+#else
                 return false;
-                #endif
+#endif
             }
         }
 
@@ -273,11 +269,11 @@ namespace EasyMobile
         {
             get
             {
-                #if EM_CHARTBOOST
+#if EM_CHARTBOOST
                 return mAdSettings == null ? null : mAdSettings.CustomInterstitialPlacements.ToDictionary(key => key, _ => new AdId("", ""));
-                #else
+#else
                 return null;
-                #endif
+#endif
             }
         }
 
@@ -285,20 +281,19 @@ namespace EasyMobile
         {
             get
             {
-                #if EM_CHARTBOOST
+#if EM_CHARTBOOST
                 return mAdSettings == null ? null : mAdSettings.CustomRewardedPlacements.ToDictionary(key => key, _ => new AdId("", ""));
-                #else
+#else
                 return null;
-                #endif
+#endif
             }
         }
 
-        protected override string NoSdkMessage { get { return NO_SDK_MESSAGE; } }
+        protected override string NoSdkMessage => NO_SDK_MESSAGE;
 
         protected override void InternalInit()
         {
-            #if EM_CHARTBOOST
-
+#if EM_CHARTBOOST
             mAdSettings = EM_Settings.Advertising.Chartboost;
 
             Chartboost.didCacheInterstitial += CBDidCacheInterstitial;
@@ -328,7 +323,7 @@ namespace EasyMobile
             mIsInitialized = true;
             Debug.Log("Chartboost client has been initialized.");
 
-            #endif
+#endif
         }
 
         //------------------------------------------------------------
@@ -356,25 +351,25 @@ namespace EasyMobile
 
         protected override void InternalLoadInterstitialAd(AdPlacement placement)
         {
-            #if EM_CHARTBOOST
+#if EM_CHARTBOOST
             Chartboost.cacheInterstitial(ToCBLocation(placement));
-            #endif
+#endif
         }
 
         protected override bool InternalIsInterstitialAdReady(AdPlacement placement)
         {
-            #if EM_CHARTBOOST
+#if EM_CHARTBOOST
             return Chartboost.hasInterstitial(ToCBLocation(placement));
-            #else
+#else
             return false;
-            #endif
+#endif
         }
 
         protected override void InternalShowInterstitialAd(AdPlacement placement)
-        {   
-            #if EM_CHARTBOOST
+        {
+#if EM_CHARTBOOST
             Chartboost.showInterstitial(ToCBLocation(placement));
-            #endif
+#endif
         }
 
         //------------------------------------------------------------
@@ -383,38 +378,38 @@ namespace EasyMobile
 
         protected override void InternalLoadRewardedAd(AdPlacement placement)
         {
-            #if EM_CHARTBOOST
+#if EM_CHARTBOOST
             Chartboost.cacheRewardedVideo(ToCBLocation(placement));
-            #endif
+#endif
         }
 
         protected override bool InternalIsRewardedAdReady(AdPlacement placement)
         {
-            #if EM_CHARTBOOST
+#if EM_CHARTBOOST
             return Chartboost.hasRewardedVideo(ToCBLocation(placement));
-            #else
+#else
             return false;
-            #endif
+#endif
         }
 
         protected override void InternalShowRewardedAd(AdPlacement placement)
         {
-            #if EM_CHARTBOOST
+#if EM_CHARTBOOST
             Chartboost.showRewardedVideo(ToCBLocation(placement));
-            #endif
+#endif
         }
 
-        #endregion  // AdClient Overrides
+        #endregion // AdClient Overrides
 
         #region IConsentRequirable Overrides
 
         private const string DATA_PRIVACY_CONSENT_KEY = "EM_Ads_Chartboost_DataPrivacyConsent";
 
-        protected override string DataPrivacyConsentSaveKey { get { return DATA_PRIVACY_CONSENT_KEY; } }
+        protected override string DataPrivacyConsentSaveKey => DATA_PRIVACY_CONSENT_KEY;
 
         protected override void ApplyDataPrivacyConsent(ConsentStatus consent)
         {
-            #if EM_CHARTBOOST
+#if EM_CHARTBOOST
             // If the consent is left as Unknown (maybe due to non-EEA region) 
             // we won't do anything (pre-GDPR behaviour).
             switch (consent)
@@ -431,28 +426,27 @@ namespace EasyMobile
                 default:
                     break;
             }
-            #else
+#else
             Debug.Log(NO_SDK_MESSAGE);
-            #endif
+#endif
         }
 
         #endregion
 
         #region Private Stuff
 
-        #if EM_CHARTBOOST
+#if EM_CHARTBOOST
         private CBLocation ToCBLocation(AdPlacement placement)
         {
             return placement == null || placement == AdPlacement.Default ? CBLocation.Default : CBLocation.locationFromName(placement.Name);
         }
-        #endif
+#endif
 
-        #endregion  // Private Stuff
+        #endregion // Private Stuff
 
         #region Ad Event Handlers
 
-        #if EM_CHARTBOOST
-        
+#if EM_CHARTBOOST
         //------------------------------------------------------------
         // Interstitial Ad Events.
         //------------------------------------------------------------
@@ -519,8 +513,8 @@ namespace EasyMobile
                 OnRewardedAdSkipped(AdPlacement.PlacementWithName(location.ToString()));
             }
         }
-        #endif
+#endif
 
-        #endregion  // Ad Event Handlers
+        #endregion // Ad Event Handlers
     }
 }

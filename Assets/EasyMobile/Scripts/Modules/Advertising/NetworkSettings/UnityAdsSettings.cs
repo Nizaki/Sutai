@@ -13,8 +13,8 @@ namespace EasyMobile
         /// </summary>
         public AdId AppId
         {
-            get { return mAppId; }
-            set { mAppId = value; }
+            get => mAppId;
+            set => mAppId = value;
         }
 
         /// <summary>
@@ -22,8 +22,8 @@ namespace EasyMobile
         /// </summary>
         public AdId DefaultBannerAdId
         {
-            get { return mDefaultBannerAdId; }
-            set { mDefaultBannerAdId = value; }
+            get => mDefaultBannerAdId;
+            set => mDefaultBannerAdId = value;
         }
 
         /// <summary>
@@ -31,8 +31,8 @@ namespace EasyMobile
         /// </summary>
         public AdId DefaultInterstitialAdId
         {
-            get { return mDefaultInterstitialAdId; }
-            set { mDefaultInterstitialAdId = value; }
+            get => mDefaultInterstitialAdId;
+            set => mDefaultInterstitialAdId = value;
         }
 
         /// <summary>
@@ -40,8 +40,8 @@ namespace EasyMobile
         /// </summary>
         public AdId DefaultRewardedAdId
         {
-            get { return mDefaultRewardedAdId; }
-            set { mDefaultRewardedAdId = value; }
+            get => mDefaultRewardedAdId;
+            set => mDefaultRewardedAdId = value;
         }
 
         /// <summary>
@@ -50,8 +50,8 @@ namespace EasyMobile
         /// </summary>
         public Dictionary<AdPlacement, AdId> CustomBannerAdIds
         {
-            get { return mCustomBannerAdIds; }
-            set { mCustomBannerAdIds = value as Dictionary_AdPlacement_AdId; }
+            get => mCustomBannerAdIds;
+            set => mCustomBannerAdIds = value as Dictionary_AdPlacement_AdId;
         }
 
         /// <summary>
@@ -60,8 +60,8 @@ namespace EasyMobile
         /// </summary>
         public Dictionary<AdPlacement, AdId> CustomInterstitialAdIds
         {
-            get { return mCustomInterstitialAdIds; }
-            set { mCustomInterstitialAdIds = value as Dictionary_AdPlacement_AdId; }
+            get => mCustomInterstitialAdIds;
+            set => mCustomInterstitialAdIds = value as Dictionary_AdPlacement_AdId;
         }
 
         /// <summary>
@@ -70,8 +70,8 @@ namespace EasyMobile
         /// </summary>
         public Dictionary<AdPlacement, AdId> CustomRewardedAdIds
         {
-            get { return mCustomRewardedAdIds; }
-            set { mCustomRewardedAdIds = value as Dictionary_AdPlacement_AdId; }
+            get => mCustomRewardedAdIds;
+            set => mCustomRewardedAdIds = value as Dictionary_AdPlacement_AdId;
         }
 
         /// <summary>
@@ -79,30 +79,22 @@ namespace EasyMobile
         /// </summary>
         public bool EnableTestMode
         {
-            get { return mEnableTestMode; }
-            set { mEnableTestMode = value; }
+            get => mEnableTestMode;
+            set => mEnableTestMode = value;
         }
 
         public const string DEFAULT_BANNER_ZONE_ID = "";
         public const string DEFAULT_VIDEO_ZONE_ID = "video";
         public const string DEFAULT_REWARDED_ZONE_ID = "rewardedVideo";
 
-        [SerializeField]
-        private AdId mAppId;
-        [SerializeField]
-        private AdId mDefaultBannerAdId;
-        [SerializeField]
-        private AdId mDefaultInterstitialAdId;
-        [SerializeField]
-        private AdId mDefaultRewardedAdId;
-        [SerializeField]
-        private Dictionary_AdPlacement_AdId mCustomBannerAdIds;
-        [SerializeField]
-        private Dictionary_AdPlacement_AdId mCustomInterstitialAdIds;
-        [SerializeField]
-        private Dictionary_AdPlacement_AdId mCustomRewardedAdIds;
-        [SerializeField]
-        private bool mEnableTestMode;
+        [SerializeField] private AdId mAppId;
+        [SerializeField] private AdId mDefaultBannerAdId;
+        [SerializeField] private AdId mDefaultInterstitialAdId;
+        [SerializeField] private AdId mDefaultRewardedAdId;
+        [SerializeField] private Dictionary_AdPlacement_AdId mCustomBannerAdIds;
+        [SerializeField] private Dictionary_AdPlacement_AdId mCustomInterstitialAdIds;
+        [SerializeField] private Dictionary_AdPlacement_AdId mCustomRewardedAdIds;
+        [SerializeField] private bool mEnableTestMode;
 
         public UnityAdsSettings()
         {

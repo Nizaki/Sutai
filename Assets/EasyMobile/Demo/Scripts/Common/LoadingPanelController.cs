@@ -7,22 +7,17 @@ namespace EasyMobile.Demo
 {
     public class LoadingPanelController : MonoBehaviour
     {
-        [Header("Child Objects")]
-        public Image spinner;
+        [Header("Child Objects")] public Image spinner;
         public Text message;
         public Button button;
 
-        [Header("Config")]
-        public float spinningAngle = 10;
+        [Header("Config")] public float spinningAngle = 10;
         public float spinningFillSpeed = 0.002f;
 
         private bool mIsShowing = false;
         private Coroutine mSpinCoroutine;
 
-        public bool IsShowing
-        {
-            get { return mIsShowing; }
-        }
+        public bool IsShowing => mIsShowing;
 
         public void Show()
         {
@@ -35,7 +30,7 @@ namespace EasyMobile.Demo
 
         public void Hide()
         {
-            mIsShowing = false; 
+            mIsShowing = false;
             gameObject.SetActive(false);
         }
 
@@ -54,12 +49,12 @@ namespace EasyMobile.Demo
             button.onClick.AddListener(callback);
         }
 
-        void OnEnable()
+        private void OnEnable()
         {
             mSpinCoroutine = StartCoroutine(CRSpin());
         }
 
-        void OnDisable()
+        private void OnDisable()
         {
             if (mSpinCoroutine != null)
             {
@@ -70,7 +65,7 @@ namespace EasyMobile.Demo
 
         private IEnumerator CRSpin()
         {
-            float fillAmount = 0f;
+            var fillAmount = 0f;
             while (true)
             {
                 fillAmount += spinningFillSpeed;

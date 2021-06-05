@@ -29,12 +29,15 @@ namespace EasyMobile.Editor
                 if (_aboutEMTex == null)
                 {
 #if EASY_MOBILE_PRO
-                    string imageName = "em-about-pro.psd";
+                    var imageName = "em-about-pro.psd";
 #else
                     string imageName = "em-about-basic.psd";
 #endif
-                    _aboutEMTex = AssetDatabase.LoadAssetAtPath(EM_Constants.SkinTextureFolder + "/" + imageName, typeof(Texture2D)) as Texture2D;
+                    _aboutEMTex =
+                        AssetDatabase.LoadAssetAtPath(EM_Constants.SkinTextureFolder + "/" + imageName,
+                            typeof(Texture2D)) as Texture2D;
                 }
+
                 return _aboutEMTex;
             }
         }
@@ -47,9 +50,11 @@ namespace EasyMobile.Editor
             {
                 if (_homeIcon == null)
                 {
-                    string iconName = EditorGUIUtility.isProSkin ? "icon-home-dark.psd" : "icon-home-light.psd";
-                    _homeIcon = AssetDatabase.LoadAssetAtPath(EM_Constants.SkinTextureFolder + "/" + iconName, typeof(Texture2D)) as Texture2D;
+                    var iconName = EditorGUIUtility.isProSkin ? "icon-home-dark.psd" : "icon-home-light.psd";
+                    _homeIcon = AssetDatabase.LoadAssetAtPath(EM_Constants.SkinTextureFolder + "/" + iconName,
+                        typeof(Texture2D)) as Texture2D;
                 }
+
                 return _homeIcon;
             }
         }
@@ -62,9 +67,11 @@ namespace EasyMobile.Editor
             {
                 if (_backIcon == null)
                 {
-                    string iconName = EditorGUIUtility.isProSkin ? "icon-back-dark.psd" : "icon-back-light.psd";
-                    _backIcon = AssetDatabase.LoadAssetAtPath(EM_Constants.SkinTextureFolder + "/" + iconName, typeof(Texture2D)) as Texture2D;
+                    var iconName = EditorGUIUtility.isProSkin ? "icon-back-dark.psd" : "icon-back-light.psd";
+                    _backIcon = AssetDatabase.LoadAssetAtPath(EM_Constants.SkinTextureFolder + "/" + iconName,
+                        typeof(Texture2D)) as Texture2D;
                 }
+
                 return _backIcon;
             }
         }
@@ -77,9 +84,11 @@ namespace EasyMobile.Editor
             {
                 if (_arrowUp == null)
                 {
-                    string iconName = EditorGUIUtility.isProSkin ? "icon-up-arrow-dark.psd" : "icon-up-arrow-light.psd";
-                    _arrowUp = AssetDatabase.LoadAssetAtPath(EM_Constants.SkinTextureFolder + "/" + iconName, typeof(Texture2D)) as Texture2D;
+                    var iconName = EditorGUIUtility.isProSkin ? "icon-up-arrow-dark.psd" : "icon-up-arrow-light.psd";
+                    _arrowUp = AssetDatabase.LoadAssetAtPath(EM_Constants.SkinTextureFolder + "/" + iconName,
+                        typeof(Texture2D)) as Texture2D;
                 }
+
                 return _arrowUp;
             }
         }
@@ -92,9 +101,14 @@ namespace EasyMobile.Editor
             {
                 if (_arrowDown == null)
                 {
-                    string iconName = EditorGUIUtility.isProSkin ? "icon-down-arrow-dark.psd" : "icon-down-arrow-light.psd";
-                    _arrowDown = AssetDatabase.LoadAssetAtPath(EM_Constants.SkinTextureFolder + "/" + iconName, typeof(Texture2D)) as Texture2D;
+                    var iconName = EditorGUIUtility.isProSkin
+                        ? "icon-down-arrow-dark.psd"
+                        : "icon-down-arrow-light.psd";
+                    _arrowDown =
+                        AssetDatabase.LoadAssetAtPath(EM_Constants.SkinTextureFolder + "/" + iconName,
+                            typeof(Texture2D)) as Texture2D;
                 }
+
                 return _arrowDown;
             }
         }
@@ -107,9 +121,14 @@ namespace EasyMobile.Editor
             {
                 if (_chevronDown == null)
                 {
-                    string iconName = EditorGUIUtility.isProSkin ? "icon-chevron-down-dark.psd" : "icon-chevron-down-light.psd";
-                    _chevronDown = AssetDatabase.LoadAssetAtPath(EM_Constants.SkinTextureFolder + "/" + iconName, typeof(Texture2D)) as Texture2D;
+                    var iconName = EditorGUIUtility.isProSkin
+                        ? "icon-chevron-down-dark.psd"
+                        : "icon-chevron-down-light.psd";
+                    _chevronDown =
+                        AssetDatabase.LoadAssetAtPath(EM_Constants.SkinTextureFolder + "/" + iconName,
+                            typeof(Texture2D)) as Texture2D;
                 }
+
                 return _chevronDown;
             }
         }
@@ -122,9 +141,14 @@ namespace EasyMobile.Editor
             {
                 if (_chevronUp == null)
                 {
-                    string iconName = EditorGUIUtility.isProSkin ? "icon-chevron-up-dark.psd" : "icon-chevron-up-light.psd";
-                    _chevronUp = AssetDatabase.LoadAssetAtPath(EM_Constants.SkinTextureFolder + "/" + iconName, typeof(Texture2D)) as Texture2D;
+                    var iconName = EditorGUIUtility.isProSkin
+                        ? "icon-chevron-up-dark.psd"
+                        : "icon-chevron-up-light.psd";
+                    _chevronUp =
+                        AssetDatabase.LoadAssetAtPath(EM_Constants.SkinTextureFolder + "/" + iconName,
+                            typeof(Texture2D)) as Texture2D;
                 }
+
                 return _chevronUp;
             }
         }
@@ -137,9 +161,14 @@ namespace EasyMobile.Editor
             {
                 if (_bottomSeparatorTex == null)
                 {
-                    string iconName = EditorGUIUtility.isProSkin ? "bottom-separator-dark.psd" : "bottom-separator-light.psd";
-                    _bottomSeparatorTex = AssetDatabase.LoadAssetAtPath(EM_Constants.SkinTextureFolder + "/" + iconName, typeof(Texture2D)) as Texture2D;
+                    var iconName = EditorGUIUtility.isProSkin
+                        ? "bottom-separator-dark.psd"
+                        : "bottom-separator-light.psd";
+                    _bottomSeparatorTex =
+                        AssetDatabase.LoadAssetAtPath(EM_Constants.SkinTextureFolder + "/" + iconName,
+                            typeof(Texture2D)) as Texture2D;
                 }
+
                 return _bottomSeparatorTex;
             }
         }
@@ -152,9 +181,14 @@ namespace EasyMobile.Editor
             {
                 if (_uppercaseSectionHeaderBg == null)
                 {
-                    string iconName = EditorGUIUtility.isProSkin ? "uppercase-section-header-dark.psd" : "uppercase-section-header-light.psd";
-                    _uppercaseSectionHeaderBg = AssetDatabase.LoadAssetAtPath(EM_Constants.SkinTextureFolder + "/" + iconName, typeof(Texture2D)) as Texture2D;
+                    var iconName = EditorGUIUtility.isProSkin
+                        ? "uppercase-section-header-dark.psd"
+                        : "uppercase-section-header-light.psd";
+                    _uppercaseSectionHeaderBg =
+                        AssetDatabase.LoadAssetAtPath(EM_Constants.SkinTextureFolder + "/" + iconName,
+                            typeof(Texture2D)) as Texture2D;
                 }
+
                 return _uppercaseSectionHeaderBg;
             }
         }
@@ -167,9 +201,14 @@ namespace EasyMobile.Editor
             {
                 if (_uppercaseSectionHeaderIcon == null)
                 {
-                    string iconName = EditorGUIUtility.isProSkin ? "uppercase-section-header-icon-dark.psd" : "uppercase-section-header-icon-light.psd";
-                    _uppercaseSectionHeaderIcon = AssetDatabase.LoadAssetAtPath(EM_Constants.SkinTextureFolder + "/" + iconName, typeof(Texture2D)) as Texture2D;
+                    var iconName = EditorGUIUtility.isProSkin
+                        ? "uppercase-section-header-icon-dark.psd"
+                        : "uppercase-section-header-icon-light.psd";
+                    _uppercaseSectionHeaderIcon =
+                        AssetDatabase.LoadAssetAtPath(EM_Constants.SkinTextureFolder + "/" + iconName,
+                            typeof(Texture2D)) as Texture2D;
                 }
+
                 return _uppercaseSectionHeaderIcon;
             }
         }
@@ -183,11 +222,13 @@ namespace EasyMobile.Editor
                 if (_easymobileIcon == null)
                 {
 #if EASY_MOBILE_PRO
-                    string iconName = "easymobile-icon-pro.png";
+                    var iconName = "easymobile-icon-pro.png";
 #else
                     string iconName = "easymobile-icon-basic.png";
 #endif
-                    _easymobileIcon = AssetDatabase.LoadAssetAtPath(EM_Constants.SkinTextureFolder + "/" + iconName, typeof(Texture2D)) as Texture2D;
+                    _easymobileIcon =
+                        AssetDatabase.LoadAssetAtPath(EM_Constants.SkinTextureFolder + "/" + iconName,
+                            typeof(Texture2D)) as Texture2D;
                 }
 
                 return _easymobileIcon;
@@ -202,9 +243,12 @@ namespace EasyMobile.Editor
             {
                 if (_hyperlinkIcon == null)
                 {
-                    string iconName = EditorGUIUtility.isProSkin ? "icon-hyperlink-dark.psd" : "icon-hyperlink-light.psd";
-                    _hyperlinkIcon = AssetDatabase.LoadAssetAtPath(EM_Constants.SkinTextureFolder + "/" + iconName, typeof(Texture2D)) as Texture2D;
+                    var iconName = EditorGUIUtility.isProSkin ? "icon-hyperlink-dark.psd" : "icon-hyperlink-light.psd";
+                    _hyperlinkIcon =
+                        AssetDatabase.LoadAssetAtPath(EM_Constants.SkinTextureFolder + "/" + iconName,
+                            typeof(Texture2D)) as Texture2D;
                 }
+
                 return _hyperlinkIcon;
             }
         }
@@ -217,9 +261,12 @@ namespace EasyMobile.Editor
             {
                 if (_hyperlinkIconActive == null)
                 {
-                    string iconName = "icon-hyperlink-active.psd";
-                    _hyperlinkIconActive = AssetDatabase.LoadAssetAtPath(EM_Constants.SkinTextureFolder + "/" + iconName, typeof(Texture2D)) as Texture2D;
+                    var iconName = "icon-hyperlink-active.psd";
+                    _hyperlinkIconActive =
+                        AssetDatabase.LoadAssetAtPath(EM_Constants.SkinTextureFolder + "/" + iconName,
+                            typeof(Texture2D)) as Texture2D;
                 }
+
                 return _hyperlinkIconActive;
             }
         }
@@ -231,9 +278,9 @@ namespace EasyMobile.Editor
             get
             {
                 if (_moduleOffIcon == null)
-                {
-                    _moduleOffIcon = AssetDatabase.LoadAssetAtPath(EM_Constants.SkinTextureFolder + "/" + "icon-module-off.psd", typeof(Texture2D)) as Texture2D;
-                }
+                    _moduleOffIcon =
+                        AssetDatabase.LoadAssetAtPath(EM_Constants.SkinTextureFolder + "/" + "icon-module-off.psd",
+                            typeof(Texture2D)) as Texture2D;
                 return _moduleOffIcon;
             }
         }
@@ -245,9 +292,9 @@ namespace EasyMobile.Editor
             get
             {
                 if (_moduleOnIcon == null)
-                {
-                    _moduleOnIcon = AssetDatabase.LoadAssetAtPath(EM_Constants.SkinTextureFolder + "/" + "icon-module-on.psd", typeof(Texture2D)) as Texture2D;
-                }
+                    _moduleOnIcon =
+                        AssetDatabase.LoadAssetAtPath(EM_Constants.SkinTextureFolder + "/" + "icon-module-on.psd",
+                            typeof(Texture2D)) as Texture2D;
                 return _moduleOnIcon;
             }
         }
@@ -260,9 +307,11 @@ namespace EasyMobile.Editor
             {
                 if (_adIcon == null)
                 {
-                    string iconName = "Module Icons/ad-icon.psd";
-                    _adIcon = AssetDatabase.LoadAssetAtPath(EM_Constants.SkinTextureFolder + "/" + iconName, typeof(Texture2D)) as Texture2D;
+                    var iconName = "Module Icons/ad-icon.psd";
+                    _adIcon = AssetDatabase.LoadAssetAtPath(EM_Constants.SkinTextureFolder + "/" + iconName,
+                        typeof(Texture2D)) as Texture2D;
                 }
+
                 return _adIcon;
             }
         }
@@ -275,9 +324,12 @@ namespace EasyMobile.Editor
             {
                 if (_gameServiceIcon == null)
                 {
-                    string iconName = "Module Icons/game-service-icon.psd";
-                    _gameServiceIcon = AssetDatabase.LoadAssetAtPath(EM_Constants.SkinTextureFolder + "/" + iconName, typeof(Texture2D)) as Texture2D;
+                    var iconName = "Module Icons/game-service-icon.psd";
+                    _gameServiceIcon =
+                        AssetDatabase.LoadAssetAtPath(EM_Constants.SkinTextureFolder + "/" + iconName,
+                            typeof(Texture2D)) as Texture2D;
                 }
+
                 return _gameServiceIcon;
             }
         }
@@ -290,9 +342,11 @@ namespace EasyMobile.Editor
             {
                 if (_iapIcon == null)
                 {
-                    string iconName = "Module Icons/iap-icon.psd";
-                    _iapIcon = AssetDatabase.LoadAssetAtPath(EM_Constants.SkinTextureFolder + "/" + iconName, typeof(Texture2D)) as Texture2D;
+                    var iconName = "Module Icons/iap-icon.psd";
+                    _iapIcon = AssetDatabase.LoadAssetAtPath(EM_Constants.SkinTextureFolder + "/" + iconName,
+                        typeof(Texture2D)) as Texture2D;
                 }
+
                 return _iapIcon;
             }
         }
@@ -305,9 +359,12 @@ namespace EasyMobile.Editor
             {
                 if (_notificationIcon == null)
                 {
-                    string iconName = "Module Icons/notification-icon.psd";
-                    _notificationIcon = AssetDatabase.LoadAssetAtPath(EM_Constants.SkinTextureFolder + "/" + iconName, typeof(Texture2D)) as Texture2D;
+                    var iconName = "Module Icons/notification-icon.psd";
+                    _notificationIcon =
+                        AssetDatabase.LoadAssetAtPath(EM_Constants.SkinTextureFolder + "/" + iconName,
+                            typeof(Texture2D)) as Texture2D;
                 }
+
                 return _notificationIcon;
             }
         }
@@ -320,11 +377,14 @@ namespace EasyMobile.Editor
             {
                 if (_selectModulePanelTexture == null)
                 {
-                    var color = EditorGUIUtility.isProSkin ? new Color(.3f, .3f, .3f, 1.0f) : new Color(.92f, .92f, .92f, 1.0f);
+                    var color = EditorGUIUtility.isProSkin
+                        ? new Color(.3f, .3f, .3f, 1.0f)
+                        : new Color(.92f, .92f, .92f, 1.0f);
                     _selectModulePanelTexture = new Texture2D(1, 1);
                     _selectModulePanelTexture.SetPixel(0, 0, color);
                     _selectModulePanelTexture.Apply();
                 }
+
                 return _selectModulePanelTexture;
             }
         }
@@ -337,9 +397,12 @@ namespace EasyMobile.Editor
             {
                 if (_privacyIcon == null)
                 {
-                    string iconName = "Module Icons/privacy-icon.psd";
-                    _privacyIcon = AssetDatabase.LoadAssetAtPath(EM_Constants.SkinTextureFolder + "/" + iconName, typeof(Texture2D)) as Texture2D;
+                    var iconName = "Module Icons/privacy-icon.psd";
+                    _privacyIcon =
+                        AssetDatabase.LoadAssetAtPath(EM_Constants.SkinTextureFolder + "/" + iconName,
+                            typeof(Texture2D)) as Texture2D;
                 }
+
                 return _privacyIcon;
             }
         }
@@ -352,9 +415,12 @@ namespace EasyMobile.Editor
             {
                 if (_sharingIcon == null)
                 {
-                    string iconName = "Module Icons/sharing-icon.psd";
-                    _sharingIcon = AssetDatabase.LoadAssetAtPath(EM_Constants.SkinTextureFolder + "/" + iconName, typeof(Texture2D)) as Texture2D;
+                    var iconName = "Module Icons/sharing-icon.psd";
+                    _sharingIcon =
+                        AssetDatabase.LoadAssetAtPath(EM_Constants.SkinTextureFolder + "/" + iconName,
+                            typeof(Texture2D)) as Texture2D;
                 }
+
                 return _sharingIcon;
             }
         }
@@ -367,9 +433,12 @@ namespace EasyMobile.Editor
             {
                 if (_utilityIcon == null)
                 {
-                    string iconName = "Module Icons/utility-icon.psd";
-                    _utilityIcon = AssetDatabase.LoadAssetAtPath(EM_Constants.SkinTextureFolder + "/" + iconName, typeof(Texture2D)) as Texture2D;
+                    var iconName = "Module Icons/utility-icon.psd";
+                    _utilityIcon =
+                        AssetDatabase.LoadAssetAtPath(EM_Constants.SkinTextureFolder + "/" + iconName,
+                            typeof(Texture2D)) as Texture2D;
                 }
+
                 return _utilityIcon;
             }
         }
@@ -382,9 +451,12 @@ namespace EasyMobile.Editor
             {
                 if (_nativeApisIcon == null)
                 {
-                    string iconName = "Module Icons/native-apis-icon.psd";
-                    _nativeApisIcon = AssetDatabase.LoadAssetAtPath(EM_Constants.SkinTextureFolder + "/" + iconName, typeof(Texture2D)) as Texture2D;
+                    var iconName = "Module Icons/native-apis-icon.psd";
+                    _nativeApisIcon =
+                        AssetDatabase.LoadAssetAtPath(EM_Constants.SkinTextureFolder + "/" + iconName,
+                            typeof(Texture2D)) as Texture2D;
                 }
+
                 return _nativeApisIcon;
             }
         }
@@ -397,9 +469,11 @@ namespace EasyMobile.Editor
             {
                 if (_permissionsIcon == null)
                 {
-                    string iconName = "Module Icons/permissions-icon.png";
-                    _permissionsIcon = AssetDatabase.LoadAssetAtPath<Texture2D>(EM_Constants.SkinTextureFolder + "/" + iconName);
+                    var iconName = "Module Icons/permissions-icon.png";
+                    _permissionsIcon =
+                        AssetDatabase.LoadAssetAtPath<Texture2D>(EM_Constants.SkinTextureFolder + "/" + iconName);
                 }
+
                 return _permissionsIcon;
             }
         }
@@ -412,9 +486,11 @@ namespace EasyMobile.Editor
             {
                 if (_easymobileSmallIcon == null)
                 {
-                    string iconName = "em_icon_small.psd";
-                    _easymobileSmallIcon = AssetDatabase.LoadAssetAtPath<Texture2D>(EM_Constants.SkinTextureFolder + "/" + iconName);
+                    var iconName = "em_icon_small.psd";
+                    _easymobileSmallIcon =
+                        AssetDatabase.LoadAssetAtPath<Texture2D>(EM_Constants.SkinTextureFolder + "/" + iconName);
                 }
+
                 return _easymobileSmallIcon;
             }
         }
@@ -427,9 +503,11 @@ namespace EasyMobile.Editor
             {
                 if (_toolReimpotGPSRIcon == null)
                 {
-                    string iconName = "Tool Icons/google-play.psd";
-                    _toolReimpotGPSRIcon = AssetDatabase.LoadAssetAtPath<Texture2D>(EM_Constants.SkinTextureFolder + "/" + iconName);
+                    var iconName = "Tool Icons/google-play.psd";
+                    _toolReimpotGPSRIcon =
+                        AssetDatabase.LoadAssetAtPath<Texture2D>(EM_Constants.SkinTextureFolder + "/" + iconName);
                 }
+
                 return _toolReimpotGPSRIcon;
             }
         }
@@ -442,9 +520,11 @@ namespace EasyMobile.Editor
             {
                 if (_toolImportPlaymakerActionsIcon == null)
                 {
-                    string iconName = "Tool Icons/playmaker.psd";
-                    _toolImportPlaymakerActionsIcon = AssetDatabase.LoadAssetAtPath<Texture2D>(EM_Constants.SkinTextureFolder + "/" + iconName);
+                    var iconName = "Tool Icons/playmaker.psd";
+                    _toolImportPlaymakerActionsIcon =
+                        AssetDatabase.LoadAssetAtPath<Texture2D>(EM_Constants.SkinTextureFolder + "/" + iconName);
                 }
+
                 return _toolImportPlaymakerActionsIcon;
             }
         }
@@ -457,9 +537,11 @@ namespace EasyMobile.Editor
             {
                 if (_toolExportEMSettingsIcon == null)
                 {
-                    string iconName = "Tool Icons/export.psd";
-                    _toolExportEMSettingsIcon = AssetDatabase.LoadAssetAtPath<Texture2D>(EM_Constants.SkinTextureFolder + "/" + iconName);
+                    var iconName = "Tool Icons/export.psd";
+                    _toolExportEMSettingsIcon =
+                        AssetDatabase.LoadAssetAtPath<Texture2D>(EM_Constants.SkinTextureFolder + "/" + iconName);
                 }
+
                 return _toolExportEMSettingsIcon;
             }
         }
@@ -472,9 +554,11 @@ namespace EasyMobile.Editor
             {
                 if (_toolUserGuideIcon == null)
                 {
-                    string iconName = "Tool Icons/manual.psd";
-                    _toolUserGuideIcon = AssetDatabase.LoadAssetAtPath<Texture2D>(EM_Constants.SkinTextureFolder + "/" + iconName);
+                    var iconName = "Tool Icons/manual.psd";
+                    _toolUserGuideIcon =
+                        AssetDatabase.LoadAssetAtPath<Texture2D>(EM_Constants.SkinTextureFolder + "/" + iconName);
                 }
+
                 return _toolUserGuideIcon;
             }
         }
@@ -487,9 +571,11 @@ namespace EasyMobile.Editor
             {
                 if (_toolScriptingRefIcon == null)
                 {
-                    string iconName = "Tool Icons/api.psd";
-                    _toolScriptingRefIcon = AssetDatabase.LoadAssetAtPath<Texture2D>(EM_Constants.SkinTextureFolder + "/" + iconName);
+                    var iconName = "Tool Icons/api.psd";
+                    _toolScriptingRefIcon =
+                        AssetDatabase.LoadAssetAtPath<Texture2D>(EM_Constants.SkinTextureFolder + "/" + iconName);
                 }
+
                 return _toolScriptingRefIcon;
             }
         }
@@ -502,9 +588,11 @@ namespace EasyMobile.Editor
             {
                 if (_toolVideoTutorialsIcon == null)
                 {
-                    string iconName = "Tool Icons/video-tutorials.psd";
-                    _toolVideoTutorialsIcon = AssetDatabase.LoadAssetAtPath<Texture2D>(EM_Constants.SkinTextureFolder + "/" + iconName);
+                    var iconName = "Tool Icons/video-tutorials.psd";
+                    _toolVideoTutorialsIcon =
+                        AssetDatabase.LoadAssetAtPath<Texture2D>(EM_Constants.SkinTextureFolder + "/" + iconName);
                 }
+
                 return _toolVideoTutorialsIcon;
             }
         }
@@ -517,9 +605,11 @@ namespace EasyMobile.Editor
             {
                 if (_toolSupportIcon == null)
                 {
-                    string iconName = "Tool Icons/support.psd";
-                    _toolSupportIcon = AssetDatabase.LoadAssetAtPath<Texture2D>(EM_Constants.SkinTextureFolder + "/" + iconName);
+                    var iconName = "Tool Icons/support.psd";
+                    _toolSupportIcon =
+                        AssetDatabase.LoadAssetAtPath<Texture2D>(EM_Constants.SkinTextureFolder + "/" + iconName);
                 }
+
                 return _toolSupportIcon;
             }
         }
@@ -532,9 +622,11 @@ namespace EasyMobile.Editor
             {
                 if (_toolRateIcon == null)
                 {
-                    string iconName = "Tool Icons/fivestars.psd";
-                    _toolRateIcon = AssetDatabase.LoadAssetAtPath<Texture2D>(EM_Constants.SkinTextureFolder + "/" + iconName);
+                    var iconName = "Tool Icons/fivestars.psd";
+                    _toolRateIcon =
+                        AssetDatabase.LoadAssetAtPath<Texture2D>(EM_Constants.SkinTextureFolder + "/" + iconName);
                 }
+
                 return _toolRateIcon;
             }
         }
@@ -547,9 +639,11 @@ namespace EasyMobile.Editor
             {
                 if (_toolGenerateManifestIcon == null)
                 {
-                    string iconName = "Tool Icons/xml.psd";
-                    _toolGenerateManifestIcon = AssetDatabase.LoadAssetAtPath<Texture2D>(EM_Constants.SkinTextureFolder + "/" + iconName);
+                    var iconName = "Tool Icons/xml.psd";
+                    _toolGenerateManifestIcon =
+                        AssetDatabase.LoadAssetAtPath<Texture2D>(EM_Constants.SkinTextureFolder + "/" + iconName);
                 }
+
                 return _toolGenerateManifestIcon;
             }
         }
@@ -562,9 +656,11 @@ namespace EasyMobile.Editor
             {
                 if (_toolAboutIcon == null)
                 {
-                    string iconName = "Tool Icons/about.psd";
-                    _toolAboutIcon = AssetDatabase.LoadAssetAtPath<Texture2D>(EM_Constants.SkinTextureFolder + "/" + iconName);
+                    var iconName = "Tool Icons/about.psd";
+                    _toolAboutIcon =
+                        AssetDatabase.LoadAssetAtPath<Texture2D>(EM_Constants.SkinTextureFolder + "/" + iconName);
                 }
+
                 return _toolAboutIcon;
             }
         }
@@ -585,14 +681,11 @@ namespace EasyMobile.Editor
                 }
                 else
                 {
-                    string skinName = EditorGUIUtility.isProSkin ? "EMSkin_Dark.guiskin" : "EMSkin_Light.guiskin";
-                    string skinPath = EM_Constants.SkinFolder + "/" + skinName;
+                    var skinName = EditorGUIUtility.isProSkin ? "EMSkin_Dark.guiskin" : "EMSkin_Light.guiskin";
+                    var skinPath = EM_Constants.SkinFolder + "/" + skinName;
                     _skin = AssetDatabase.LoadAssetAtPath(skinPath, typeof(GUISkin)) as GUISkin;
 
-                    if (_skin == null)
-                    {
-                        Debug.LogError("Couldn't load the GUISkin at " + skinPath);
-                    }
+                    if (_skin == null) Debug.LogError("Couldn't load the GUISkin at " + skinPath);
 
                     return _skin;
                 }
@@ -611,7 +704,6 @@ namespace EasyMobile.Editor
             get
             {
                 if (_inspectorHeaderIcon == null)
-                {
                     _inspectorHeaderIcon = new GUIStyle(GUIStyle.none)
                     {
                         imagePosition = ImagePosition.ImageOnly,
@@ -619,7 +711,6 @@ namespace EasyMobile.Editor
                         fixedHeight = 30,
                         fixedWidth = 30
                     };
-                }
                 return _inspectorHeaderIcon;
             }
         }
@@ -640,13 +731,12 @@ namespace EasyMobile.Editor
                     _inspectorHeaderTitle.padding = padding;
 
                     if (EditorGUIUtility.isProSkin)
-                    {
                         _inspectorHeaderTitle.normal = new GUIStyleState()
                         {
                             textColor = Color.white
                         };
-                    }
                 }
+
                 return _inspectorHeaderTitle;
             }
         }
@@ -667,13 +757,12 @@ namespace EasyMobile.Editor
                     _inspectorHeaderSubtitle.padding = padding;
 
                     if (EditorGUIUtility.isProSkin)
-                    {
                         _inspectorHeaderSubtitle.normal = new GUIStyleState()
                         {
                             textColor = Color.white
                         };
-                    }
                 }
+
                 return _inspectorHeaderSubtitle;
             }
         }
@@ -693,6 +782,7 @@ namespace EasyMobile.Editor
                     _moduleToolbarButton.fixedHeight = EditorGUIUtility.singleLineHeight * 2;
                     _moduleToolbarButton.stretchWidth = true;
                 }
+
                 return _moduleToolbarButton;
             }
         }
@@ -712,6 +802,7 @@ namespace EasyMobile.Editor
                     _moduleToolbarButtonLeft.fixedHeight = EditorGUIUtility.singleLineHeight * 2f;
                     _moduleToolbarButtonLeft.stretchWidth = true;
                 }
+
                 return _moduleToolbarButtonLeft;
             }
         }
@@ -731,6 +822,7 @@ namespace EasyMobile.Editor
                     _moduleToolbarButtonMid.fixedHeight = EditorGUIUtility.singleLineHeight * 2f;
                     _moduleToolbarButtonMid.stretchWidth = true;
                 }
+
                 return _moduleToolbarButtonMid;
             }
         }
@@ -750,6 +842,7 @@ namespace EasyMobile.Editor
                     _moduleToolbarButtonRight.fixedHeight = EditorGUIUtility.singleLineHeight * 2f;
                     _moduleToolbarButtonRight.stretchWidth = true;
                 }
+
                 return _moduleToolbarButtonRight;
             }
         }
@@ -763,12 +856,13 @@ namespace EasyMobile.Editor
             {
                 if (_moduleFoldout == null)
                 {
-                    _moduleFoldout = new GUIStyle(EditorStyles.foldout);  // Extending default foldout style.
+                    _moduleFoldout = new GUIStyle(EditorStyles.foldout); // Extending default foldout style.
                     _moduleFoldout.fontSize = 14;
                     _moduleFoldout.fontStyle = FontStyle.Bold;
                     _moduleFoldout.alignment = TextAnchor.MiddleLeft;
                     _moduleFoldout.normal.textColor = Color.black;
                 }
+
                 return _moduleFoldout;
             }
         }
@@ -782,9 +876,10 @@ namespace EasyMobile.Editor
             {
                 if (_wordwrapTextField == null)
                 {
-                    _wordwrapTextField = new GUIStyle(EditorStyles.textField);  // Extending default textfield style.
+                    _wordwrapTextField = new GUIStyle(EditorStyles.textField); // Extending default textfield style.
                     _wordwrapTextField.wordWrap = true;
                 }
+
                 return _wordwrapTextField;
             }
         }
@@ -797,7 +892,6 @@ namespace EasyMobile.Editor
             get
             {
                 if (_fullWidthBottomSeparatorBox == null)
-                {
                     _fullWidthBottomSeparatorBox = new GUIStyle(EditorStyles.inspectorFullWidthMargins)
                     {
                         stretchWidth = true,
@@ -810,7 +904,6 @@ namespace EasyMobile.Editor
                             background = BottomSeparatorTex
                         }
                     };
-                }
                 return _fullWidthBottomSeparatorBox;
             }
         }
@@ -823,12 +916,10 @@ namespace EasyMobile.Editor
             get
             {
                 if (_uppdercaseSectionBox == null)
-                {
                     _uppdercaseSectionBox = new GUIStyle(EditorStyles.helpBox)
                     {
-                        margin = new RectOffset(0, 10, 5, 5),
+                        margin = new RectOffset(0, 10, 5, 5)
                     };
-                }
                 return _uppdercaseSectionBox;
             }
         }
@@ -841,9 +932,7 @@ namespace EasyMobile.Editor
             get
             {
                 if (_uppercaseSectionHeaderExpand == null)
-                {
                     _uppercaseSectionHeaderExpand = GetCustomStyle("Uppercase Section Header");
-                }
                 return _uppercaseSectionHeaderExpand;
             }
         }
@@ -856,12 +945,10 @@ namespace EasyMobile.Editor
             get
             {
                 if (_uppercaseSectionHeaderCollapse == null)
-                {
                     _uppercaseSectionHeaderCollapse = new GUIStyle(GetCustomStyle("Uppercase Section Header"))
                     {
                         normal = new GUIStyleState()
                     };
-                }
                 return _uppercaseSectionHeaderCollapse;
             }
         }
@@ -880,16 +967,12 @@ namespace EasyMobile.Editor
             }
             else if (Skin != null)
             {
-                GUIStyle style = Skin.FindStyle(styleName);
+                var style = Skin.FindStyle(styleName);
 
                 if (style == null)
-                {
                     Debug.LogError("Couldn't find style " + styleName);
-                }
                 else
-                {
                     _customStyles.Add(styleName, style);
-                }
 
                 return style;
             }
@@ -902,4 +985,3 @@ namespace EasyMobile.Editor
         #endregion
     }
 }
-

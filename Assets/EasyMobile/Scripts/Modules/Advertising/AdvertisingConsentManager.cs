@@ -11,7 +11,7 @@ namespace EasyMobile
         private const string DATA_PRIVACY_CONSENT_KEY = "EM_Ads_DataPrivacyConsent";
 
         public static AdvertisingConsentManager Instance
-        { 
+        {
             get
             {
                 if (sInstance == null)
@@ -24,7 +24,7 @@ namespace EasyMobile
 
         private AdvertisingConsentManager(string key)
         {
-            this.mDataPrivacyConsentKey = key;
+            mDataPrivacyConsentKey = key;
         }
     }
 }

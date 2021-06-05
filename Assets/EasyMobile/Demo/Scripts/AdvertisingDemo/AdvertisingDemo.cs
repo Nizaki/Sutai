@@ -8,31 +8,25 @@ namespace EasyMobile.Demo
 {
     public class AdvertisingDemo : MonoBehaviour
     {
-        [SerializeField]
-        private DemoUtils demoUtils = null;
+        [SerializeField] private DemoUtils demoUtils = null;
 
-        [SerializeField]
-        private GameObject curtain = null, isAdRemovedInfo = null;
+        [SerializeField] private GameObject curtain = null, isAdRemovedInfo = null;
 
-        [SerializeField]
-        private Text defaultBannerNetworkText = null, defaultInterstitialNetworkText = null, defaultRewardedNetworkText = null;
+        [SerializeField] private Text defaultBannerNetworkText = null,
+            defaultInterstitialNetworkText = null,
+            defaultRewardedNetworkText = null;
 
-        [SerializeField]
-        private Dropdown autoLoadModeDropdown = null;
+        [SerializeField] private Dropdown autoLoadModeDropdown = null;
 
-        [Space]
-        [SerializeField]
-        private BannerSection bannerUI = null;
+        [Space] [SerializeField] private BannerSection bannerUI = null;
 
-        [SerializeField]
-        private InterstitialSection interstitialUI = null;
+        [SerializeField] private InterstitialSection interstitialUI = null;
 
-        [SerializeField]
-        private RewardedVideoSection rewardedVideoUI = null;
+        [SerializeField] private RewardedVideoSection rewardedVideoUI = null;
 
         private AutoAdLoadingMode lastAutoLoadMode = AutoAdLoadingMode.None;
 
-        void Awake()
+        private void Awake()
         {
             // Init EM runtime if needed (useful in case only this scene is built).
             if (!RuntimeManager.IsInitialized())
@@ -56,14 +50,14 @@ namespace EasyMobile.Demo
             rewardedVideoUI.Update();
 
             // Check if ads were removed.
-            bool adRemoved = Advertising.IsAdRemoved();
-            string adRemovedMessage = adRemoved ? "Ads were removed" : "Ads are enabled";
+            var adRemoved = Advertising.IsAdRemoved();
+            var adRemovedMessage = adRemoved ? "Ads were removed" : "Ads are enabled";
             demoUtils.DisplayBool(isAdRemovedInfo, !adRemoved, adRemovedMessage);
 
             // Check if the Advertising.AutoLoadAdsMode value was updated somewhere else.
             if (lastAutoLoadMode != Advertising.AutoAdLoadingMode)
             {
-                autoLoadModeDropdown.value = (int)Advertising.AutoAdLoadingMode;
+                autoLoadModeDropdown.value = (int) Advertising.AutoAdLoadingMode;
                 lastAutoLoadMode = Advertising.AutoAdLoadingMode;
             }
         }
@@ -88,7 +82,8 @@ namespace EasyMobile.Demo
 
         protected void SetupDefaultNetworkTexts()
         {
-            AdSettings.DefaultAdNetworks defaultNetwork = new AdSettings.DefaultAdNetworks(BannerAdNetwork.None, InterstitialAdNetwork.None, RewardedAdNetwork.None);
+            var defaultNetwork = new AdSettings.DefaultAdNetworks(BannerAdNetwork.None, InterstitialAdNetwork.None,
+                RewardedAdNetwork.None);
 
 #if UNITY_ANDROID
             defaultNetwork = EM_Settings.Advertising.AndroidDefaultAdNetworks;
@@ -97,26 +92,26 @@ namespace EasyMobile.Demo
 #endif
 
             defaultBannerNetworkText.text = "Default banner ad network: " + defaultNetwork.bannerAdNetwork.ToString();
-            defaultInterstitialNetworkText.text = "Default interstitial ad network: " + defaultNetwork.interstitialAdNetwork.ToString();
-            defaultRewardedNetworkText.text = "Default rewarded video network: " + defaultNetwork.rewardedAdNetwork.ToString();
+            defaultInterstitialNetworkText.text =
+                "Default interstitial ad network: " + defaultNetwork.interstitialAdNetwork.ToString();
+            defaultRewardedNetworkText.text =
+                "Default rewarded video network: " + defaultNetwork.rewardedAdNetwork.ToString();
         }
 
         protected void SetupAutoLoadModeDropdown()
         {
-            List<Dropdown.OptionData> options = new List<Dropdown.OptionData>();
+            var options = new List<Dropdown.OptionData>();
             foreach (AutoAdLoadingMode mode in Enum.GetValues(typeof(AutoAdLoadingMode)))
-            {
                 options.Add(new Dropdown.OptionData(mode.ToString()));
-            }
             autoLoadModeDropdown.ClearOptions();
             autoLoadModeDropdown.AddOptions(options);
 
-            autoLoadModeDropdown.value = (int)Advertising.AutoAdLoadingMode;
+            autoLoadModeDropdown.value = (int) Advertising.AutoAdLoadingMode;
 
             autoLoadModeDropdown.onValueChanged.AddListener(mode =>
             {
-                Advertising.AutoAdLoadingMode = (AutoAdLoadingMode)mode;
-                lastAutoLoadMode = (AutoAdLoadingMode)mode;
+                Advertising.AutoAdLoadingMode = (AutoAdLoadingMode) mode;
+                lastAutoLoadMode = (AutoAdLoadingMode) mode;
             });
         }
 
@@ -138,7 +133,7 @@ namespace EasyMobile.Demo
 
         private void OnInterstitialAdCompleted(InterstitialAdNetwork network, AdPlacement placement)
         {
-            StartCoroutine(DelayCoroutine(GetPopupDelayTime((AdNetwork)network), () =>
+            StartCoroutine(DelayCoroutine(GetPopupDelayTime((AdNetwork) network), () =>
                 NativeUI.Alert("Interstitial Ad Completed", string.Format(
                     "Interstitial ad has been closed. Network: {0}, Placement: {1}",
                     network, AdPlacement.GetPrintableName(placement)))));
@@ -150,7 +145,7 @@ namespace EasyMobile.Demo
 
         private void OnRewardedAdCompleted(RewardedAdNetwork network, AdPlacement placement)
         {
-            StartCoroutine(DelayCoroutine(GetPopupDelayTime((AdNetwork)network), () =>
+            StartCoroutine(DelayCoroutine(GetPopupDelayTime((AdNetwork) network), () =>
                 NativeUI.Alert("Rewarded Ad Completed", string.Format(
                     "The rewarded ad has completed, this is when you should reward the user. Network: {0}, Placement: {1}",
                     network, AdPlacement.GetPrintableName(placement)))));
@@ -162,7 +157,7 @@ namespace EasyMobile.Demo
 
         private void OnRewardedAdSkipped(RewardedAdNetwork network, AdPlacement placement)
         {
-            StartCoroutine(DelayCoroutine(GetPopupDelayTime((AdNetwork)network), () =>
+            StartCoroutine(DelayCoroutine(GetPopupDelayTime((AdNetwork) network), () =>
                 NativeUI.Alert("Rewarded Ad Skipped", string.Format(
                     "The rewarded ad was skipped, and the user shouldn't get the reward. Network: {0}, Placement: {1}",
                     network, AdPlacement.GetPrintableName(placement)))));
@@ -194,4 +189,3 @@ namespace EasyMobile.Demo
         #endregion
     }
 }
-

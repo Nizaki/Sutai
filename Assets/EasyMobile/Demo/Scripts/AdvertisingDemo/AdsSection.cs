@@ -11,14 +11,11 @@ namespace EasyMobile.Demo
     [Serializable]
     public class AdsSection
     {
-        [SerializeField]
-        protected GameObject defaultRoot, customRoot;
+        [SerializeField] protected GameObject defaultRoot, customRoot;
 
-        [SerializeField]
-        protected Button enableDefaultSectionButton, enableCustomSectionButton;
+        [SerializeField] protected Button enableDefaultSectionButton, enableCustomSectionButton;
 
-        [SerializeField]
-        protected bool useDefaultUIAsDefault = true;
+        [SerializeField] protected bool useDefaultUIAsDefault = true;
 
         /// <summary>
         /// True: the default section is being displayed.
@@ -46,13 +43,9 @@ namespace EasyMobile.Demo
             IsUsingDefaultSection = isUsingDefaultSection;
 
             if (IsUsingDefaultSection)
-            {
                 ShowDefaultSection();
-            }
             else
-            {
                 ShowCustomSection();
-            }
         }
 
         protected virtual void ShowDefaultSection()

@@ -14,8 +14,8 @@ namespace EasyMobile
         /// </summary>
         public string SDKKey
         {
-            get { return mSDKKey; }
-            set { mSDKKey = value; }
+            get => mSDKKey;
+            set => mSDKKey = value;
         }
 
         /// <summary>
@@ -23,8 +23,8 @@ namespace EasyMobile
         /// </summary>
         public AdId DefaultBannerAdId
         {
-            get { return mDefaultBannerAdId; }
-            set { mDefaultBannerAdId = value; }
+            get => mDefaultBannerAdId;
+            set => mDefaultBannerAdId = value;
         }
 
         /// <summary>
@@ -32,8 +32,8 @@ namespace EasyMobile
         /// </summary>
         public AdId DefaultInterstitialAdId
         {
-            get { return mDefaultInterstitialAdId; }
-            set { mDefaultInterstitialAdId = value; }
+            get => mDefaultInterstitialAdId;
+            set => mDefaultInterstitialAdId = value;
         }
 
         /// <summary>
@@ -41,8 +41,8 @@ namespace EasyMobile
         /// </summary>
         public AdId DefaultRewardedAdId
         {
-            get { return mDefaultRewardedAdId; }
-            set { mDefaultRewardedAdId = value; }
+            get => mDefaultRewardedAdId;
+            set => mDefaultRewardedAdId = value;
         }
 
         /// <summary>
@@ -50,8 +50,8 @@ namespace EasyMobile
         /// </summary>
         public bool AgeRestrictMode
         {
-            get { return mAgeRestrictMode; }
-            set { mAgeRestrictMode = value; }
+            get => mAgeRestrictMode;
+            set => mAgeRestrictMode = value;
         }
 
         /// <summary>
@@ -60,8 +60,8 @@ namespace EasyMobile
         /// </summary>
         public Dictionary<AdPlacement, AdId> CustomBannerAdIds
         {
-            get { return mCustomBannerAdIds; }
-            set { mCustomBannerAdIds = value as Dictionary_AdPlacement_AdId; }
+            get => mCustomBannerAdIds;
+            set => mCustomBannerAdIds = value as Dictionary_AdPlacement_AdId;
         }
 
         /// <summary>
@@ -70,8 +70,8 @@ namespace EasyMobile
         /// </summary>
         public Dictionary<AdPlacement, AdId> CustomInterstitialAdIds
         {
-            get { return mCustomInterstitialAdIds; }
-            set { mCustomInterstitialAdIds = value as Dictionary_AdPlacement_AdId; }
+            get => mCustomInterstitialAdIds;
+            set => mCustomInterstitialAdIds = value as Dictionary_AdPlacement_AdId;
         }
 
         /// <summary>
@@ -80,28 +80,18 @@ namespace EasyMobile
         /// </summary>
         public Dictionary<AdPlacement, AdId> CustomRewardedAdIds
         {
-            get { return mCustomRewardedAdIds; }
-            set { mCustomRewardedAdIds = value as Dictionary_AdPlacement_AdId; }
+            get => mCustomRewardedAdIds;
+            set => mCustomRewardedAdIds = value as Dictionary_AdPlacement_AdId;
         }
 
-        [SerializeField]
-        private bool mAgeRestrictMode;
+        [SerializeField] private bool mAgeRestrictMode;
 
-        [SerializeField]
-        private string mSDKKey;
-        [SerializeField]
-        private AdId mDefaultBannerAdId;
-        [SerializeField]
-        private AdId mDefaultInterstitialAdId;
-        [SerializeField]
-        private AdId mDefaultRewardedAdId;
-        [SerializeField]
-        private Dictionary_AdPlacement_AdId mCustomBannerAdIds;
-        [SerializeField]
-        private Dictionary_AdPlacement_AdId mCustomInterstitialAdIds;
-        [SerializeField]
-        private Dictionary_AdPlacement_AdId mCustomRewardedAdIds;
-
-
+        [SerializeField] private string mSDKKey;
+        [SerializeField] private AdId mDefaultBannerAdId;
+        [SerializeField] private AdId mDefaultInterstitialAdId;
+        [SerializeField] private AdId mDefaultRewardedAdId;
+        [SerializeField] private Dictionary_AdPlacement_AdId mCustomBannerAdIds;
+        [SerializeField] private Dictionary_AdPlacement_AdId mCustomInterstitialAdIds;
+        [SerializeField] private Dictionary_AdPlacement_AdId mCustomRewardedAdIds;
     }
 }

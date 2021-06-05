@@ -12,6 +12,7 @@ namespace EasyMobile.Demo
     {
         [Header("One-Time Local Notification")]
         public string title = "Demo Notification";
+
         public string subtitle = "Demo Notification Subtitle";
         public string message = "Demo notification message";
         public string categoryId;
@@ -20,8 +21,7 @@ namespace EasyMobile.Demo
         public int delayMinutes = 0;
         public int delaySeconds = 15;
 
-        [Header("Repeat Local Notification")]
-        public string repeatTitle = "Demo Repeat Notification";
+        [Header("Repeat Local Notification")] public string repeatTitle = "Demo Repeat Notification";
         public string repeatSubtitle = "Demo Repeat Notification Subtitle";
         public string repeatMessage = "Demo repeat notification message";
         public string repeatCategoryId;
@@ -30,8 +30,7 @@ namespace EasyMobile.Demo
         public int repeatDelaySeconds = 25;
         public NotificationRepeat repeatType = NotificationRepeat.EveryMinute;
 
-        [Header("Object References")]
-        public GameObject curtain;
+        [Header("Object References")] public GameObject curtain;
         public GameObject pushNotifService;
         public GameObject isAutoInitInfo;
         public GameObject isInitializedInfo;
@@ -39,16 +38,16 @@ namespace EasyMobile.Demo
         public InputField idInputField;
         public DemoUtils demoUtils;
 
-        string orgNotificationListText;
+        private string orgNotificationListText;
 
-        void Awake()
+        private void Awake()
         {
             // Init EM runtime if needed (useful in case only this scene is built).
             if (!RuntimeManager.IsInitialized())
                 RuntimeManager.Init();
         }
 
-        void Start()
+        private void Start()
         {
             curtain.SetActive(!EM_Settings.IsNotificationsModuleEnable);
 
@@ -57,23 +56,23 @@ namespace EasyMobile.Demo
                 Notifications.CurrentPushNotificationService != PushNotificationProvider.None,
                 "Remote Notification Service: " + Notifications.CurrentPushNotificationService.ToString());
 
-            bool autoInit = EM_Settings.Notifications.IsAutoInit;
+            var autoInit = EM_Settings.Notifications.IsAutoInit;
             demoUtils.DisplayBool(
                 isAutoInitInfo,
-                autoInit, 
-                "Auto Initialization: " + autoInit.ToString().ToUpper()); 
+                autoInit,
+                "Auto Initialization: " + autoInit.ToString().ToUpper());
 
             orgNotificationListText = pendingNotificationList.text;
             InvokeRepeating("UpdatePendingNotificationList", 1, 1);
         }
 
-        void Update()
+        private void Update()
         {
-            bool isInit = Notifications.IsInitialized();
+            var isInit = Notifications.IsInitialized();
             demoUtils.DisplayBool(
                 isInitializedInfo,
-                isInit, 
-                "IsInitialized: " + isInit.ToString().ToUpper());  
+                isInit,
+                "IsInitialized: " + isInit.ToString().ToUpper());
         }
 
         public void Init()
@@ -109,7 +108,7 @@ namespace EasyMobile.Demo
             // Increase badge number (iOS only)
             notif.badge = Notifications.GetAppIconBadgeNumber() + 1;
 
-            DateTime triggerDate = DateTime.Now + new TimeSpan(delayHours, delayMinutes, delaySeconds);
+            var triggerDate = DateTime.Now + new TimeSpan(delayHours, delayMinutes, delaySeconds);
             Notifications.ScheduleLocalNotification(triggerDate, notif);
         }
 
@@ -123,7 +122,8 @@ namespace EasyMobile.Demo
             notif.body = repeatMessage;
             notif.categoryId = repeatCategoryId;
 
-            Notifications.ScheduleLocalNotification(new TimeSpan(repeatDelayHours, repeatDelayMinutes, repeatDelaySeconds), notif, repeatType);
+            Notifications.ScheduleLocalNotification(
+                new TimeSpan(repeatDelayHours, repeatDelayMinutes, repeatDelaySeconds), notif, repeatType);
         }
 
         public void CancelPendingLocalNotification()
@@ -156,45 +156,42 @@ namespace EasyMobile.Demo
             NativeUI.Alert("Alert", "Cleared all shown notifications of this app.");
         }
 
-        bool InitCheck()
+        private bool InitCheck()
         {
-            bool isInit = Notifications.IsInitialized();
+            var isInit = Notifications.IsInitialized();
 
-            if (!isInit)
-            {
-                NativeUI.Alert("Alert", "Please initialize first.");
-            }
+            if (!isInit) NativeUI.Alert("Alert", "Please initialize first.");
 
             return isInit;
         }
 
-        void UpdatePendingNotificationList()
+        private void UpdatePendingNotificationList()
         {
             Notifications.GetPendingLocalNotifications(pendingNotifs =>
+            {
+                var sb = new StringBuilder();
+                foreach (var req in pendingNotifs)
                 {
-                    StringBuilder sb = new StringBuilder();
-                    foreach (var req in pendingNotifs)
-                    {
-                        NotificationContent content = req.content;
+                    var content = req.content;
 
-                        sb.Append("ID: " + req.id.ToString() + "\n")
-                            .Append("Title: " + content.title + "\n")
-                            .Append("Subtitle: " + content.subtitle + "\n")
-                            .Append("Body: " + content.body + "\n")
-                            .Append("Badge: " + content.badge.ToString() + "\n")
-                            .Append("UserInfo: " + Json.Serialize(content.userInfo) + "\n")
-                            .Append("CategoryID: " + content.categoryId + "\n")
-                            .Append("NextTriggerDate: " + req.nextTriggerDate.ToShortDateString() + "\n")
-                            .Append("Repeat: " + req.repeat.ToString() + "\n")
-                            .Append("-------------------------\n");
-                    }
+                    sb.Append("ID: " + req.id.ToString() + "\n")
+                        .Append("Title: " + content.title + "\n")
+                        .Append("Subtitle: " + content.subtitle + "\n")
+                        .Append("Body: " + content.body + "\n")
+                        .Append("Badge: " + content.badge.ToString() + "\n")
+                        .Append("UserInfo: " + Json.Serialize(content.userInfo) + "\n")
+                        .Append("CategoryID: " + content.categoryId + "\n")
+                        .Append("NextTriggerDate: " + req.nextTriggerDate.ToShortDateString() + "\n")
+                        .Append("Repeat: " + req.repeat.ToString() + "\n")
+                        .Append("-------------------------\n");
+                }
 
-                    var listText = sb.ToString();
+                var listText = sb.ToString();
 
-                    // Display list of pending notifications
-                    if (!pendingNotificationList.text.Equals(orgNotificationListText) || !string.IsNullOrEmpty(listText))
-                        pendingNotificationList.text = sb.ToString();
-                });
+                // Display list of pending notifications
+                if (!pendingNotificationList.text.Equals(orgNotificationListText) || !string.IsNullOrEmpty(listText))
+                    pendingNotificationList.text = sb.ToString();
+            });
         }
     }
 }

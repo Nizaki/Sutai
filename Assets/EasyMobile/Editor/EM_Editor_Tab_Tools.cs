@@ -17,26 +17,28 @@ namespace EasyMobile.Editor
 
             toolActions = new List<Action>
             {
-                #if EASY_MOBILE_PRO
-                () => DrawTool(InstallPlayMakerActions, "Install PlayMaker Actions", EM_GUIStyleManager.ToolImportPlaymakerActionsIcon),
-                #endif
+#if EASY_MOBILE_PRO
+                () => DrawTool(InstallPlayMakerActions, "Install PlayMaker Actions",
+                    EM_GUIStyleManager.ToolImportPlaymakerActionsIcon),
+#endif
 
-                () => DrawTool(ReimportNativePackage, "Import External Dependency Manager", EM_GUIStyleManager.ToolReimportGPSRIcon),
+                () => DrawTool(ReimportNativePackage, "Import External Dependency Manager",
+                    EM_GUIStyleManager.ToolReimportGPSRIcon),
                 () => DrawTool(ExportEMSettings, "Export Settings", EM_GUIStyleManager.ToolExportEMSettingsIcon),
                 () => DrawTool(OpenDocumentation, "User Guide", EM_GUIStyleManager.ToolUserGuideIcon),
                 () => DrawTool(OpenScriptingReference, "Scripting Reference", EM_GUIStyleManager.ToolScriptingRefIcon),
                 () => DrawTool(OpenVideoTutorials, "Video Tutorials", EM_GUIStyleManager.ToolVideoTutorialsIcon),
                 () => DrawTool(SendSupportEmail, "Support", EM_GUIStyleManager.ToolSupportIcon),
                 () => DrawTool(OpenAssetStore, "Rate EM", EM_GUIStyleManager.ToolRateIcon),
-                () => DrawTool(About, "About", EM_GUIStyleManager.ToolAboutIcon),
+                () => DrawTool(About, "About", EM_GUIStyleManager.ToolAboutIcon)
             };
 
-            int index = 0;
+            var index = 0;
             while (index < toolActions.Count)
             {
-                int itemCount = GetCollumnItemCount();
+                var itemCount = GetCollumnItemCount();
                 EditorGUILayout.BeginHorizontal();
-                for (int j = 0; j < itemCount && index < toolActions.Count; j++)
+                for (var j = 0; j < itemCount && index < toolActions.Count; j++)
                 {
                     if (j != itemCount)
                         GUILayout.Space(5f);
@@ -44,6 +46,7 @@ namespace EasyMobile.Editor
                     toolActions[index].Invoke();
                     index++;
                 }
+
                 EditorGUILayout.EndHorizontal();
                 EditorGUILayout.Space();
             }
@@ -51,11 +54,11 @@ namespace EasyMobile.Editor
 
         private void DrawTool(Action toolAction, string buttonLabel, Texture2D icon)
         {
-            int itemCount = GetCollumnItemCount();
-            float buttonWidth = width / itemCount - (30f / itemCount);
+            var itemCount = GetCollumnItemCount();
+            var buttonWidth = width / itemCount - 30f / itemCount;
             float buttonHeight = GetButtonHeight(itemCount);
 
-            GUIStyle style = new GUIStyle(GUI.skin.button)
+            var style = new GUIStyle(GUI.skin.button)
             {
                 margin = new RectOffset(0, 0, 0, 0),
                 padding = new RectOffset(6, 6, 6, 6),
@@ -104,8 +107,9 @@ namespace EasyMobile.Editor
         public static void ExportEMSettings()
         {
             var packageName = EM_Constants.SettingsAssetName + ".unitypackage";
-            string exportDest = EditorUtility.OpenFolderPanel("Select Export Destination", Application.dataPath, "");
-            AssetDatabase.ExportPackage(EM_Constants.SettingsAssetPath, exportDest + "/" + packageName, ExportPackageOptions.Default | ExportPackageOptions.Interactive);
+            var exportDest = EditorUtility.OpenFolderPanel("Select Export Destination", Application.dataPath, "");
+            AssetDatabase.ExportPackage(EM_Constants.SettingsAssetPath, exportDest + "/" + packageName,
+                ExportPackageOptions.Default | ExportPackageOptions.Interactive);
         }
 
         public static void OpenDocumentation()
@@ -125,7 +129,8 @@ namespace EasyMobile.Editor
 
         public static void SendSupportEmail()
         {
-            Application.OpenURL("mailto:" + EM_Constants.SupportEmail + "?subject=" + EM_EditorUtil.EscapeURL(EM_Constants.SupportEmailSubject));
+            Application.OpenURL("mailto:" + EM_Constants.SupportEmail + "?subject=" +
+                                EM_EditorUtil.EscapeURL(EM_Constants.SupportEmailSubject));
         }
 
         public static void OpenAssetStore()
@@ -135,17 +140,19 @@ namespace EasyMobile.Editor
 
         private static void ManuallyGenerateManifest()
         {
-            string jdkPath = EM_EditorUtil.GetJdkPath();
+            var jdkPath = EM_EditorUtil.GetJdkPath();
 
             if (string.IsNullOrEmpty(jdkPath))
             {
-                EM_EditorUtil.Alert("Missing JDK Path", "A JDK path needs to be specified for the generation of Easy Mobile's AndroidManifest.xml as well as for the Android build. " +
-                   "Go to Preferences > External Tools > JDK to set it.");
+                EM_EditorUtil.Alert("Missing JDK Path",
+                    "A JDK path needs to be specified for the generation of Easy Mobile's AndroidManifest.xml as well as for the Android build. " +
+                    "Go to Preferences > External Tools > JDK to set it.");
             }
             else
             {
                 EM_AndroidManifestBuilder.GenerateManifest(jdkPath, true, true);
-                EM_EditorUtil.Alert("Android Manifest Updated", "Easy Mobile's Android manifest (Assets/Plugins/Android/EasyMobile/AndroidManifest.xml) has been updated!");
+                EM_EditorUtil.Alert("Android Manifest Updated",
+                    "Easy Mobile's Android manifest (Assets/Plugins/Android/EasyMobile/AndroidManifest.xml) has been updated!");
             }
         }
 

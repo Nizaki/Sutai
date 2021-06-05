@@ -24,9 +24,9 @@ namespace EasyMobile.Demo
             {
                 try
                 {
-                    using (MemoryStream memoryStream = new MemoryStream())
+                    using (var memoryStream = new MemoryStream())
                     {
-                        BinaryFormatter binaryFormatter = new BinaryFormatter();
+                        var binaryFormatter = new BinaryFormatter();
                         binaryFormatter.Serialize(memoryStream, this);
                         return memoryStream.ToArray();
                     }
@@ -44,12 +44,12 @@ namespace EasyMobile.Demo
                     if (bytes == null)
                         throw new ArgumentNullException();
 
-                    using (MemoryStream memoryStream = new MemoryStream())
+                    using (var memoryStream = new MemoryStream())
                     {
-                        BinaryFormatter binaryFormatter = new BinaryFormatter();
+                        var binaryFormatter = new BinaryFormatter();
                         memoryStream.Write(bytes, 0, bytes.Length);
                         memoryStream.Seek(0, SeekOrigin.Begin);
-                        object obj = binaryFormatter.Deserialize(memoryStream);
+                        var obj = binaryFormatter.Deserialize(memoryStream);
                         return obj is MatchData ? obj as MatchData : null;
                     }
                 }
@@ -70,13 +70,14 @@ namespace EasyMobile.Demo
                                            "Setting it to a nonzero number to match the player only with players whose match request shares the same variant number. " +
                                            "This value must be between 1 and 1023 (inclusive).";
 
-        private const string ExclusiveBitmaskHint = "If your game has multiple player roles (such as farmer, archer, and wizard) " +
-                                                    "and you want to restrict auto-matched games to one player of each role, " +
-                                                    "add an exclusive bitmask to your match request.When auto-matching with this option, " +
-                                                    "players will only be considered for a match when the logical AND of their exclusive bitmasks is equal to 0. " +
-                                                    "In other words, this value represents the exclusive role the player making this request wants to play in the created match. " +
-                                                    "If this value is 0 (default) it will be ignored. " +
-                                                    "If you're creating a match with the standard matchmaker UI, this value will also be ignored.";
+        private const string ExclusiveBitmaskHint =
+            "If your game has multiple player roles (such as farmer, archer, and wizard) " +
+            "and you want to restrict auto-matched games to one player of each role, " +
+            "add an exclusive bitmask to your match request.When auto-matching with this option, " +
+            "players will only be considered for a match when the logical AND of their exclusive bitmasks is equal to 0. " +
+            "In other words, this value represents the exclusive role the player making this request wants to play in the created match. " +
+            "If this value is 0 (default) it will be ignored. " +
+            "If you're creating a match with the standard matchmaker UI, this value will also be ignored.";
 
         private const string MinPlayersHint = "The minimum number of players that may join the match, " +
                                               "including the player who is making the match request. Must be at least 2 (default).";
@@ -107,21 +108,25 @@ namespace EasyMobile.Demo
         private const string RematchHint = "Request a rematch. " +
                                            "This can be used on a finished match in order to start a new match with the same opponents.";
 
-        private const string ShowMatchesUIHint = "Show the standard UI where player can pick a match or accept an invitations.";
+        private const string ShowMatchesUIHint =
+            "Show the standard UI where player can pick a match or accept an invitations.";
 
         private const string GetAllMatchesHint = "Return all matches' data.";
 
-        private const string RegisterMatchDelegateHint = "Register a match delegate to be called when a match arrives. " +
-                                                         "Matches may arrive as notifications on the device when it's the player's turn. " +
-                                                         "If the match arrived via notification (this can be determined from the delegate's parameters), " +
-                                                         "the recommended implementation is to take the player directly to the game screen so they can play their turn.";
+        private const string RegisterMatchDelegateHint =
+            "Register a match delegate to be called when a match arrives. " +
+            "Matches may arrive as notifications on the device when it's the player's turn. " +
+            "If the match arrived via notification (this can be determined from the delegate's parameters), " +
+            "the recommended implementation is to take the player directly to the game screen so they can play their turn.";
 
-        private const string NextParticipantHint = "Pick next participant to pass the turn when calling \"Take Turn\" " +
-                                                   "or \"Leave During Turn\".";
+        private const string NextParticipantHint =
+            "Pick next participant to pass the turn when calling \"Take Turn\" " +
+            "or \"Leave During Turn\".";
 
-        private const string MatchFinishedMessage = "Click the \"Acknowledge Finished Match\" button to call \"AcknowledgeFinished\" method " +
-                                                    "to acknowledge that the user has seen the results of the finished match. " +
-                                                    "This will remove the match from the user's inbox.";
+        private const string MatchFinishedMessage =
+            "Click the \"Acknowledge Finished Match\" button to call \"AcknowledgeFinished\" method " +
+            "to acknowledge that the user has seen the results of the finished match. " +
+            "This will remove the match from the user's inbox.";
 
         private const string NullMatchMessage = "Please create a match first.";
 
@@ -139,12 +144,12 @@ namespace EasyMobile.Demo
                                                      "Google Play games services allows participants to cancel the match at any point after joining a match " +
                                                      "(if you game interface supports this action).";
 
-        private const string SelectedParticipantLeftMessage = "The selected participant has left the match, please choose a different one.";
+        private const string SelectedParticipantLeftMessage =
+            "The selected participant has left the match, please choose a different one.";
 
         private const string AllOpponentsLeftMessage = "All your opponent(s) had left the match.";
 
-        [SerializeField]
-        private Button getAllMatchesButton = null,
+        [SerializeField] private Button getAllMatchesButton = null,
             showMatchesUIButton = null,
             takeTurnButton = null,
             finishButton = null,
@@ -158,27 +163,21 @@ namespace EasyMobile.Demo
             showNextParticipantDetailsButton = null,
             registerMatchDelegateButton = null;
 
-        [SerializeField]
-        private InputField variantInputField = null,
+        [SerializeField] private InputField variantInputField = null,
             exclusiveBitmaskInputField = null,
             minPlayersInputField = null,
             maxPlayersInputField = null;
 
-        [SerializeField]
-        private Dropdown participantsDropdown = null;
+        [SerializeField] private Dropdown participantsDropdown = null;
 
-        [SerializeField]
-        private Text maxDataSizeText = null;
+        [SerializeField] private Text maxDataSizeText = null;
 
-        [SerializeField]
-        private GameObject matchDelegateRegisteredUI = null,
+        [SerializeField] private GameObject matchDelegateRegisteredUI = null,
             isMyTurnUI = null;
 
-        [SerializeField]
-        private string matchDelegateRegisteredText = "Is match delegate registered";
+        [SerializeField] private string matchDelegateRegisteredText = "Is match delegate registered";
 
-        [SerializeField]
-        private Button variantHintButton = null,
+        [SerializeField] private Button variantHintButton = null,
             bitmaskHintButton = null,
             minPlayersHintButton = null,
             maxPlayersHintButton = null,
@@ -194,15 +193,11 @@ namespace EasyMobile.Demo
             registerMatchDelegateHintButton = null,
             nextParticipantHintButton = null;
 
-        [Space]
-        [SerializeField]
-        private GameObject allMatchesRootPanel = null;
+        [Space] [SerializeField] private GameObject allMatchesRootPanel = null;
 
-        [SerializeField]
-        private Transform allMatchesContent = null;
+        [SerializeField] private Transform allMatchesContent = null;
 
-        [SerializeField]
-        private Button matchButton = null,
+        [SerializeField] private Button matchButton = null,
             hideAllMatchesPanelButton = null;
 
         public uint Variant { get; private set; }
@@ -253,11 +248,12 @@ namespace EasyMobile.Demo
         {
             get
             {
-                if (CurrentOpponents == null || CurrentOpponents.Length < 1 || CurrentMatch == null || CurrentMatch.HasVacantSlot)
+                if (CurrentOpponents == null || CurrentOpponents.Length < 1 || CurrentMatch == null ||
+                    CurrentMatch.HasVacantSlot)
                     return false;
 
                 return !CurrentOpponents.Any(participant => participant.Status != Participant.ParticipantStatus.Left &&
-                    participant.Status != Participant.ParticipantStatus.Done);
+                                                            participant.Status != Participant.ParticipantStatus.Done);
             }
         }
 
@@ -270,7 +266,7 @@ namespace EasyMobile.Demo
                     return false;
 
                 return participant.Status == Participant.ParticipantStatus.Left ||
-                participant.Status == Participant.ParticipantStatus.Done;
+                       participant.Status == Participant.ParticipantStatus.Done;
             }
         }
 
@@ -292,15 +288,9 @@ namespace EasyMobile.Demo
             }
         }
 
-        public bool CanRematch
-        {
-            get
-            {
-                return CurrentMatch != null && CurrentMatch.Status == TurnBasedMatch.MatchStatus.Ended;
-            }
-        }
+        public bool CanRematch => CurrentMatch != null && CurrentMatch.Status == TurnBasedMatch.MatchStatus.Ended;
 
-        protected override MatchType MatchType { get { return MatchType.TurnBased; } }
+        protected override MatchType MatchType => MatchType.TurnBased;
 
         private bool canTakeTurn = false;
         private List<Button> createdMatchButtons = new List<Button>();
@@ -315,14 +305,13 @@ namespace EasyMobile.Demo
             base.Awake();
 
             RefreshParticipantsDropDown();
-            
+
             InitButtons();
             InitInputFields();
         }
 
         protected override void LateStart()
         {
-
             MaxPlayersAllowed = MatchRequest.GetMaxPlayersAllowed(MatchType.TurnBased);
             maxDataSizeText.text = "Max data size: " + GameServices.TurnBased.GetMaxMatchDataSize() + " byte(s)";
             RegisterMatchDelegate();
@@ -348,7 +337,7 @@ namespace EasyMobile.Demo
         protected override void CreateQuickMatch()
         {
             StartCreateQuickMatchSpinningUI();
-            GameServices.TurnBased.CreateQuickMatch( MatchRequest, OnCreateQuickMatch);
+            GameServices.TurnBased.CreateQuickMatch(MatchRequest, OnCreateQuickMatch);
         }
 
         protected override void CreateWithMatchmaker()
@@ -454,7 +443,7 @@ namespace EasyMobile.Demo
                 return;
             }
 
-            MatchOutcome outcome = new MatchOutcome();
+            var outcome = new MatchOutcome();
             outcome.SetParticipantResult(CurrentMatch.SelfParticipantId, MatchOutcome.ParticipantResult.Won);
             foreach (var id in CurrentOpponents.Select(p => p.ParticipantId))
                 outcome.SetParticipantResult(id, MatchOutcome.ParticipantResult.Lost);
@@ -494,7 +483,6 @@ namespace EasyMobile.Demo
             var message = IsMyTurn ? "Leave during your turn?" : "It's not your turn, want to leave?";
             var alert = NativeUI.ShowTwoButtonAlert("Leave match", message, "Yes", "No");
             if (alert != null)
-            {
                 alert.OnComplete += button =>
                 {
                     if (button != 0)
@@ -515,7 +503,6 @@ namespace EasyMobile.Demo
 
                     GameServices.TurnBased.LeaveMatch(CurrentMatch, action);
                 };
-            }
         }
 
         public void Rematch()
@@ -527,17 +514,17 @@ namespace EasyMobile.Demo
             }
 
             GameServices.TurnBased.Rematch(CurrentMatch, (success, match) =>
+            {
+                if (success)
                 {
-                    if (success)
-                    {
-                        NativeUI.Alert("Rematch success", "Rematch successfully, a new match will be started right now...");
-                        OnMatchReceived(match, true, false);
-                    }
-                    else
-                    {
-                        NativeUI.Alert("Rematch failed", "Failed to rematch");
-                    }
-                });
+                    NativeUI.Alert("Rematch success", "Rematch successfully, a new match will be started right now...");
+                    OnMatchReceived(match, true, false);
+                }
+                else
+                {
+                    NativeUI.Alert("Rematch failed", "Failed to rematch");
+                }
+            });
         }
 
         public void AcknowledgeFinishedMatch()
@@ -549,8 +536,8 @@ namespace EasyMobile.Demo
             }
 
             GameServices.TurnBased.AcknowledgeFinished(CurrentMatch, GetAlertCallbackAction(
-                    "Acknowledged finished match successfully.",
-                    "Failed to acknowledge finished match"));
+                "Acknowledged finished match successfully.",
+                "Failed to acknowledge finished match"));
         }
 
         public void RegisterMatchDelegate()
@@ -667,10 +654,10 @@ namespace EasyMobile.Demo
                 }
 
                 var nextParticipant = match.Participants.FirstOrDefault(
-                                          p => p.ParticipantId != match.SelfParticipantId &&
-                                          (p.Status == Participant.ParticipantStatus.Joined ||
-                                          p.Status == Participant.ParticipantStatus.Invited ||
-                                          p.Status == Participant.ParticipantStatus.Matching));
+                    p => p.ParticipantId != match.SelfParticipantId &&
+                         (p.Status == Participant.ParticipantStatus.Joined ||
+                          p.Status == Participant.ParticipantStatus.Invited ||
+                          p.Status == Participant.ParticipantStatus.Matching));
 
                 if (nextParticipant != default(Participant))
                 {
@@ -685,12 +672,13 @@ namespace EasyMobile.Demo
                     // No valid next participant, match ends here.
                     // In this case we'll set the outcome for all players as Tied for demo purpose.
                     // In a real game you may determine the outcome based on the game data and your game logic.
-                    MatchOutcome outcome = new MatchOutcome();
+                    var outcome = new MatchOutcome();
                     foreach (var id in match.Participants.Select(p => p.ParticipantId))
                     {
                         var result = MatchOutcome.ParticipantResult.Tied;
                         outcome.SetParticipantResult(id, result);
                     }
+
                     GameServices.TurnBased.Finish(match, match.Data, outcome, null);
                 }
 
@@ -700,7 +688,7 @@ namespace EasyMobile.Demo
             if (CurrentMatch != null && CurrentMatch.MatchId != match.MatchId)
             {
                 var alert = NativeUI.ShowTwoButtonAlert("Received Different Match",
-                                "A different match has been arrived, do you want to replace it with the current one?", "Yes", "No");
+                    "A different match has been arrived, do you want to replace it with the current one?", "Yes", "No");
 
                 if (alert != null)
                 {
@@ -762,25 +750,29 @@ namespace EasyMobile.Demo
         {
             if (match.Data != null && match.Data.Length > 0 && MatchData.FromByteArray(match.Data) == null)
             {
-                NativeUI.Alert("Error", "The arrived match can't be opened in this scene. You might want to open it in the TicTacToe demo instead.");
+                NativeUI.Alert("Error",
+                    "The arrived match can't be opened in this scene. You might want to open it in the TicTacToe demo instead.");
                 return;
             }
 
             CurrentMatch = match;
-            CurrentOpponents = CurrentMatch.Participants.Where(p => p.ParticipantId != CurrentMatch.SelfParticipantId).ToArray();
+            CurrentOpponents = CurrentMatch.Participants.Where(p => p.ParticipantId != CurrentMatch.SelfParticipantId)
+                .ToArray();
             RefreshParticipantsDropDown();
             canTakeTurn = true;
 
             if (CurrentMatch.Data == null || CurrentMatch.Data.Length < 1) /// New game detected...
-                CurrentMatchData = new MatchData() { TurnCount = 0 };
+                CurrentMatchData = new MatchData() {TurnCount = 0};
             else
                 CurrentMatchData = MatchData.FromByteArray(CurrentMatch.Data);
 
             if (CurrentMatch.Status == TurnBasedMatch.MatchStatus.Ended)
             {
                 canTakeTurn = false;
-                var result = string.Format("Winner: {0}\nTurnCount: {1}\n\n", CurrentMatchData.WinnerName ?? "null", CurrentMatchData.TurnCount);
-                NativeUI.Alert("Finished Match Arrived", result + MatchFinishedMessage + "\n\nMatch info:\n" + GetTurnbasedMatchDisplayString(CurrentMatch));
+                var result = string.Format("Winner: {0}\nTurnCount: {1}\n\n", CurrentMatchData.WinnerName ?? "null",
+                    CurrentMatchData.TurnCount);
+                NativeUI.Alert("Finished Match Arrived",
+                    result + MatchFinishedMessage + "\n\nMatch info:\n" + GetTurnbasedMatchDisplayString(CurrentMatch));
                 return;
             }
             else if (CurrentMatch.Status == TurnBasedMatch.MatchStatus.Cancelled)
@@ -806,7 +798,8 @@ namespace EasyMobile.Demo
             }
 
             CurrentMatchData.TurnCount++;
-            NativeUI.Alert("Match Arrived", "New match data has been arrived:\n" + GetTurnbasedMatchDisplayString(match));
+            NativeUI.Alert("Match Arrived",
+                "New match data has been arrived:\n" + GetTurnbasedMatchDisplayString(match));
         }
 
         private void RefreshParticipantsDropDown()
@@ -818,16 +811,15 @@ namespace EasyMobile.Demo
 
             var options = new List<Dropdown.OptionData>();
             foreach (var participant in CurrentOpponents)
-            {
                 if (participant.ParticipantId != CurrentMatch.SelfParticipantId)
                 {
-                    var displayName = string.Format("<b><i>[{0}]</i></b>{1}", participant.Status, participant.DisplayName);
+                    var displayName = string.Format("<b><i>[{0}]</i></b>{1}", participant.Status,
+                        participant.DisplayName);
                     options.Add(new Dropdown.OptionData(displayName));
                 }
-            }
 
             var openSlots = CurrentMatch.PlayerCount - CurrentOpponents.Length - 1;
-            for (int i = 0; i < openSlots; i++)
+            for (var i = 0; i < openSlots; i++)
                 options.Add(new Dropdown.OptionData("Auto-match slot"));
 
             participantsDropdown.AddOptions(options);
@@ -859,9 +851,9 @@ namespace EasyMobile.Demo
             }
 
             var bytes = CurrentMatchData.ToByteArray();
-            string dataSize = bytes != null ? (bytes.Length.ToString() + " byte(s)") : "Error";
-            string message = string.Format("Turn Count: {0}\nWinner Name: {1}\nSize: {2}",
-                                 CurrentMatchData.TurnCount, CurrentMatchData.WinnerName, dataSize);
+            var dataSize = bytes != null ? bytes.Length.ToString() + " byte(s)" : "Error";
+            var message = string.Format("Turn Count: {0}\nWinner Name: {1}\nSize: {2}",
+                CurrentMatchData.TurnCount, CurrentMatchData.WinnerName, dataSize);
             NativeUI.Alert("Match Data", message);
         }
 
@@ -887,7 +879,8 @@ namespace EasyMobile.Demo
             var opponents = CurrentMatch.Participants.Where(p => p.ParticipantId != CurrentMatch.SelfParticipantId);
             if (opponents.Count() < 1)
             {
-                NativeUI.Alert("No Opponent", "Noone has joined your match yet. Auto-match players only appear after they joined the game.");
+                NativeUI.Alert("No Opponent",
+                    "Noone has joined your match yet. Auto-match players only appear after they joined the game.");
                 return;
             }
 
@@ -909,12 +902,11 @@ namespace EasyMobile.Demo
 
         private void ShowAllMatchesPanel(TurnBasedMatch[] matches)
         {
-            foreach(var match in matches)
-            {
+            foreach (var match in matches)
                 if (match != null)
                 {
-                    Button button = Instantiate(matchButton, allMatchesContent);
-                    Text text = button.GetComponentInChildren<Text>();
+                    var button = Instantiate(matchButton, allMatchesContent);
+                    var text = button.GetComponentInChildren<Text>();
                     text.text = "<b>Match id:</b> " + match.MatchId + "\n";
                     text.text += "<b>Status:</b> " + match.Status + ", ";
                     text.text += "<b>Is your turn:</b> " + match.IsMyTurn;
@@ -926,7 +918,7 @@ namespace EasyMobile.Demo
                     });
                     createdMatchButtons.Add(button);
                 }
-            }
+
             allMatchesRootPanel.SetActive(true);
         }
 
@@ -1044,7 +1036,7 @@ namespace EasyMobile.Demo
 
             if (MaxPlayers < minPlayers)
             {
-                MaxPlayers = (uint)Mathf.Clamp(minPlayers, 2, MaxPlayersAllowed);
+                MaxPlayers = (uint) Mathf.Clamp(minPlayers, 2, MaxPlayersAllowed);
                 maxPlayersInputField.text = MaxPlayers.ToString();
             }
 

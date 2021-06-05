@@ -14,8 +14,8 @@ namespace EasyMobile
         /// <value>The app identifier.</value>
         public AdId AppId
         {
-            get { return mAppId; }
-            set { mAppId = value; }
+            get => mAppId;
+            set => mAppId = value;
         }
 
         /// <summary>
@@ -24,8 +24,8 @@ namespace EasyMobile
         /// <value>The default interstitial ad identifier.</value>
         public AdId DefaultInterstitialAdId
         {
-            get { return mDefaultInterstitialAdId; }
-            set { mDefaultInterstitialAdId = value; }
+            get => mDefaultInterstitialAdId;
+            set => mDefaultInterstitialAdId = value;
         }
 
         /// <summary>
@@ -34,8 +34,8 @@ namespace EasyMobile
         /// <value>The default rewarded ad identifier.</value>
         public AdId DefaultRewardedAdId
         {
-            get { return mDefaultRewardedAdId; }
-            set { mDefaultRewardedAdId = value; }
+            get => mDefaultRewardedAdId;
+            set => mDefaultRewardedAdId = value;
         }
 
         /// <summary>
@@ -44,8 +44,8 @@ namespace EasyMobile
         /// <value>The default rewarded ad identifier.</value>
         public AdId DefaultBannerAdId
         {
-            get { return mDefaultBannerAdId; }
-            set { mDefaultBannerAdId = value; }
+            get => mDefaultBannerAdId;
+            set => mDefaultBannerAdId = value;
         }
 
         /// <summary>
@@ -54,8 +54,8 @@ namespace EasyMobile
         /// <value>Will Vungle client use the advanced settings.</value>
         public bool UseAdvancedSetting
         {
-            get { return mUseAdvancedSetting; }
-            set { mUseAdvancedSetting = value; }
+            get => mUseAdvancedSetting;
+            set => mUseAdvancedSetting = value;
         }
 
         /// <summary>
@@ -64,8 +64,8 @@ namespace EasyMobile
         /// <value>The advanced settings to be used by Vungle Ads Client.</value>
         public VungleAdvancedSettings AdvancedSettings
         {
-            get { return mAdvancedSettings; }
-            set { mAdvancedSettings = value; }
+            get => mAdvancedSettings;
+            set => mAdvancedSettings = value;
         }
 
         /// <summary>
@@ -75,8 +75,8 @@ namespace EasyMobile
         /// <value>The custom interstitial ad identifiers.</value>
         public Dictionary<AdPlacement, AdId> CustomInterstitialAdIds
         {
-            get { return mCustomInterstitialAdIds; }
-            set { mCustomRewardedAdIds = (Dictionary_AdPlacement_AdId)value; }
+            get => mCustomInterstitialAdIds;
+            set => mCustomRewardedAdIds = (Dictionary_AdPlacement_AdId) value;
         }
 
         /// <summary>
@@ -86,8 +86,8 @@ namespace EasyMobile
         /// <value>The custom rewarded ad identifiers.</value>
         public Dictionary<AdPlacement, AdId> CustomRewardedAdIds
         {
-            get { return mCustomRewardedAdIds; }
-            set { mCustomRewardedAdIds = (Dictionary_AdPlacement_AdId)value; }
+            get => mCustomRewardedAdIds;
+            set => mCustomRewardedAdIds = (Dictionary_AdPlacement_AdId) value;
         }
 
         /// <summary>
@@ -97,28 +97,20 @@ namespace EasyMobile
         /// <value>The custom rewarded ad identifiers.</value>
         public Dictionary<AdPlacement, AdId> CustomBannerAdIds
         {
-            get { return mCustomBannerAdIds; }
-            set { mCustomBannerAdIds = (Dictionary_AdPlacement_AdId)value; }
+            get => mCustomBannerAdIds;
+            set => mCustomBannerAdIds = (Dictionary_AdPlacement_AdId) value;
         }
 
-        [SerializeField]
-        private AdId mAppId = null;
-        [SerializeField]
-        private AdId mDefaultInterstitialAdId = null;
-        [SerializeField]
-        private AdId mDefaultRewardedAdId = null;
-        [SerializeField]
-        private AdId mDefaultBannerAdId = null;
-        [SerializeField]
-        private Dictionary_AdPlacement_AdId mCustomInterstitialAdIds = null;
-        [SerializeField]
-        private Dictionary_AdPlacement_AdId mCustomRewardedAdIds = null;
-        [SerializeField]
-        private Dictionary_AdPlacement_AdId mCustomBannerAdIds = null;
-        [SerializeField]
-        private bool mUseAdvancedSetting;
-        [SerializeField]
-        private VungleAdvancedSettings mAdvancedSettings;
+        [SerializeField] private AdId mAppId = null;
+        [SerializeField] private AdId mDefaultInterstitialAdId = null;
+        [SerializeField] private AdId mDefaultRewardedAdId = null;
+        [SerializeField] private AdId mDefaultBannerAdId = null;
+        [SerializeField] private Dictionary_AdPlacement_AdId mCustomInterstitialAdIds = null;
+        [SerializeField] private Dictionary_AdPlacement_AdId mCustomRewardedAdIds = null;
+        [SerializeField] private Dictionary_AdPlacement_AdId mCustomBannerAdIds = null;
+        [SerializeField] private bool mUseAdvancedSetting;
+        [SerializeField] private VungleAdvancedSettings mAdvancedSettings;
+
         [Serializable]
         public class VungleAdvancedSettings
         {
@@ -144,10 +136,12 @@ namespace EasyMobile
             }
 
             public AdOrientation adOrientation = AdOrientation.All;
+
             public PrematureAdClosePopup prematureAdClosePopup = new PrematureAdClosePopup()
             {
                 alertTitle = "Alert!!!",
-                alertText = "You are about to close this ad. If this is a rewarded ad, you might not receive the reward.",
+                alertText =
+                    "You are about to close this ad. If this is a rewarded ad, you might not receive the reward.",
                 closeText = "Close",
                 continueText = "Continue"
             };

@@ -133,7 +133,7 @@ namespace EasyMobile.Internal
         /// <param name="ppkey">Key to retrieve the value.</param>
         public static DateTime GetTime(string ppkey, DateTime defaultTime)
         {
-            string storedTime = StoringSystem.GetString(ppkey, string.Empty);
+            var storedTime = StoringSystem.GetString(ppkey, string.Empty);
 
             if (!string.IsNullOrEmpty(storedTime))
                 return DateTime.FromBinary(Convert.ToInt64(storedTime));

@@ -17,7 +17,7 @@ namespace EasyMobile
         MoPub,
         TapJoy,
         UnityAds,
-        Vungle,
+        Vungle
     }
 
     public enum BannerAdNetwork
@@ -31,7 +31,7 @@ namespace EasyMobile
         IronSource = AdNetwork.IronSource,
         MoPub = AdNetwork.MoPub,
         UnityAds = AdNetwork.UnityAds,
-        Vungle = AdNetwork.Vungle,
+        Vungle = AdNetwork.Vungle
     }
 
     public enum InterstitialAdNetwork
@@ -47,7 +47,7 @@ namespace EasyMobile
         MoPub = AdNetwork.MoPub,
         TapJoy = AdNetwork.TapJoy,
         UnityAds = AdNetwork.UnityAds,
-        Vungle = AdNetwork.Vungle,
+        Vungle = AdNetwork.Vungle
     }
 
     public enum RewardedAdNetwork
@@ -63,6 +63,6 @@ namespace EasyMobile
         MoPub = AdNetwork.MoPub,
         TapJoy = AdNetwork.TapJoy,
         UnityAds = AdNetwork.UnityAds,
-        Vungle = AdNetwork.Vungle,
+        Vungle = AdNetwork.Vungle
     }
 }

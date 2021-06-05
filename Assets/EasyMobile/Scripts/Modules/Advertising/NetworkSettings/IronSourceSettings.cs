@@ -13,8 +13,8 @@ namespace EasyMobile
         /// </summary>
         public AdId AppId
         {
-            get { return mAppId; }
-            set { mAppId = value; }
+            get => mAppId;
+            set => mAppId = value;
         }
 
         /// <summary>
@@ -22,8 +22,8 @@ namespace EasyMobile
         /// </summary>
         public bool UseAdvancedSetting
         {
-            get { return mUseAdvancedSetting; }
-            set { mUseAdvancedSetting = value; }
+            get => mUseAdvancedSetting;
+            set => mUseAdvancedSetting = value;
         }
 
         /// <summary>
@@ -31,16 +31,13 @@ namespace EasyMobile
         /// </summary>
         public SegmentSettings Segments
         {
-            get { return mSegments; }
-            set { mSegments = value; }
+            get => mSegments;
+            set => mSegments = value;
         }
 
-        [SerializeField]
-        private AdId mAppId;
-        [SerializeField]
-        private bool mUseAdvancedSetting;
-        [SerializeField]
-        private SegmentSettings mSegments;
+        [SerializeField] private AdId mAppId;
+        [SerializeField] private bool mUseAdvancedSetting;
+        [SerializeField] private SegmentSettings mSegments;
 
         [Serializable]
         public class SegmentSettings
@@ -105,7 +102,7 @@ namespace EasyMobile
             /// 50 (screen height ≤ 720) X screen width, 90 (screen height > 720) X screen width.
             /// Supports: Admob, AppLovin, Facebook, InMobi.
             /// </summary>
-            SmartBanner,
+            SmartBanner
         }
     }
 }

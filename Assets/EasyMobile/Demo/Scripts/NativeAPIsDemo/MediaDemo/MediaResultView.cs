@@ -7,21 +7,16 @@ namespace EasyMobile.Demo
 {
     public class MediaResultView : MonoBehaviour
     {
-        [SerializeField]
-        private Text infoText = null;
+        [SerializeField] private Text infoText = null;
 
-        [SerializeField]
-        private InputField maxImageSizeInput = null;
+        [SerializeField] private InputField maxImageSizeInput = null;
 
-        [SerializeField]
-        private GameObject maxImageSizeRoot = null;
+        [SerializeField] private GameObject maxImageSizeRoot = null;
 
-        [SerializeField]
-        private Button loadButton = null,
+        [SerializeField] private Button loadButton = null,
             removeButton = null;
 
-        [SerializeField]
-        private MediaDemo mediaDemo = null;
+        [SerializeField] private MediaDemo mediaDemo = null;
 
         private MediaResult model = null;
         private string error = null;
@@ -40,7 +35,7 @@ namespace EasyMobile.Demo
                 if (string.IsNullOrEmpty(maxImageSizeInput.text))
                     return -1;
 
-                int result = -1;
+                var result = -1;
                 int.TryParse(maxImageSizeInput.text, out result);
                 return result;
             }
@@ -55,7 +50,7 @@ namespace EasyMobile.Demo
 
         public MediaResult GetMedia()
         {
-            return this.model;
+            return model;
         }
 
         public void UpdateWithError(string error)
@@ -71,11 +66,13 @@ namespace EasyMobile.Demo
         {
             model = newModel;
             error = null;
-            maxImageSizeRoot.SetActive(model != null && error == null && model.Type == MediaType.Image && (model.contentUri != null || model.absoluteUri != null));
+            maxImageSizeRoot.SetActive(model != null && error == null && model.Type == MediaType.Image &&
+                                       (model.contentUri != null || model.absoluteUri != null));
             loadButton.gameObject.SetActive(model != null && error == null && model.Uri != null);
             infoText.text = string.Format(
                 "<b>Type:</b> <i>{0}</i> \n<b>Uri:</b> <i>{1}</i>",
-                model.Type, model.Uri ?? "null"); ;
+                model.Type, model.Uri ?? "null");
+            ;
         }
 
         public void Load()

@@ -2,10 +2,10 @@
 using UnityEditor;
 using System.Collections.Generic;
 using System;
-
 #if EM_URP
 using UnityEngine.Rendering.Universal;
 using UnityEngine.Rendering;
+
 #endif
 
 namespace EasyMobile.Editor
@@ -36,12 +36,9 @@ namespace EasyMobile.Editor
 
         protected override void InternalEnableModule()
         {
-            List<string> symbols = new List<string>();
+            var symbols = new List<string>();
 
-            if (EM_ExternalPluginManager.IsUsingURP())
-            {
-                symbols.Add(EM_ScriptingSymbols.UniversalRenderPipeline);
-            }
+            if (EM_ExternalPluginManager.IsUsingURP()) symbols.Add(EM_ScriptingSymbols.UniversalRenderPipeline);
 
             // Defines all ad symbols on all platforms.
             GlobalDefineManager.SDS_AddDefinesOnAllPlatforms(symbols.ToArray());
@@ -49,40 +46,17 @@ namespace EasyMobile.Editor
 
         protected override void InternalDisableModule()
         {
-            GlobalDefineManager.SDS_RemoveDefinesOnAllPlatforms(new string[] { EM_ScriptingSymbols.UniversalRenderPipeline });
+            GlobalDefineManager.SDS_RemoveDefinesOnAllPlatforms(new string[]
+                {EM_ScriptingSymbols.UniversalRenderPipeline});
         }
 
-        public override List<string> AndroidManifestTemplatePaths
-        {
-            get
-            {
-                return null;
-            }
-        }
+        public override List<string> AndroidManifestTemplatePaths => null;
 
-        public override IAndroidPermissionRequired AndroidPermissionsHolder
-        {
-            get
-            {
-                return null;
-            }
-        }
+        public override IAndroidPermissionRequired AndroidPermissionsHolder => null;
 
-        public override IIOSInfoItemRequired iOSInfoItemsHolder
-        {
-            get
-            {
-                return null;
-            }
-        }
+        public override IIOSInfoItemRequired iOSInfoItemsHolder => null;
 
-        public override Module SelfModule
-        {
-            get
-            {
-                return Module.Gif;
-            }
-        }
+        public override Module SelfModule => Module.Gif;
 
         #endregion
     }

@@ -8,14 +8,11 @@ namespace EasyMobile.Demo
     [Serializable]
     public class AddedStringStringView : MonoBehaviour
     {
-        [SerializeField]
-        private GameObject root = null;
+        [SerializeField] private GameObject root = null;
 
-        [SerializeField]
-        private Text stringView = null;
+        [SerializeField] private Text stringView = null;
 
-        [SerializeField]
-        private Button removeButton = null;
+        [SerializeField] private Button removeButton = null;
 
         public event Action OnDestroy;
 
@@ -30,7 +27,7 @@ namespace EasyMobile.Demo
         {
             if (invokeCallback && OnDestroy != null)
                 OnDestroy();
-                
+
             GameObject.Destroy(root);
         }
     }

@@ -3,6 +3,7 @@
  * This Recorder is inspired by the Recorder class of the Moments plugin by Chman (Thomas Hourdel) at https://github.com/Chman/Moments.
  * 
  */
+
 using UnityEngine;
 using System;
 using System.Collections;
@@ -13,7 +14,9 @@ namespace EasyMobile
 {
     using Min = EM_Moments.MinAttribute;
 
-    [AddComponentMenu("Easy Mobile/Recorder"), RequireComponent(typeof(Camera)), DisallowMultipleComponent]
+    [AddComponentMenu("Easy Mobile/Recorder")]
+    [RequireComponent(typeof(Camera))]
+    [DisallowMultipleComponent]
     public sealed class Recorder : MonoBehaviour
     {
         public enum RecorderState
@@ -26,37 +29,37 @@ namespace EasyMobile
         /// Determines whether the height should be computed automatically from the current width and aspect ratio.
         /// </summary>
         /// <value><c>true</c> if auto aspect; otherwise, <c>false</c>.</value>
-        public bool AutoHeight { get { return _autoHeight; } }
+        public bool AutoHeight => _autoHeight;
 
         /// <summary>
         /// Image width in pixels.
         /// </summary>
         /// <value>The width.</value>
-        public int Width { get { return _width; } }
+        public int Width => _width;
 
         /// <summary>
         /// Image height in pixels.
         /// </summary>
         /// <value>The height.</value>
-        public int Height { get { return _height; } }
+        public int Height => _height;
 
         /// <summary>
         /// Gets the frame per second.
         /// </summary>
         /// <value>The frame per second.</value>
-        public int FramePerSecond { get { return _framePerSecond; } }
+        public int FramePerSecond => _framePerSecond;
 
         /// <summary>
         /// The length of the GIF in seconds.
         /// </summary>
         /// <value>The length.</value>
-        public float Length { get { return _length; } }
+        public float Length => _length;
 
         /// <summary>
         /// Gets the current state of the recorder.
         /// </summary>
         /// <value>The state.</value>
-        public RecorderState State { get { return _state; } }
+        public RecorderState State => _state;
 
         /// <summary>
         /// Gets the camera that this recorder operates on.
@@ -73,30 +76,24 @@ namespace EasyMobile
             }
         }
 
-        [SerializeField]
-        bool _autoHeight = true;
+        [SerializeField] private bool _autoHeight = true;
 
-        [SerializeField, Min(8)]
-        int _width = 320;
+        [SerializeField] [Min(8)] private int _width = 320;
 
-        [SerializeField, Min(8)]
-        int _height = 480;
+        [SerializeField] [Min(8)] private int _height = 480;
 
-        [SerializeField, Range(1, 30)]
-        int _framePerSecond = 15;
+        [SerializeField] [Range(1, 30)] private int _framePerSecond = 15;
 
-        [SerializeField, Range(0.1f, 30f)]
-        float _length = 3f;
+        [SerializeField] [Range(0.1f, 30f)] private float _length = 3f;
 
-        [SerializeField]
-        RecorderState _state = RecorderState.Stopped;
+        [SerializeField] private RecorderState _state = RecorderState.Stopped;
 
-        Camera _targetCamera;
-        int maxFrameCount;
-        float pastTime;
-        float timePerFrame;
-        Queue<RenderTexture> recordedFrames;
-        ReflectionUtils<Recorder> reflectionUtils;
+        private Camera _targetCamera;
+        private int maxFrameCount;
+        private float pastTime;
+        private float timePerFrame;
+        private Queue<RenderTexture> recordedFrames;
+        private ReflectionUtils<Recorder> reflectionUtils;
 
         #region Static methods
 
@@ -108,7 +105,7 @@ namespace EasyMobile
         /// <param name="targetCam">Target camera.</param>
         public static int CalculateAutoHeight(int width, Camera targetCam)
         {
-            return Mathf.RoundToInt((float)width / targetCam.aspect);
+            return Mathf.RoundToInt((float) width / targetCam.aspect);
         }
 
         /// <summary>
@@ -121,7 +118,7 @@ namespace EasyMobile
         /// <param name="length">Length.</param>
         public static float EstimateMemoryUse(int width, int height, int fps, float length)
         {
-            float mem = fps * length;
+            var mem = fps * length;
             mem *= width * height * 4;
             mem /= 1024 * 1024;
             return mem;
@@ -208,7 +205,7 @@ namespace EasyMobile
 
         #region Unity events
 
-        void Awake()
+        private void Awake()
         {
             reflectionUtils = new ReflectionUtils<Recorder>(this);
             recordedFrames = new Queue<RenderTexture>();
@@ -216,7 +213,7 @@ namespace EasyMobile
             Init();
         }
 
-        void OnDestroy()
+        private void OnDestroy()
         {
             _state = RecorderState.Stopped;
             FlushMemory();
@@ -234,13 +231,11 @@ namespace EasyMobile
             if (pastTime >= timePerFrame)
             {
                 pastTime -= timePerFrame;
-                RenderTexture targetBlitRT = EM_GIFRecorderFeature.GetBlitRT(TargetCamera);
+                var targetBlitRT = EM_GIFRecorderFeature.GetBlitRT(TargetCamera);
 
                 if (targetBlitRT != null)
-                {
                     //Enqueue last frame blit result
                     recordedFrames.Enqueue(targetBlitRT);
-                }
 
                 RenderTexture tempRT = null;
 
@@ -262,6 +257,7 @@ namespace EasyMobile
                     // multi-GPU systems and will cause Unity to issue a warning.
                     tempRT.DiscardContents();
                 }
+
                 EM_GIFRecorderFeature.SetBlitRT(TargetCamera, tempRT);
             }
         }
@@ -309,11 +305,12 @@ namespace EasyMobile
             Graphics.Blit(source, destination);
         }
 #endif
+
         #endregion
 
         #region Methods
 
-        void Init()
+        private void Init()
         {
             maxFrameCount = Mathf.RoundToInt(_length * _framePerSecond);
             timePerFrame = 1f / _framePerSecond;
@@ -324,7 +321,7 @@ namespace EasyMobile
                 reflectionUtils.ConstrainMin(x => x._height, CalculateAutoHeight(_width, TargetCamera));
         }
 
-        void FlushMemory()
+        private void FlushMemory()
         {
             if (recordedFrames != null)
             {
@@ -333,11 +330,12 @@ namespace EasyMobile
                     rt.Release();
                     Flush(rt);
                 }
+
                 recordedFrames.Clear();
             }
         }
 
-        void Flush(UnityEngine.Object obj)
+        private void Flush(UnityEngine.Object obj)
         {
 #if UNITY_EDITOR
             if (Application.isPlaying)

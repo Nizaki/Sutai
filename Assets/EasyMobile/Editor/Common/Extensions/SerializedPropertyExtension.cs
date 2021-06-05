@@ -9,23 +9,22 @@ namespace EasyMobile.Editor
     {
         internal static object GetTargetObject(this SerializedProperty property)
         {
-            string path = property.propertyPath.Replace(".Array.data[", "[");
+            var path = property.propertyPath.Replace(".Array.data[", "[");
             object obj = property.serializedObject.targetObject;
-            string[] elements = path.Split('.');
+            var elements = path.Split('.');
 
             foreach (var element in elements)
-            {
                 if (element.Contains("["))
                 {
-                    string elementName = element.Substring(0, element.IndexOf("["));
-                    int index = Convert.ToInt32(element.Substring(element.IndexOf("[")).Replace("[", "").Replace("]", ""));
+                    var elementName = element.Substring(0, element.IndexOf("["));
+                    var index = Convert.ToInt32(element.Substring(element.IndexOf("[")).Replace("[", "")
+                        .Replace("]", ""));
                     obj = GetValue(obj, elementName, index);
                 }
                 else
                 {
                     obj = GetValue(obj, element);
                 }
-            }
 
             return obj;
         }
@@ -35,15 +34,16 @@ namespace EasyMobile.Editor
             if (source == null)
                 return null;
 
-            Type type = source.GetType();
+            var type = source.GetType();
 
             while (type != null)
             {
-                FieldInfo field = type.GetField(name, BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.Instance);
+                var field = type.GetField(name, BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.Instance);
                 if (field != null)
                     return field.GetValue(source);
 
-                PropertyInfo property = type.GetProperty(name, BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.Instance | BindingFlags.IgnoreCase);
+                var property = type.GetProperty(name,
+                    BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.Instance | BindingFlags.IgnoreCase);
                 if (property != null)
                     return property.GetValue(source, null);
 
@@ -55,20 +55,18 @@ namespace EasyMobile.Editor
 
         private static object GetValue(object source, string name, int index)
         {
-            IEnumerable enumerable = GetValue(source, name) as IEnumerable;
+            var enumerable = GetValue(source, name) as IEnumerable;
             if (enumerable == null)
                 return null;
 
-            IEnumerator enumerator = enumerable.GetEnumerator();
+            var enumerator = enumerable.GetEnumerator();
             //while (index-- >= 0)
             //    enm.MoveNext();
             //return enm.Current;
 
-            for (int i = 0; i <= index; i++)
-            {
+            for (var i = 0; i <= index; i++)
                 if (!enumerator.MoveNext())
                     return null;
-            }
 
             return enumerator.Current;
         }

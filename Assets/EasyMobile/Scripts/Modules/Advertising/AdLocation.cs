@@ -117,7 +117,7 @@ namespace EasyMobile
         public static AdLocation LocationFromName(string name)
         {
             if (string.IsNullOrEmpty(name))
-                return AdLocation.Default;
+                return Default;
             else if (map[name] != null)
                 return map[name] as AdLocation;
             else
@@ -125,7 +125,7 @@ namespace EasyMobile
         }
     }
 
-    #pragma warning disable 0618
+#pragma warning disable 0618
     [Obsolete]
     public static class AdLocationExtension
     {
@@ -137,6 +137,5 @@ namespace EasyMobile
                 return AdPlacement.PlacementWithName(location.ToString());
         }
     }
-    #pragma warning restore 0618
+#pragma warning restore 0618
 }
-

@@ -7,12 +7,11 @@ namespace EasyMobile.Demo
 {
     public class ScrollableList : MonoBehaviour
     {
-        public event System.Action<ScrollableList, string, string> ItemSelected = delegate {};
+        public event System.Action<ScrollableList, string, string> ItemSelected = delegate { };
 
-        public event System.Action<ScrollableList> UIClosed = delegate {};
+        public event System.Action<ScrollableList> UIClosed = delegate { };
 
-        [Header("Visual Settings")]
-        public Vector3 position = Vector3.zero;
+        [Header("Visual Settings")] public Vector3 position = Vector3.zero;
         public bool horizontalScroll = true;
         public bool verticalScroll = true;
         public float width = 500;
@@ -26,8 +25,7 @@ namespace EasyMobile.Demo
         public Color bodyColor = Color.white;
         public Color itemColor = Color.gray;
 
-        [Header("Internal References")]
-        public Text title;
+        [Header("Internal References")] public Text title;
         public ScrollRect scrollRect;
         public Transform content;
         public GameObject itemPrefab;
@@ -35,8 +33,9 @@ namespace EasyMobile.Demo
 
         public static ScrollableList Create(GameObject listPrefab, string title, Dictionary<string, string> items)
         {
-            GameObject listObj = Instantiate(listPrefab, listPrefab.transform.position, listPrefab.transform.rotation) as GameObject;
-            ScrollableList scrollableList = listObj.GetComponent<ScrollableList>();
+            var listObj =
+                Instantiate(listPrefab, listPrefab.transform.position, listPrefab.transform.rotation) as GameObject;
+            var scrollableList = listObj.GetComponent<ScrollableList>();
             scrollableList.title.text = title;
             scrollableList.items = items;
             scrollableList.Init();
@@ -64,18 +63,15 @@ namespace EasyMobile.Demo
             layoutGroup.padding.bottom = paddingBottom;
 
             // Set content height
-            float contentHeight = paddingTop + itemHeight * items.Count + spacing * (items.Count - 1) + paddingBottom;
+            var contentHeight = paddingTop + itemHeight * items.Count + spacing * (items.Count - 1) + paddingBottom;
             var contentRectTf = content.GetComponent<RectTransform>();
             contentRectTf.sizeDelta = new Vector2(contentRectTf.sizeDelta.x, contentHeight);
-            Vector3 contentPos = contentRectTf.localPosition;
+            var contentPos = contentRectTf.localPosition;
             contentPos.y = 0;
             contentRectTf.localPosition = contentPos;
 
             // Populate items
-            foreach (KeyValuePair<string, string> item in items)
-            {
-                AddItem(item.Key, item.Value);
-            }
+            foreach (var item in items) AddItem(item.Key, item.Value);
 
             scrollRect.horizontal = false;
             scrollRect.vertical = false;
@@ -86,20 +82,20 @@ namespace EasyMobile.Demo
 
         public GameObject AddItem(string title, string subtitle)
         {
-            GameObject newItem = Instantiate(itemPrefab, content.position, Quaternion.identity) as GameObject;
+            var newItem = Instantiate(itemPrefab, content.position, Quaternion.identity) as GameObject;
             newItem.GetComponent<LayoutElement>().preferredHeight = itemHeight;
             newItem.GetComponent<Image>().color = itemColor;
-            ScrollableListItem itemComp = newItem.GetComponent<ScrollableListItem>();
+            var itemComp = newItem.GetComponent<ScrollableListItem>();
             itemComp.title.text = title;
             itemComp.subtitle.text = subtitle;
             itemComp.button.onClick.AddListener(() =>
-                {
-                    // Fire event
-                    ItemSelected(this, title, subtitle);
+            {
+                // Fire event
+                ItemSelected(this, title, subtitle);
 
-                    // Hide the whole list
-                    Destroy(gameObject, 0.1f);
-                });
+                // Hide the whole list
+                Destroy(gameObject, 0.1f);
+            });
 
             newItem.transform.SetParent(content, false);
 
@@ -112,7 +108,7 @@ namespace EasyMobile.Demo
             Destroy(gameObject);
         }
 
-        void EnableScroll()
+        private void EnableScroll()
         {
             scrollRect.horizontal = horizontalScroll;
             scrollRect.vertical = verticalScroll;
@@ -120,4 +116,3 @@ namespace EasyMobile.Demo
         }
     }
 }
-

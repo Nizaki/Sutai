@@ -6,14 +6,11 @@ namespace EasyMobile.Demo
 {
     public class Racing3DCarInputHandler : MonoBehaviour
     {
-        [SerializeField]
-        private Racing3DCarControl hostCar = null, guestCar = null;
+        [SerializeField] private Racing3DCarControl hostCar = null, guestCar = null;
 
-        [SerializeField]
-        private Racing3DGameControl gameControl = null;
+        [SerializeField] private Racing3DGameControl gameControl = null;
 
-        [SerializeField]
-        private float clickDelay = 0.4f, swipeThreshold = 20f;
+        [SerializeField] private float clickDelay = 0.4f, swipeThreshold = 20f;
 
         private float previousClickTime;
         private Vector2 fingerDown;
@@ -24,8 +21,8 @@ namespace EasyMobile.Demo
             if (!gameControl.IsPlaying)
                 return;
 
-            if(Input.touchCount > 0)
-                SwipeDetect(Input.GetTouch(0));              
+            if (Input.touchCount > 0)
+                SwipeDetect(Input.GetTouch(0));
         }
 
         private void SwipeDetect(Touch touch)
@@ -34,7 +31,7 @@ namespace EasyMobile.Demo
             {
                 fingerUp = touch.position;
                 fingerDown = touch.position;
-            }          
+            }
 
             // Detects swipe after finger is released
             if (touch.phase == TouchPhase.Ended)
@@ -60,16 +57,17 @@ namespace EasyMobile.Demo
 
             previousClickTime = Time.time + clickDelay;
             if (fingerDown.x - fingerUp.x > 0) // Right swipe
-            {               
+            {
                 Move(hostCar, Racing3DGameModel.MoveDirections.Right);
                 Move(guestCar, Racing3DGameModel.MoveDirections.Right);
-            }             
+            }
             else if (fingerDown.x - fingerUp.x < 0) // Left swipe
             {
                 Move(hostCar, Racing3DGameModel.MoveDirections.Left);
                 Move(guestCar, Racing3DGameModel.MoveDirections.Left);
             }
-            fingerUp = fingerDown;         
+
+            fingerUp = fingerDown;
         }
 
         private void Move(Racing3DCarControl car, Racing3DGameModel.MoveDirections direction)

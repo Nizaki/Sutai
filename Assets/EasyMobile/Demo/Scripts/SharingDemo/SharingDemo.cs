@@ -16,34 +16,34 @@ namespace EasyMobile.Demo
         public InputField shareTextMessage;
 
         // Screenshot names don't need to include the extension (e.g. ".png")
-        string TwoStepScreenshotName = "EM_Screenshot";
-        string OneStepScreenshotName = "EM_OneStepScreenshot";
-        string TwoStepScreenshotPath;
-        string sampleURL = "https://assetstore.unity.com/packages/slug/75476";
+        private string TwoStepScreenshotName = "EM_Screenshot";
+        private string OneStepScreenshotName = "EM_OneStepScreenshot";
+        private string TwoStepScreenshotPath;
+        private string sampleURL = "https://assetstore.unity.com/packages/slug/75476";
 
-        void Awake()
+        private void Awake()
         {
             // Init EM runtime if needed (useful in case only this scene is built).
             if (!RuntimeManager.IsInitialized())
                 RuntimeManager.Init();
         }
 
-        void OnEnable()
+        private void OnEnable()
         {
             ColorChooser.colorSelected += ColorChooser_colorSelected;
         }
 
-        void OnDisable()
+        private void OnDisable()
         {
             ColorChooser.colorSelected -= ColorChooser_colorSelected;
         }
 
-        void ColorChooser_colorSelected(Color obj)
+        private void ColorChooser_colorSelected(Color obj)
         {
             clockRect.color = obj;
         }
 
-        void Update()
+        private void Update()
         {
             clockText.text = System.DateTime.Now.ToString("hh:mm:ss");
         }
@@ -69,13 +69,9 @@ namespace EasyMobile.Demo
         public void ShareScreenshot()
         {
             if (!string.IsNullOrEmpty(TwoStepScreenshotPath))
-            {
                 Sharing.ShareImage(TwoStepScreenshotPath, twoStepShareMessage.text);
-            }
             else
-            {
                 NativeUI.Alert("Alert", "Please save a screenshot first.");
-            }
         }
 
         public void OneStepSharing()
@@ -83,7 +79,7 @@ namespace EasyMobile.Demo
             StartCoroutine(CROneStepSharing());
         }
 
-        IEnumerator CRSaveScreenshot()
+        private IEnumerator CRSaveScreenshot()
         {
             yield return new WaitForEndOfFrame();
 
@@ -92,7 +88,7 @@ namespace EasyMobile.Demo
             NativeUI.Alert("Alert", "A new screenshot was saved at " + TwoStepScreenshotPath);
         }
 
-        IEnumerator CROneStepSharing()
+        private IEnumerator CROneStepSharing()
         {
             yield return new WaitForEndOfFrame();
 

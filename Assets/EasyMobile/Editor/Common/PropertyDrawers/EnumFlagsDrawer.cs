@@ -12,45 +12,47 @@ namespace EasyMobile.Editor
     {
         public override void OnGUI(Rect position, SerializedProperty property, GUIContent label)
         {
-            EnumFlagsAttribute flagSettings = (EnumFlagsAttribute)attribute;
-            Enum targetEnum = GetBaseProperty<Enum>(property);
-            string propName = flagSettings.enumName;
+            var flagSettings = (EnumFlagsAttribute) attribute;
+            var targetEnum = GetBaseProperty<Enum>(property);
+            var propName = flagSettings.enumName;
             Enum enumNew;
 
             EditorGUI.BeginProperty(position, label, property);
 
             if (string.IsNullOrEmpty(propName))
             {
-                #if UNITY_2017_3_OR_NEWER
+#if UNITY_2017_3_OR_NEWER
                 enumNew = EditorGUI.EnumFlagsField(position, label, targetEnum);
-                #else
+#else
                 enumNew = EditorGUI.EnumMaskField(position, label, targetEnum);
-                #endif
+#endif
             }
             else
             {
-                #if UNITY_2017_3_OR_NEWER
+#if UNITY_2017_3_OR_NEWER
                 enumNew = EditorGUI.EnumFlagsField(position, propName, targetEnum);
-                #else
+#else
                 enumNew = EditorGUI.EnumMaskField(position, propName, targetEnum);
-                #endif
+#endif
             }
 
-            property.intValue = (int)Convert.ChangeType(enumNew, targetEnum.GetType());
+            property.intValue = (int) Convert.ChangeType(enumNew, targetEnum.GetType());
             EditorGUI.EndProperty();
         }
 
-        static T GetBaseProperty<T>(SerializedProperty prop)
+        private static T GetBaseProperty<T>(SerializedProperty prop)
         {
-            string[] separatedPaths = prop.propertyPath.Split('.');
-            System.Object reflectionTarget = prop.serializedObject.targetObject as object;
+            var separatedPaths = prop.propertyPath.Split('.');
+            var reflectionTarget = prop.serializedObject.targetObject as object;
 
             foreach (var path in separatedPaths)
             {
-                FieldInfo fieldInfo = reflectionTarget.GetType().GetField(path, BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.Instance);
+                var fieldInfo = reflectionTarget.GetType().GetField(path,
+                    BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.Instance);
                 reflectionTarget = fieldInfo.GetValue(reflectionTarget);
             }
-            return (T)reflectionTarget;
+
+            return (T) reflectionTarget;
         }
     }
 }

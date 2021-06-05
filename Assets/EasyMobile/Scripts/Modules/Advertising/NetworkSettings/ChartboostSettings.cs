@@ -11,8 +11,8 @@ namespace EasyMobile
         /// </summary>
         public AdPlacement[] CustomInterstitialPlacements
         {
-            get { return mCustomInterstitialPlacements; }
-            set { mCustomInterstitialPlacements = value; }
+            get => mCustomInterstitialPlacements;
+            set => mCustomInterstitialPlacements = value;
         }
 
         /// <summary>
@@ -20,13 +20,11 @@ namespace EasyMobile
         /// </summary>
         public AdPlacement[] CustomRewardedPlacements
         {
-            get { return mCustomRewardedPlacements; }
-            set { mCustomRewardedPlacements = value; }
+            get => mCustomRewardedPlacements;
+            set => mCustomRewardedPlacements = value;
         }
 
-        [SerializeField]
-        private AdPlacement[] mCustomInterstitialPlacements;
-        [SerializeField]
-        private AdPlacement[] mCustomRewardedPlacements;
+        [SerializeField] private AdPlacement[] mCustomInterstitialPlacements;
+        [SerializeField] private AdPlacement[] mCustomRewardedPlacements;
     }
 }

@@ -9,6 +9,7 @@ namespace EasyMobile
         private class AppStateHandler : MonoBehaviour
         {
             private static AppStateHandler instance;
+
             private void Awake()
             {
                 if (instance != null)
@@ -34,16 +35,14 @@ namespace EasyMobile
         }
 
         private static VungleClientImpl sInstance;
+
         /// <summary>
         /// Returns the singleton client.
         /// </summary>
         /// <returns>The client.</returns>
         public static VungleClientImpl CreateClient()
         {
-            if (sInstance == null)
-            {
-                sInstance = new VungleClientImpl();
-            }
+            if (sInstance == null) sInstance = new VungleClientImpl();
             return sInstance;
         }
 
@@ -51,10 +50,11 @@ namespace EasyMobile
         {
             public readonly AdId Id;
             public readonly AdPlacement Placement;
+
             public VungleAd(AdId id, AdPlacement placement)
             {
-                this.Id = id;
-                this.Placement = placement;
+                Id = id;
+                Placement = placement;
             }
         }
 
@@ -62,7 +62,9 @@ namespace EasyMobile
         {
             private bool isShowing;
 
-            public VungleBannerAd(AdId id, AdPlacement placement) : base(id, placement) { }
+            public VungleBannerAd(AdId id, AdPlacement placement) : base(id, placement)
+            {
+            }
 #if EM_VUNGLE
             private Vungle.VungleBannerSize GetVungleBannerSize(BannerAdSize size)
             {
@@ -139,7 +141,8 @@ namespace EasyMobile
 #if EM_VUNGLE
             private Dictionary<string, object> options;
 #endif
-            public VungleInterstitialAd(AdId id, AdPlacement placement, Dictionary<string, object> options) : base(id, placement)
+            public VungleInterstitialAd(AdId id, AdPlacement placement, Dictionary<string, object> options) : base(id,
+                placement)
             {
 #if EM_VUNGLE
                 this.options = options;
@@ -170,7 +173,7 @@ namespace EasyMobile
             {
 #if EM_VUNGLE
                 return Vungle.isAdvertAvailable(Id.Id);
-#else          
+#else
                 return false;
 #endif
             }
@@ -181,7 +184,8 @@ namespace EasyMobile
 #if EM_VUNGLE
             private Dictionary<string, object> options;
 #endif
-            public VungleRewardedAd(AdId id, AdPlacement placement, Dictionary<string, object> options) : base(id, placement)
+            public VungleRewardedAd(AdId id, AdPlacement placement, Dictionary<string, object> options) : base(id,
+                placement)
             {
 #if EM_VUNGLE
                 this.options = options;
@@ -212,7 +216,7 @@ namespace EasyMobile
             {
 #if EM_VUNGLE
                 return Vungle.isAdvertAvailable(Id.Id);
-#else          
+#else
                 return false;
 #endif
             }
@@ -234,15 +238,15 @@ namespace EasyMobile
             }
         }
 
-        public override AdNetwork Network { get { return AdNetwork.Vungle; } }
+        public override AdNetwork Network => AdNetwork.Vungle;
 
-        public override bool IsBannerAdSupported { get { return true; } }
+        public override bool IsBannerAdSupported => true;
 
-        public override bool IsInterstitialAdSupported { get { return true; } }
+        public override bool IsInterstitialAdSupported => true;
 
-        public override bool IsRewardedAdSupported { get { return true; } }
+        public override bool IsRewardedAdSupported => true;
 
-        protected override string NoSdkMessage { get { return NO_SDK_MESSAGE; } }
+        protected override string NoSdkMessage => NO_SDK_MESSAGE;
 
         protected override Dictionary<AdPlacement, AdId> CustomInterstitialAdsDict
         {
@@ -269,7 +273,7 @@ namespace EasyMobile
         }
 
         private const string DATA_PRIVACY_CONSENT_KEY = "EM_Ads_Vungle_DataPrivacyConsent";
-        protected override string DataPrivacyConsentSaveKey { get { return DATA_PRIVACY_CONSENT_KEY; } }
+        protected override string DataPrivacyConsentSaveKey => DATA_PRIVACY_CONSENT_KEY;
 
         private Dictionary<AdPlacement, VungleBannerAd> customBannerPlacementDict;
         private Dictionary<AdPlacement, VungleRewardedAd> customRewardedPlacementDict;
@@ -340,19 +344,24 @@ namespace EasyMobile
                     continue;
                 customBannerPlacementDict.Add(keyPair.Key, new VungleBannerAd(keyPair.Value, keyPair.Key));
             }
+
             foreach (var keyPair in mAdSettings.CustomInterstitialAdIds)
             {
                 if (customInterstitialPlacementDict.ContainsKey(keyPair.Key))
                     continue;
-                customInterstitialPlacementDict.Add(keyPair.Key, new VungleInterstitialAd(keyPair.Value, keyPair.Key, options));
+                customInterstitialPlacementDict.Add(keyPair.Key,
+                    new VungleInterstitialAd(keyPair.Value, keyPair.Key, options));
             }
+
             foreach (var keyPair in mAdSettings.CustomRewardedAdIds)
             {
                 if (customRewardedPlacementDict.ContainsKey(keyPair.Key))
                     continue;
                 customRewardedPlacementDict.Add(keyPair.Key, new VungleRewardedAd(keyPair.Value, keyPair.Key, options));
             }
-            defaultInterstitial = new VungleInterstitialAd(mAdSettings.DefaultInterstitialAdId, AdPlacement.Default, options);
+
+            defaultInterstitial =
+                new VungleInterstitialAd(mAdSettings.DefaultInterstitialAdId, AdPlacement.Default, options);
             defaultRewarded = new VungleRewardedAd(mAdSettings.DefaultRewardedAdId, AdPlacement.Default, options);
             defaultBanner = new VungleBannerAd(mAdSettings.DefaultBannerAdId, AdPlacement.Default);
 
@@ -417,24 +426,19 @@ namespace EasyMobile
             if (id == defaultRewarded.Id.Id)
                 return defaultRewarded;
             foreach (var keyPair in customBannerPlacementDict)
-            {
                 if (keyPair.Value.Id.Id == id)
                     return keyPair.Value;
-            }
             foreach (var keyPair in customInterstitialPlacementDict)
-            {
                 if (keyPair.Value.Id.Id == id)
                     return keyPair.Value;
-            }
             foreach (var keyPair in customRewardedPlacementDict)
-            {
                 if (keyPair.Value.Id.Id == id)
                     return keyPair.Value;
-            }
             return null;
         }
 
         #region Vungle callbacks
+
 #if EM_VUNGLE
         private void OnAdPlayableEvent(string vungleId, bool loaded)
         {
@@ -479,6 +483,7 @@ namespace EasyMobile
             Debug.Log("Vungle client has been initialized.");
         }
 #endif
+
         #endregion
 
         public override bool IsValidPlacement(AdPlacement placement, AdType type)
@@ -530,7 +535,7 @@ namespace EasyMobile
 
         protected override void InternalDestroyBannerAd(AdPlacement placement)
         {
-            VungleBannerAd ad = GetBannerVungleAd(placement);
+            var ad = GetBannerVungleAd(placement);
             if (ad == null)
                 return;
             ad.Destroy();
@@ -538,7 +543,7 @@ namespace EasyMobile
 
         protected override void InternalHideBannerAd(AdPlacement placement)
         {
-            VungleBannerAd ad = GetBannerVungleAd(placement);
+            var ad = GetBannerVungleAd(placement);
             if (ad == null)
                 return;
             ad.Hide();
@@ -546,7 +551,7 @@ namespace EasyMobile
 
         protected override bool InternalIsInterstitialAdReady(AdPlacement placement)
         {
-            VungleInterstitialAd ad = GetInterstitialVungleAd(placement);
+            var ad = GetInterstitialVungleAd(placement);
             if (ad == null)
                 return false;
             return ad.IsReady();
@@ -554,7 +559,7 @@ namespace EasyMobile
 
         protected override bool InternalIsRewardedAdReady(AdPlacement placement)
         {
-            VungleRewardedAd ad = GetRewardedVungleAd(placement);
+            var ad = GetRewardedVungleAd(placement);
             if (ad == null)
                 return false;
             return ad.IsReady();
@@ -562,7 +567,7 @@ namespace EasyMobile
 
         protected override void InternalLoadInterstitialAd(AdPlacement placement)
         {
-            VungleInterstitialAd ad = GetInterstitialVungleAd(placement);
+            var ad = GetInterstitialVungleAd(placement);
             if (ad == null)
                 return;
             ad.Load();
@@ -570,15 +575,16 @@ namespace EasyMobile
 
         protected override void InternalLoadRewardedAd(AdPlacement placement)
         {
-            VungleRewardedAd ad = GetRewardedVungleAd(placement);
+            var ad = GetRewardedVungleAd(placement);
             if (ad == null)
                 return;
             ad.Load();
         }
 
-        protected override void InternalShowBannerAd(AdPlacement placement, BannerAdPosition position, BannerAdSize size)
+        protected override void InternalShowBannerAd(AdPlacement placement, BannerAdPosition position,
+            BannerAdSize size)
         {
-            VungleBannerAd ad = GetBannerVungleAd(placement);
+            var ad = GetBannerVungleAd(placement);
             if (ad == null)
                 return;
             ad.Show(size, position);
@@ -586,7 +592,7 @@ namespace EasyMobile
 
         protected override void InternalShowInterstitialAd(AdPlacement placement)
         {
-            VungleInterstitialAd ad = GetInterstitialVungleAd(placement);
+            var ad = GetInterstitialVungleAd(placement);
             if (ad == null)
                 return;
             ad.Show();
@@ -594,7 +600,7 @@ namespace EasyMobile
 
         protected override void InternalShowRewardedAd(AdPlacement placement)
         {
-            VungleRewardedAd ad = GetRewardedVungleAd(placement);
+            var ad = GetRewardedVungleAd(placement);
             if (ad == null)
                 return;
             ad.Show();

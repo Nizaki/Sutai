@@ -35,8 +35,8 @@ namespace EM_Moments
 {
     internal sealed class Worker
     {
-        Thread m_Thread;
-        int m_Id;
+        private Thread m_Thread;
+        private int m_Id;
 
         internal List<GifFrame> m_Frames;
         internal GifEncoder m_Encoder;
@@ -44,7 +44,8 @@ namespace EM_Moments
         internal Action<int, string> m_OnFileSaved;
         internal Action<int, float> m_OnFileSaveProgress;
 
-        internal Worker(int taskId, ThreadPriority priority, List<GifFrame> frames, GifEncoder encoder, string filepath, Action<int, float> onFileSaveProgress, Action<int, string> onFileSaved)
+        internal Worker(int taskId, ThreadPriority priority, List<GifFrame> frames, GifEncoder encoder, string filepath,
+            Action<int, float> onFileSaveProgress, Action<int, string> onFileSaved)
         {
             m_Id = taskId;
             m_Thread = new Thread(Run);
@@ -61,18 +62,18 @@ namespace EM_Moments
             m_Thread.Start();
         }
 
-        void Run()
+        private void Run()
         {
             m_Encoder.Start(m_FilePath);
 
-            for (int i = 0; i < m_Frames.Count; i++)
+            for (var i = 0; i < m_Frames.Count; i++)
             {
-                GifFrame frame = m_Frames[i];
+                var frame = m_Frames[i];
                 m_Encoder.AddFrame(frame);
 
                 if (m_OnFileSaveProgress != null)
                 {
-                    float percent = (float)i / (float)m_Frames.Count;
+                    var percent = (float) i / (float) m_Frames.Count;
                     m_OnFileSaveProgress(m_Id, percent);
                 }
             }

@@ -15,16 +15,14 @@ namespace EasyMobile.Demo
             [SerializeField]
             protected Button showBannerButton = null, hideBannerButton = null, destroyBannerButton = null;
 
-            [SerializeField]
-            protected Dropdown bannerPositionSelector = null, bannerSizeSelector = null;
+            [SerializeField] protected Dropdown bannerPositionSelector = null, bannerSizeSelector = null;
 
-            [SerializeField]
-            private List<BannerAdSize> allBannerSizes;
+            [SerializeField] private List<BannerAdSize> allBannerSizes;
             private List<BannerAdPosition> allBannerPositions;
 
-            public BannerAdSize SelectedBannerSize { get { return allBannerSizes[bannerSizeSelector.value]; } }
+            public BannerAdSize SelectedBannerSize => allBannerSizes[bannerSizeSelector.value];
 
-            public BannerAdPosition SelectedBannerPosition { get { return allBannerPositions[bannerPositionSelector.value]; } }
+            public BannerAdPosition SelectedBannerPosition => allBannerPositions[bannerPositionSelector.value];
 
             public virtual void Start()
             {
@@ -36,7 +34,7 @@ namespace EasyMobile.Demo
             protected void InitBannerPositionDropdown()
             {
                 allBannerPositions = new List<BannerAdPosition>();
-                List<Dropdown.OptionData> optionDatas = new List<Dropdown.OptionData>();
+                var optionDatas = new List<Dropdown.OptionData>();
 
                 foreach (BannerAdPosition position in Enum.GetValues(typeof(BannerAdPosition)))
                 {
@@ -64,13 +62,13 @@ namespace EasyMobile.Demo
 
                 bannerSizeSelector.ClearOptions();
                 bannerSizeSelector.AddOptions(new List<Dropdown.OptionData>
-                    {
-                        new Dropdown.OptionData("Banner"),
-                        new Dropdown.OptionData("IAB Banner"),
-                        new Dropdown.OptionData("Leaderboard"),
-                        new Dropdown.OptionData("Medium Rectangle"),
-                        new Dropdown.OptionData("Smart Banner")
-                    });
+                {
+                    new Dropdown.OptionData("Banner"),
+                    new Dropdown.OptionData("IAB Banner"),
+                    new Dropdown.OptionData("Leaderboard"),
+                    new Dropdown.OptionData("Medium Rectangle"),
+                    new Dropdown.OptionData("Smart Banner")
+                });
 
                 // Default size as SmartBanner.
                 bannerSizeSelector.value = allBannerSizes.IndexOf(BannerAdSize.SmartBanner);
@@ -108,15 +106,13 @@ namespace EasyMobile.Demo
         [Serializable]
         private class CustomBannerUI : DefaulBannerUI
         {
-            [SerializeField]
-            private Dropdown networkSelector = null;
+            [SerializeField] private Dropdown networkSelector = null;
 
-            [SerializeField]
-            private InputField customKeyInputField = null;
+            [SerializeField] private InputField customKeyInputField = null;
 
             private List<BannerAdNetwork> allBannerNetworks = null;
 
-            public BannerAdNetwork SelectedNetwork { get { return allBannerNetworks[networkSelector.value]; } }
+            public BannerAdNetwork SelectedNetwork => allBannerNetworks[networkSelector.value];
 
             public override void Start()
             {
@@ -127,7 +123,7 @@ namespace EasyMobile.Demo
             private void InitBannerNetworkDropdown()
             {
                 allBannerNetworks = new List<BannerAdNetwork>();
-                List<Dropdown.OptionData> optionDatas = new List<Dropdown.OptionData>();
+                var optionDatas = new List<Dropdown.OptionData>();
 
                 foreach (BannerAdNetwork network in Enum.GetValues(typeof(BannerAdNetwork)))
                 {
@@ -169,11 +165,9 @@ namespace EasyMobile.Demo
             }
         }
 
-        [SerializeField]
-        private DefaulBannerUI defaultBannerUI = null;
+        [SerializeField] private DefaulBannerUI defaultBannerUI = null;
 
-        [SerializeField]
-        private CustomBannerUI customBannerUI = null;
+        [SerializeField] private CustomBannerUI customBannerUI = null;
 
         public override void Start()
         {

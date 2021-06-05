@@ -20,7 +20,7 @@ namespace ThreeDISevenZeroR.UnityGifDecoder
         {
             buffer = new byte[256];
         }
-        
+
         public GifBitBlockReader(Stream stream) : this()
         {
             SetStream(stream);
@@ -49,10 +49,7 @@ namespace ThreeDISevenZeroR.UnityGifDecoder
         /// </summary>
         public void FinishReading()
         {
-            while (!endReached)
-            {
-                ReadNextBlock();
-            }
+            while (!endReached) ReadNextBlock();
         }
 
         /// <summary>
@@ -67,13 +64,13 @@ namespace ThreeDISevenZeroR.UnityGifDecoder
             var offset = 0;
             var bitsAvailable = 8 - currentBitPosition;
 
-            while(bitsToRead > 0)
+            while (bitsToRead > 0)
             {
                 if (currentBitPosition >= 8)
                 {
                     currentBitPosition = 0;
                     bitsAvailable = 8;
-                    
+
                     if (endReached)
                     {
                         // Some gifs can read slightly past end of a stream
@@ -100,14 +97,14 @@ namespace ThreeDISevenZeroR.UnityGifDecoder
 
             return result;
         }
-        
+
         private void ReadNextBlock()
         {
             currentBufferSize = stream.ReadByte8();
             currentBufferPosition = 0;
             endReached = currentBufferSize == 0;
-            
-            if(!endReached)
+
+            if (!endReached)
                 stream.Read(buffer, 0, currentBufferSize);
         }
     }

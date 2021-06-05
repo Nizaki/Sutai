@@ -4,7 +4,9 @@ using UnityEngine.UI;
 
 namespace EasyMobile
 {
-    [AddComponentMenu("Easy Mobile/Clip Player"), RequireComponent(typeof(MeshRenderer)), DisallowMultipleComponent]
+    [AddComponentMenu("Easy Mobile/Clip Player")]
+    [RequireComponent(typeof(MeshRenderer))]
+    [DisallowMultipleComponent]
     public class ClipPlayer : MonoBehaviour, IClipPlayer
     {
         /// <summary>
@@ -13,19 +15,18 @@ namespace EasyMobile
         /// <value>The scale mode.</value>
         public ClipPlayerScaleMode ScaleMode
         {
-            get { return _scaleMode; }
-            set { _scaleMode = value; }
+            get => _scaleMode;
+            set => _scaleMode = value;
         }
 
-        [SerializeField]
-        ClipPlayerScaleMode _scaleMode = ClipPlayerScaleMode.AutoHeight;
+        [SerializeField] private ClipPlayerScaleMode _scaleMode = ClipPlayerScaleMode.AutoHeight;
 
         // Projecting object
-        Material mat;
-        IEnumerator playCoroutine;
-        bool isPaused;
+        private Material mat;
+        private IEnumerator playCoroutine;
+        private bool isPaused;
 
-        void Awake()
+        private void Awake()
         {
             mat = GetComponent<MeshRenderer>().material;
         }
@@ -84,7 +85,7 @@ namespace EasyMobile
         /// Resizes this player according to the predefined scale mode and the clip's aspect ratio.
         /// </summary>
         /// <param name="clip">Clip.</param>
-        void Resize(AnimatedClip clip)
+        private void Resize(AnimatedClip clip)
         {
             if (_scaleMode == ClipPlayerScaleMode.None)
             {
@@ -92,7 +93,7 @@ namespace EasyMobile
             }
             else
             {
-                float aspectRatio = (float)clip.Width / clip.Height;
+                var aspectRatio = (float) clip.Width / clip.Height;
                 var scale = transform.localScale;
 
                 if (_scaleMode == ClipPlayerScaleMode.AutoHeight)
@@ -104,14 +105,14 @@ namespace EasyMobile
             }
         }
 
-        IEnumerator CRPlay(AnimatedClip clip, float startDelay, bool loop)
+        private IEnumerator CRPlay(AnimatedClip clip, float startDelay, bool loop)
         {
-            float timePerFrame = 1f / clip.FramePerSecond;
-            bool hasDelayed = false;
+            var timePerFrame = 1f / clip.FramePerSecond;
+            var hasDelayed = false;
 
             do
             {
-                for (int i = 0; i < clip.Frames.Length; i++)
+                for (var i = 0; i < clip.Frames.Length; i++)
                 {
                     mat.mainTexture = clip.Frames[i];
                     yield return new WaitForSeconds(timePerFrame);

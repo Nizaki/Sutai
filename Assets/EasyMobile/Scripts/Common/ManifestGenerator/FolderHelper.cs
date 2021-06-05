@@ -18,7 +18,7 @@ namespace EasyMobile.ManifestGenerator
             AssetDatabase.Refresh();
         }
 
-        public static void DeleteFolder (string folderPath, bool deletedAllContents = false)
+        public static void DeleteFolder(string folderPath, bool deletedAllContents = false)
         {
             if (!IsFolderExists(folderPath))
                 return;

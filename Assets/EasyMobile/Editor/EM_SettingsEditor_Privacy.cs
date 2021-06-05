@@ -4,7 +4,6 @@ using System.Collections.Generic;
 using UnityEditor.SceneManagement;
 using UnityEngine;
 using UnityEditor;
-
 using EGL = UnityEditor.EditorGUILayout;
 using SP = UnityEditor.SerializedProperty;
 using ES = UnityEditor.EditorStyles;
@@ -16,53 +15,58 @@ namespace EasyMobile.Editor
     {
         #region Fields and Properties
 
-        const string PrivacyModuleLabel = "PRIVACY";
-        const string PrivacyModuleIntro = "The Privacy module provides convenient tools and resources that help with getting compliant with " +
-                                          "user privacy regulations such as GDPR.";
-        const string ContentDescription = "The main content description of the dialog. You can use HTML tags like <b>, <i> and <a> in the text as well as " +
-                                          "insert toggles and buttons to form the dialog layout.";
-        const string TogglesArrayDescription = "The toggles to be inserted to the dialog content.";
-        const string ButtonsArrayDescription = "The buttons to be inserted to the dialog content. Your dialog must have at least one button.";
-        const string PreviewSectionDescription = "Preview the consent dialog using the Privacy demo scene.";
-        const string EmptySelectedTextMsg = "Please select some texts by highlighting them first.";
+        private const string PrivacyModuleLabel = "PRIVACY";
 
-        const string BoldStartTag = "<b>";
-        const string BoldEndTag = "</b>";
-        const string ItalicStartTag = "<i>";
-        const string ItalicEndTag = "</i>";
-        const string HyperlinkPrefix = "http://";
-        const int CharacterPixelWidth = 7;
-        const int MinTogglesCount = 0;
-        const int MinActionButtonsCount = 1;
+        private const string PrivacyModuleIntro =
+            "The Privacy module provides convenient tools and resources that help with getting compliant with " +
+            "user privacy regulations such as GDPR.";
 
-        static Dictionary<string, bool> privacyFoldoutStates = new Dictionary<string, bool>();
+        private const string ContentDescription =
+            "The main content description of the dialog. You can use HTML tags like <b>, <i> and <a> in the text as well as " +
+            "insert toggles and buttons to form the dialog layout.";
 
-        ConsentDialog DefaultConsentDialog
+        private const string TogglesArrayDescription = "The toggles to be inserted to the dialog content.";
+
+        private const string ButtonsArrayDescription =
+            "The buttons to be inserted to the dialog content. Your dialog must have at least one button.";
+
+        private const string PreviewSectionDescription = "Preview the consent dialog using the Privacy demo scene.";
+        private const string EmptySelectedTextMsg = "Please select some texts by highlighting them first.";
+
+        private const string BoldStartTag = "<b>";
+        private const string BoldEndTag = "</b>";
+        private const string ItalicStartTag = "<i>";
+        private const string ItalicEndTag = "</i>";
+        private const string HyperlinkPrefix = "http://";
+        private const int CharacterPixelWidth = 7;
+        private const int MinTogglesCount = 0;
+        private const int MinActionButtonsCount = 1;
+
+        private static Dictionary<string, bool> privacyFoldoutStates = new Dictionary<string, bool>();
+
+        private ConsentDialog DefaultConsentDialog => EM_Settings.Privacy.DefaultConsentDialog;
+
+        private int SelectedToggleIndex
         {
-            get { return EM_Settings.Privacy.DefaultConsentDialog; }
+            get => PrivacyProperties.selectedToggleIndex.property.intValue;
+            set => PrivacyProperties.selectedToggleIndex.property.intValue = value;
         }
 
-        int SelectedToggleIndex
+        private int SelectedButtonIndex
         {
-            get { return PrivacyProperties.selectedToggleIndex.property.intValue; }
-            set { PrivacyProperties.selectedToggleIndex.property.intValue = value; }
+            get => PrivacyProperties.selectedButtonIndex.property.intValue;
+            set => PrivacyProperties.selectedButtonIndex.property.intValue = value;
         }
 
-        int SelectedButtonIndex
+        private bool EnableCopyPasteMode
         {
-            get { return PrivacyProperties.selectedButtonIndex.property.intValue; }
-            set { PrivacyProperties.selectedButtonIndex.property.intValue = value; }
+            get => PrivacyProperties.enableCopyPasteMode.property.boolValue;
+            set => PrivacyProperties.enableCopyPasteMode.property.boolValue = value;
         }
 
-        bool EnableCopyPasteMode
-        {
-            get { return PrivacyProperties.enableCopyPasteMode.property.boolValue; }
-            set { PrivacyProperties.enableCopyPasteMode.property.boolValue = value; }
-        }
-
-        bool isHyperlinkButtonClicked;
-        string hyperlinkSavedText, savedLink;
-        int hyperLinkSavedStartIndex, hyperlinkSavedEndIndex;
+        private bool isHyperlinkButtonClicked;
+        private string hyperlinkSavedText, savedLink;
+        private int hyperLinkSavedStartIndex, hyperlinkSavedEndIndex;
 
         private string textAreaControlName = "ConsentDialogTextArea";
         private bool loadedIndexes;
@@ -72,72 +76,72 @@ namespace EasyMobile.Editor
 
         #endregion
 
-        void PrivacyModuleGUI()
+        private void PrivacyModuleGUI()
         {
             DrawModuleHeader();
             EGL.Space();
             DrawModuleMainGUI();
         }
 
-        void DrawModuleMainGUI()
+        private void DrawModuleMainGUI()
         {
             DrawUppercaseSection("CONSENT_DIALOG_COMPOSER_FOLDOUT_KEY", "DEFAULT CONSENT DIALOG COMPOSER", () =>
-                {
-                    // Dialog title.
-                    EGL.Space();
-                    EGL.LabelField("Dialog Title", ES.boldLabel);
-                    EGL.PropertyField(PrivacyProperties.consentDialogTitle.property);
+            {
+                // Dialog title.
+                EGL.Space();
+                EGL.LabelField("Dialog Title", ES.boldLabel);
+                EGL.PropertyField(PrivacyProperties.consentDialogTitle.property);
 
-                    // Draw the main content.
-                    EGL.Space();
-                    EGL.LabelField("Main Content", ES.boldLabel);
-                    EGL.LabelField(ContentDescription, ES.helpBox);
-                    DrawConsentDialogContentEditor();
+                // Draw the main content.
+                EGL.Space();
+                EGL.LabelField("Main Content", ES.boldLabel);
+                EGL.LabelField(ContentDescription, ES.helpBox);
+                DrawConsentDialogContentEditor();
 
-                    // Draw the toggles array.
-                    SP togglesArray = PrivacyProperties.consentDialogToggles.property;
+                // Draw the toggles array.
+                var togglesArray = PrivacyProperties.consentDialogToggles.property;
 
-                    if (togglesArray.arraySize < MinTogglesCount)
-                        togglesArray.arraySize += MinTogglesCount - togglesArray.arraySize;
+                if (togglesArray.arraySize < MinTogglesCount)
+                    togglesArray.arraySize += MinTogglesCount - togglesArray.arraySize;
 
-                    EGL.Space();
-                    EGL.LabelField("Toggle List", ES.boldLabel);
-                    EGL.LabelField(TogglesArrayDescription, ES.helpBox);
-                    togglesFoldout = DrawResizableArray(togglesArray, togglesFoldout, "Toggles", DrawToggleArrayElement, UpdateNewTogglePropertyInfo);
+                EGL.Space();
+                EGL.LabelField("Toggle List", ES.boldLabel);
+                EGL.LabelField(TogglesArrayDescription, ES.helpBox);
+                togglesFoldout = DrawResizableArray(togglesArray, togglesFoldout, "Toggles", DrawToggleArrayElement,
+                    UpdateNewTogglePropertyInfo);
 
-                    // Draw the buttons array.
-                    SP buttonsArray = PrivacyProperties.consentDialogActionButtons.property;
+                // Draw the buttons array.
+                var buttonsArray = PrivacyProperties.consentDialogActionButtons.property;
 
-                    if (buttonsArray.arraySize < MinActionButtonsCount)
-                        buttonsArray.arraySize += MinActionButtonsCount - buttonsArray.arraySize;
+                if (buttonsArray.arraySize < MinActionButtonsCount)
+                    buttonsArray.arraySize += MinActionButtonsCount - buttonsArray.arraySize;
 
-                    EGL.Space();
-                    EGL.LabelField("Button List", ES.boldLabel);
-                    EGL.LabelField(ButtonsArrayDescription, ES.helpBox);
-                    buttonsFoldout = DrawResizableArray(buttonsArray, buttonsFoldout, "Buttons", DrawActionButtonArrayElement, UpdateNewButtonPropertyInfo);
+                EGL.Space();
+                EGL.LabelField("Button List", ES.boldLabel);
+                EGL.LabelField(ButtonsArrayDescription, ES.helpBox);
+                buttonsFoldout = DrawResizableArray(buttonsArray, buttonsFoldout, "Buttons",
+                    DrawActionButtonArrayElement, UpdateNewButtonPropertyInfo);
 
-                    // Preview button.
-                    EGL.Space();
-                    EGL.LabelField("Preview", ES.boldLabel);
-                    EGL.LabelField(PreviewSectionDescription, ES.helpBox);
-                    if (GUILayout.Button("Run Preview Scene") && !EditorApplication.isPlaying)
+                // Preview button.
+                EGL.Space();
+                EGL.LabelField("Preview", ES.boldLabel);
+                EGL.LabelField(PreviewSectionDescription, ES.helpBox);
+                if (GUILayout.Button("Run Preview Scene") && !EditorApplication.isPlaying)
+                    if (EditorSceneManager.SaveCurrentModifiedScenesIfUserWantsTo())
                     {
-                        if (EditorSceneManager.SaveCurrentModifiedScenesIfUserWantsTo())
-                        {
-                            EditorSceneManager.OpenScene(EM_Constants.DemoPrivacyScenePath);
-                            EditorApplication.isPlaying = true;
-                        }
+                        EditorSceneManager.OpenScene(EM_Constants.DemoPrivacyScenePath);
+                        EditorApplication.isPlaying = true;
                     }
-                });
+            });
         }
 
         #region Dialog editor
 
-        void DrawConsentDialogContentEditor()
+        private void DrawConsentDialogContentEditor()
         {
             // TextEditor for selecting and editing portions of text.
-            TextEditor textEditor = (TextEditor)GUIUtility.GetStateObject(typeof(TextEditor), GUIUtility.keyboardControl);
-            SP dialog = PrivacyProperties.consentDialogContent.property;
+            var textEditor = (TextEditor) GUIUtility.GetStateObject(typeof(TextEditor), GUIUtility.keyboardControl);
+            var dialog = PrivacyProperties.consentDialogContent.property;
 
             /// Fix error that make indexes reset to 0 when lose focus.
             int startIndex, endIndex;
@@ -179,7 +183,7 @@ namespace EasyMobile.Editor
             DrawHyperLinkInputSection(dialog);
 
             /// We need to do this because GUILayout.TextArea, the only TextArea that work with TextEditor, doesn't work with copy & paste.
-            GUIStyle style = new GUIStyle(ES.textArea)
+            var style = new GUIStyle(ES.textArea)
             {
                 wordWrap = true
             };
@@ -188,22 +192,20 @@ namespace EasyMobile.Editor
                 false, false, GUILayout.Height(EditorGUIUtility.singleLineHeight * 10));
 
             GUI.SetNextControlName(textAreaControlName);
-            dialog.stringValue = EnableCopyPasteMode ?
-                EGL.TextArea(dialog.stringValue, style, GUILayout.ExpandHeight(true)) :
-                GUILayout.TextArea(dialog.stringValue, style, GUILayout.ExpandHeight(true));
+            dialog.stringValue = EnableCopyPasteMode
+                ? EGL.TextArea(dialog.stringValue, style, GUILayout.ExpandHeight(true))
+                : GUILayout.TextArea(dialog.stringValue, style, GUILayout.ExpandHeight(true));
 
             EGL.EndScrollView();
         }
 
-        void DrawEditTextButtons(string label, GUIStyle buttonStyle, Action callback)
+        private void DrawEditTextButtons(string label, GUIStyle buttonStyle, Action callback)
         {
-            if (GUILayout.Button(label, buttonStyle, GUILayout.MinWidth(E_SM.smallButtonWidth), GUILayout.ExpandHeight(true)))
-            {
-                callback();
-            }
+            if (GUILayout.Button(label, buttonStyle, GUILayout.MinWidth(E_SM.smallButtonWidth),
+                GUILayout.ExpandHeight(true))) callback();
         }
 
-        void DrawEditButtons(string selectedText, SP dialog, int startIndex, int endIndex)
+        private void DrawEditButtons(string selectedText, SP dialog, int startIndex, int endIndex)
         {
             Action editBoldTag = () => EditTagInProperty(dialog, startIndex, endIndex, BoldStartTag, BoldEndTag);
             Action editItalicTag = () => EditTagInProperty(dialog, startIndex, endIndex, ItalicStartTag, ItalicEndTag);
@@ -211,12 +213,12 @@ namespace EasyMobile.Editor
             DrawEditTextButtons("I", GetItalicButtonStyle(selectedText), editItalicTag);
         }
 
-        void DrawHyperlinkButton(string selectedText, int startIndex, int endIndex)
+        private void DrawHyperlinkButton(string selectedText, int startIndex, int endIndex)
         {
             if (GUILayout.Button(isHyperlinkButtonClicked ? E_SM.HyperlinkIconActive : E_SM.HyperlinkIcon,
-                    GetHyperlinkButtonStyle(),
-                    GUILayout.MinWidth(E_SM.smallButtonWidth),
-                    GUILayout.MinHeight(15f)))
+                GetHyperlinkButtonStyle(),
+                GUILayout.MinWidth(E_SM.smallButtonWidth),
+                GUILayout.MinHeight(15f)))
             {
                 if (!isHyperlinkButtonClicked)
                 {
@@ -238,7 +240,7 @@ namespace EasyMobile.Editor
             }
         }
 
-        void DrawHyperLinkInputSection(SP dialog)
+        private void DrawHyperLinkInputSection(SP dialog)
         {
             if (!isHyperlinkButtonClicked)
                 return;
@@ -253,16 +255,18 @@ namespace EasyMobile.Editor
             savedLink = EGL.TextField(string.IsNullOrEmpty(savedLink) ? HyperlinkPrefix : savedLink);
             if (GUILayout.Button("Insert hyperlink"))
             {
-                string newText = string.Format("<a href=\"{0}\">{1}</a>", savedLink, hyperlinkSavedText);
+                var newText = string.Format("<a href=\"{0}\">{1}</a>", savedLink, hyperlinkSavedText);
                 ReplaceTextInProperty(dialog, hyperLinkSavedStartIndex, hyperlinkSavedEndIndex, newText);
                 isHyperlinkButtonClicked = false;
             }
+
             EGL.EndVertical();
             EGL.Space();
         }
 
-        void DrawInsertDropdown(SP dialog, int cursorIndex, TextEditor textEditor, string name,
-                                List<string> ids, string insertButtonText, string pattern, Func<int> getSelectedIndex, Action<int> setSelectedIndex)
+        private void DrawInsertDropdown(SP dialog, int cursorIndex, TextEditor textEditor, string name,
+            List<string> ids, string insertButtonText, string pattern, Func<int> getSelectedIndex,
+            Action<int> setSelectedIndex)
         {
             if (ids == null || ids.Count < 1)
                 return;
@@ -270,29 +274,30 @@ namespace EasyMobile.Editor
             EGL.BeginHorizontal(ES.helpBox);
 
             float insertButtonWidth = insertButtonText.Length * CharacterPixelWidth;
-            if (GUILayout.Button(insertButtonText, ES.miniButton, GUILayout.MinWidth(insertButtonWidth), GUILayout.ExpandHeight(true)))
+            if (GUILayout.Button(insertButtonText, ES.miniButton, GUILayout.MinWidth(insertButtonWidth),
+                GUILayout.ExpandHeight(true)))
             {
-                string id = ids[getSelectedIndex()];
-                string insertText = pattern + "Id = " + id + ">";
+                var id = ids[getSelectedIndex()];
+                var insertText = pattern + "Id = " + id + ">";
                 dialog.stringValue = dialog.stringValue.Insert(cursorIndex, insertText);
 
                 Debug.Log(string.Format("Inserted {0} into content at index: {1}", insertText, cursorIndex));
             }
 
-            string[] displayIdsText = ids.Select(id => id = "Id: " + id).ToArray();
+            var displayIdsText = ids.Select(id => id = "Id: " + id).ToArray();
             float maxPopupWidth = displayIdsText[getSelectedIndex()].Length * CharacterPixelWidth;
-            GUIStyle popupStyle = new GUIStyle(ES.popup)
+            var popupStyle = new GUIStyle(ES.popup)
             {
                 alignment = TextAnchor.MiddleCenter
             };
             GUI.SetNextControlName(name);
-            int index = EGL.Popup(
-                                getSelectedIndex(),
-                                displayIdsText,
-                                popupStyle,
-                                GUILayout.MinWidth(maxPopupWidth),
-                                GUILayout.MinHeight(GUILayoutUtility.GetLastRect().height)
-                            );
+            var index = EGL.Popup(
+                getSelectedIndex(),
+                displayIdsText,
+                popupStyle,
+                GUILayout.MinWidth(maxPopupWidth),
+                GUILayout.MinHeight(GUILayoutUtility.GetLastRect().height)
+            );
 
             setSelectedIndex(index);
             EGL.EndHorizontal();
@@ -307,7 +312,9 @@ namespace EasyMobile.Editor
         /// Action to update new element's values 
         /// so it won't have same values with the previous one when created.
         /// </param>
-        bool DrawResizableArray(SP arrayProperty, bool foldout, string foldoutLabel, Action<SP, int> drawElement, Action<SP> updateNewElement = null, bool noLabel = false, int maxSize = int.MaxValue)
+        private bool DrawResizableArray(SP arrayProperty, bool foldout, string foldoutLabel,
+            Action<SP, int> drawElement, Action<SP> updateNewElement = null, bool noLabel = false,
+            int maxSize = int.MaxValue)
         {
             /// Draw array name and a button to add new element into array.
             GUILayout.BeginHorizontal();
@@ -316,10 +323,11 @@ namespace EasyMobile.Editor
             foldout = EGL.Foldout(foldout, noLabel ? "" : foldoutLabel, true);
             EditorGUI.indentLevel--;
 
-            GUIContent plusButtonContent = EditorGUIUtility.IconContent("Toolbar Plus");
-            GUIStyle plusButtonStyle = GUIStyle.none;
-            GUILayoutOption plusButtonMinWidth = GUILayout.MaxWidth(E_SM.smallButtonWidth);
-            if (GUILayout.Button(plusButtonContent, plusButtonStyle, plusButtonMinWidth) && arrayProperty.arraySize < maxSize)
+            var plusButtonContent = EditorGUIUtility.IconContent("Toolbar Plus");
+            var plusButtonStyle = GUIStyle.none;
+            var plusButtonMinWidth = GUILayout.MaxWidth(E_SM.smallButtonWidth);
+            if (GUILayout.Button(plusButtonContent, plusButtonStyle, plusButtonMinWidth) &&
+                arrayProperty.arraySize < maxSize)
             {
                 arrayProperty.arraySize++;
 
@@ -331,13 +339,14 @@ namespace EasyMobile.Editor
                 /// the element that has just been added.
                 foldout = true;
             }
+
             GUILayout.EndHorizontal();
 
             /// Draw all array's elements.
             if (!foldout || arrayProperty.arraySize <= 0)
                 return foldout;
 
-            for (int i = 0; i < arrayProperty.arraySize; i++)
+            for (var i = 0; i < arrayProperty.arraySize; i++)
             {
                 drawElement(arrayProperty, i);
                 if (i < arrayProperty.arraySize - 1)
@@ -348,29 +357,30 @@ namespace EasyMobile.Editor
             return foldout;
         }
 
-        void DrawToggleArrayElement(SP dialog, int elementIndex)
+        private void DrawToggleArrayElement(SP dialog, int elementIndex)
         {
             DrawArrayElement(dialog, elementIndex, "", MinTogglesCount,
                 () => SelectedToggleIndex,
                 param => SelectedToggleIndex = param,
                 obj =>
                 {
-                    var shouldToggleContent = new GUIContent("Toggle Description", "Change description when toggle is updated.");
+                    var shouldToggleContent =
+                        new GUIContent("Toggle Description", "Change description when toggle is updated.");
                     var shouldToggleOnDescriptionContent = new GUIContent("Toggle On Description",
-                                                               "This description will be displayed if the toggle value is true.");
+                        "This description will be displayed if the toggle value is true.");
                     var shouldToggleOffDescriptionContent = new GUIContent("Description",
-                                                                "This description will be displayed regardless of the toggle value.");
+                        "This description will be displayed regardless of the toggle value.");
                     var offDescriptionContent = new GUIContent("Toggle Off Description",
-                                                    "This description will be displayed if the toggle value is false.");
+                        "This description will be displayed if the toggle value is false.");
 
                     var title = obj.FindPropertyRelative("title");
 
-                    string key = obj.propertyPath;
+                    var key = obj.propertyPath;
                     if (!privacyFoldoutStates.ContainsKey(key))
                         privacyFoldoutStates.Add(key, false);
 
                     EditorGUI.indentLevel++;
-                    string titleValue = !string.IsNullOrEmpty(title.stringValue) ? title.stringValue : "[Untitled Toggle]";
+                    var titleValue = !string.IsNullOrEmpty(title.stringValue) ? title.stringValue : "[Untitled Toggle]";
                     privacyFoldoutStates[key] = EGL.Foldout(privacyFoldoutStates[key], titleValue, true);
                     EditorGUI.indentLevel--;
 
@@ -387,9 +397,11 @@ namespace EasyMobile.Editor
                         // On description.
                         var onDescription = obj.FindPropertyRelative("onDescription");
                         onDescription.stringValue = EGL.TextField(
-                            shouldToggle.boolValue ? shouldToggleOnDescriptionContent : shouldToggleOffDescriptionContent,
+                            shouldToggle.boolValue
+                                ? shouldToggleOnDescriptionContent
+                                : shouldToggleOffDescriptionContent,
                             onDescription.stringValue,
-                            new GUIStyle(ES.textField) { wordWrap = true },
+                            new GUIStyle(ES.textField) {wordWrap = true},
                             GUILayout.Height(EditorGUIUtility.singleLineHeight * 3));
 
                         if (shouldToggle.boolValue)
@@ -398,16 +410,17 @@ namespace EasyMobile.Editor
                             offDescription.stringValue = EGL.TextField(
                                 offDescriptionContent,
                                 offDescription.stringValue,
-                                new GUIStyle(ES.textField) { wordWrap = true },
+                                new GUIStyle(ES.textField) {wordWrap = true},
                                 GUILayout.Height(EditorGUIUtility.singleLineHeight * 3));
                         }
                     }
                 });
         }
 
-        void DrawActionButtonArrayElement(SP dialog, int elementIndex)
+        private void DrawActionButtonArrayElement(SP dialog, int elementIndex)
         {
-            DrawArrayElement(dialog, elementIndex, "Consent dialog should have at least 1 button.", MinActionButtonsCount,
+            DrawArrayElement(dialog, elementIndex, "Consent dialog should have at least 1 button.",
+                MinActionButtonsCount,
                 () => SelectedButtonIndex,
                 param => SelectedButtonIndex = param,
                 obj =>
@@ -415,12 +428,12 @@ namespace EasyMobile.Editor
                     var title = obj.FindPropertyRelative("title");
 
                     EditorGUI.indentLevel++;
-                    string key = obj.propertyPath;
+                    var key = obj.propertyPath;
 
                     if (!privacyFoldoutStates.ContainsKey(key))
                         privacyFoldoutStates.Add(key, false);
 
-                    string titleValue = !string.IsNullOrEmpty(title.stringValue) ? title.stringValue : "[Untitled Button]";
+                    var titleValue = !string.IsNullOrEmpty(title.stringValue) ? title.stringValue : "[Untitled Button]";
                     privacyFoldoutStates[key] = EGL.Foldout(privacyFoldoutStates[key], titleValue, true);
                     EditorGUI.indentLevel--;
 
@@ -445,11 +458,11 @@ namespace EasyMobile.Editor
         /// <param name="getSelectedIndex">Get selected index.</param>
         /// <param name="setSelectedIndex">Set selected index.</param>
         /// <param name="drawInnerProperties">Action to draw inner properties of the element property.</param>
-        void DrawArrayElement(SP arrayProperty, int elementIndex, string minSizeWarning, int minSize,
-                              Func<int> getSelectedIndex, Action<int> setSelectedIndex, Action<SP> drawInnerProperties)
+        private void DrawArrayElement(SP arrayProperty, int elementIndex, string minSizeWarning, int minSize,
+            Func<int> getSelectedIndex, Action<int> setSelectedIndex, Action<SP> drawInnerProperties)
         {
             var elementProperty = arrayProperty.GetArrayElementAtIndex(elementIndex);
-            
+
             EGL.BeginHorizontal();
 
             EGL.BeginVertical(E_SM.GetCustomStyle("Item Box"));
@@ -464,16 +477,13 @@ namespace EasyMobile.Editor
             var deleteButtonMinWidth = GUILayout.MaxWidth(E_SM.smallButtonWidth);
 
             /// Draw a button to remove element property from array property.
-            bool canDelete = arrayProperty.arraySize > minSize;
+            var canDelete = arrayProperty.arraySize > minSize;
             EditorGUI.BeginDisabledGroup(!canDelete); // Disable the "-" button 
             if (GUILayout.Button(deleteIcon, deleteButtonStyle, deleteButtonMinWidth))
             {
                 if (arrayProperty.arraySize > minSize)
                 {
-                    if (getSelectedIndex() > elementIndex)
-                    {
-                        setSelectedIndex(getSelectedIndex() - 1);
-                    }
+                    if (getSelectedIndex() > elementIndex) setSelectedIndex(getSelectedIndex() - 1);
 
                     arrayProperty.DeleteArrayElementAtIndex(elementIndex);
 
@@ -485,12 +495,13 @@ namespace EasyMobile.Editor
                 if (!string.IsNullOrEmpty(minSizeWarning))
                     Debug.Log(minSizeWarning);
             }
+
             EditorGUI.EndDisabledGroup();
 
             EGL.EndHorizontal();
         }
 
-        void UpdateNewTogglePropertyInfo(SP toggle)
+        private void UpdateNewTogglePropertyInfo(SP toggle)
         {
             var id = toggle.FindPropertyRelative("id");
             var title = toggle.FindPropertyRelative("title");
@@ -498,14 +509,14 @@ namespace EasyMobile.Editor
             var offDescription = toggle.FindPropertyRelative("offDescription");
             var interactable = toggle.FindPropertyRelative("interactable");
 
-            id.stringValue = "TG" + (Math.Abs(toggle.GetHashCode())).ToString();
-            title.stringValue = String.Empty;
-            onDescription.stringValue = String.Empty;
-            offDescription.stringValue = String.Empty;
+            id.stringValue = "TG" + Math.Abs(toggle.GetHashCode()).ToString();
+            title.stringValue = string.Empty;
+            onDescription.stringValue = string.Empty;
+            offDescription.stringValue = string.Empty;
             interactable.boolValue = true;
         }
 
-        void UpdateNewButtonPropertyInfo(SP button)
+        private void UpdateNewButtonPropertyInfo(SP button)
         {
             var id = button.FindPropertyRelative("id");
             var title = button.FindPropertyRelative("title");
@@ -515,8 +526,8 @@ namespace EasyMobile.Editor
             var uninteractableTitleColor = button.FindPropertyRelative("uninteractableTitleColor");
             var uninteractableBackgroundColor = button.FindPropertyRelative("uninteractableBackgroundColor");
 
-            id.stringValue = "BT" + (Math.Abs(button.GetHashCode())).ToString();
-            title.stringValue = String.Empty;
+            id.stringValue = "BT" + Math.Abs(button.GetHashCode()).ToString();
+            title.stringValue = string.Empty;
             interactable.boolValue = true;
             titleColor.colorValue = Color.white;
             backgroundColor.colorValue = Color.gray;
@@ -524,13 +535,13 @@ namespace EasyMobile.Editor
             uninteractableBackgroundColor.colorValue = new Color(.25f, .25f, .25f, 1.0f);
         }
 
-        void ReplaceTextInProperty(SP dialog, int startIndex, int endIndex, string newText)
+        private void ReplaceTextInProperty(SP dialog, int startIndex, int endIndex, string newText)
         {
             dialog.stringValue = dialog.stringValue.Remove(startIndex, endIndex - startIndex);
             dialog.stringValue = dialog.stringValue.Insert(startIndex, newText);
         }
 
-        void EditTagInProperty(SP dialog, int startIndex, int endIndex, string startTag, string endTag)
+        private void EditTagInProperty(SP dialog, int startIndex, int endIndex, string startTag, string endTag)
         {
             if (endIndex <= startIndex)
             {
@@ -538,35 +549,33 @@ namespace EasyMobile.Editor
                 return;
             }
 
-            string selectedString = dialog.stringValue.Substring(startIndex, endIndex - startIndex);
+            var selectedString = dialog.stringValue.Substring(startIndex, endIndex - startIndex);
             if (StringHasTag(selectedString, startTag, endTag))
-            {
                 RemoveTagFromString(dialog, startIndex, endIndex, startTag, endTag);
-            }
             else
-            {
                 AddTagToProperty(dialog, startIndex, endIndex, startTag, endTag);
-            }
         }
 
-        void AddTagToProperty(SP dialog, int startIndex, int endIndex, string startTag, string endTag)
+        private void AddTagToProperty(SP dialog, int startIndex, int endIndex, string startTag, string endTag)
         {
             dialog.stringValue = dialog.stringValue.Insert(startIndex, startTag);
             dialog.stringValue = dialog.stringValue.Insert(endIndex + startTag.Length, endTag);
         }
 
-        void RemoveTagFromString(SP property, int startIndex, int endIndex, string startTag, string endTag)
+        private void RemoveTagFromString(SP property, int startIndex, int endIndex, string startTag, string endTag)
         {
             property.stringValue = property.stringValue.Remove(startIndex, startTag.Length);
-            property.stringValue = property.stringValue.Remove(endIndex - startTag.Length - endTag.Length, endTag.Length);
+            property.stringValue =
+                property.stringValue.Remove(endIndex - startTag.Length - endTag.Length, endTag.Length);
         }
 
-        bool StringHasTag(string targetString, string startTag, string endTag)
+        private bool StringHasTag(string targetString, string startTag, string endTag)
         {
-            return !string.IsNullOrEmpty(targetString) && targetString.StartsWith(startTag) && targetString.EndsWith(endTag);
+            return !string.IsNullOrEmpty(targetString) && targetString.StartsWith(startTag) &&
+                   targetString.EndsWith(endTag);
         }
 
-        GUIStyle GetHyperlinkButtonStyle()
+        private GUIStyle GetHyperlinkButtonStyle()
         {
             return new GUIStyle(ES.miniButton)
             {
@@ -575,27 +584,31 @@ namespace EasyMobile.Editor
             };
         }
 
-        GUIStyle GetBoldButtonStyle(string selectedString)
+        private GUIStyle GetBoldButtonStyle(string selectedString)
         {
-            return new GUIStyle(StringHasTag(selectedString, BoldStartTag, BoldEndTag) ? ES.toolbarButton : ES.miniButtonLeft)
+            return new GUIStyle(StringHasTag(selectedString, BoldStartTag, BoldEndTag)
+                ? ES.toolbarButton
+                : ES.miniButtonLeft)
             {
                 alignment = TextAnchor.MiddleCenter,
-                fontStyle = FontStyle.Bold,
+                fontStyle = FontStyle.Bold
             };
         }
 
-        GUIStyle GetItalicButtonStyle(string selectedString)
+        private GUIStyle GetItalicButtonStyle(string selectedString)
         {
-            return new GUIStyle(StringHasTag(selectedString, ItalicStartTag, ItalicEndTag) ? ES.toolbarButton : ES.miniButtonRight)
+            return new GUIStyle(StringHasTag(selectedString, ItalicStartTag, ItalicEndTag)
+                ? ES.toolbarButton
+                : ES.miniButtonRight)
             {
                 alignment = TextAnchor.MiddleCenter,
-                fontStyle = FontStyle.Italic,
+                fontStyle = FontStyle.Italic
             };
         }
 
-        void FixIndexesResetError(TextEditor textEditor, out int startIndex, out int endIndex)
+        private void FixIndexesResetError(TextEditor textEditor, out int startIndex, out int endIndex)
         {
-            string focusedControlName = GUI.GetNameOfFocusedControl();
+            var focusedControlName = GUI.GetNameOfFocusedControl();
 
             if (string.IsNullOrEmpty(focusedControlName))
             {

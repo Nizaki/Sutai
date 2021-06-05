@@ -78,27 +78,37 @@ namespace EasyMobile.Editor
         // Advertising 3rd party plugins URLs
         public const string AdColonyDownloadURL = "https://github.com/AdColony/AdColony-Unity-Plugin";
         public const string ChartboostDownloadURL = "https://answers.chartboost.com/en-us/articles/download";
-        public const string FBAudienceDownloadURL = "https://developers.facebook.com/docs/audience-network/download#unity";
+
+        public const string FBAudienceDownloadURL =
+            "https://developers.facebook.com/docs/audience-network/download#unity";
+
         public const string GoogleMobileAdsDownloadURL = "https://github.com/googleads/googleads-mobile-unity/releases";
         public const string AppLovinDownloadURL = "https://www.applovin.com/monetize/";
         public const string FairBidDownloadURL = "https://dev-unity.fyber.com/docs";
-        public const string IronSourceDownloadURL = "https://developers.ironsrc.com/ironsource-mobile/unity/unity-plugin/#step-1";
+
+        public const string IronSourceDownloadURL =
+            "https://developers.ironsrc.com/ironsource-mobile/unity/unity-plugin/#step-1";
+
         public const string MoPubDownloadURL = "https://github.com/mopub/mopub-unity-sdk/";
         public const string TapJoyDownloadURL = "https://ltv.tapjoy.com/d/sdks";
         public const string VungleDownloadURL = "https://publisher.vungle.com/sdk/plugins/unity";
 
         // Game Services 3rd party plugins URLs
-        public const string GooglePlayGamesDownloadURL = "https://github.com/playgameservices/play-games-plugin-for-unity";
+        public const string GooglePlayGamesDownloadURL =
+            "https://github.com/playgameservices/play-games-plugin-for-unity";
 
         // Notifications 3rd party plugins URLs
         public const string OneSignalDownloadURL = "https://github.com/OneSignal/OneSignal-Unity-SDK";
         public const string FirebaseDownloadURL = "https://firebase.google.com/docs/unity/setup";
 
         // PlayServicesResolver
-        public const string PlayServicesResolverPackagePath = EM_Constants.PackagesFolder + "/ExternalDependencyManager/external-dependency-manager-latest.unitypackage";
+        public const string PlayServicesResolverPackagePath = EM_Constants.PackagesFolder +
+                                                              "/ExternalDependencyManager/external-dependency-manager-latest.unitypackage";
 
         // PlayMaker actions for EM.
-        public const string PlayMakerActionsPackagePath = EM_Constants.PackagesFolder + "/PlayMakerActions/PlayMakerActions.unitypackage";
+        public const string PlayMakerActionsPackagePath =
+            EM_Constants.PackagesFolder + "/PlayMakerActions/PlayMakerActions.unitypackage";
+
         public const string PlayMakerActionsDownloadURL = "http://u3d.as/1xGQ";
 
         /// <summary>
@@ -142,7 +152,7 @@ namespace EasyMobile.Editor
         {
             if (!EM_Settings.Advertising.Chartboost.Enable)
                 return false;
-            System.Type chartboost = EM_EditorUtil.FindClass(ChartboostClassName, ChartboostNameSpace);
+            var chartboost = EM_EditorUtil.FindClass(ChartboostClassName, ChartboostNameSpace);
             return chartboost != null;
         }
 
@@ -205,7 +215,8 @@ namespace EasyMobile.Editor
         {
             if (!EM_Settings.Advertising.UnityAds.Enable)
                 return false;
-            return EM_EditorUtil.NamespaceExists(UnityAdNameSpace) && EM_EditorUtil.FindClass(UnityAdvertisementClass, UnityAdNameSpace) != null;
+            return EM_EditorUtil.NamespaceExists(UnityAdNameSpace) &&
+                   EM_EditorUtil.FindClass(UnityAdvertisementClass, UnityAdNameSpace) != null;
         }
 
         //Determindes if Vungle plugin is available.
@@ -245,7 +256,7 @@ namespace EasyMobile.Editor
         /// <returns><c>true</c> if is GPGS avail; otherwise, <c>false</c>.</returns>
         public static bool IsGPGSAvail()
         {
-            System.Type gpgs = EM_EditorUtil.FindClass(GPGSClassName, GPGSNameSpace);
+            var gpgs = EM_EditorUtil.FindClass(GPGSClassName, GPGSNameSpace);
             return gpgs != null;
         }
 
@@ -255,7 +266,7 @@ namespace EasyMobile.Editor
         /// <returns><c>true</c> if is one signal avail; otherwise, <c>false</c>.</returns>
         public static bool IsOneSignalAvail()
         {
-            System.Type oneSignal = EM_EditorUtil.FindClass(OneSignalClassName);
+            var oneSignal = EM_EditorUtil.FindClass(OneSignalClassName);
             return oneSignal != null;
         }
 
@@ -264,7 +275,7 @@ namespace EasyMobile.Editor
         /// </summary>
         public static bool IsFirebaseMessagingAvail()
         {
-            System.Type firMsg = EM_EditorUtil.FindClass(FirebaseMessagingClassName, FirebaseMessagingNameSpace);
+            var firMsg = EM_EditorUtil.FindClass(FirebaseMessagingClassName, FirebaseMessagingNameSpace);
             return firMsg != null;
         }
 
@@ -292,7 +303,7 @@ namespace EasyMobile.Editor
 
         public static bool IsPlayMakerUguiAddOnAvail()
         {
-            System.Type uGui = EM_EditorUtil.FindClass(PlayMakerUguiAddOnClass);
+            var uGui = EM_EditorUtil.FindClass(PlayMakerUguiAddOnClass);
 
             return uGui != null;
         }
@@ -373,24 +384,20 @@ namespace EasyMobile.Editor
                     "Please download and import it from the Unity Asset Store first.",
                     "Get it now",
                     "Later"))
-                {
                     Application.OpenURL(PlayMakerActionsDownloadURL);
-                }
 
                 return;
             }
 
             // Check if PlayMaker itself has been installed.
-            if (!EM_ExternalPluginManager.IsPlayMakerAvail())
+            if (!IsPlayMakerAvail())
             {
                 if (EM_EditorUtil.DisplayDialog(
-                        "Installing PlayMaker Actions",
-                        "Looks like you haven't installed PlayMaker, please install it to use these actions.",
-                        "Continue Anyway",
-                        "Cancel"))
-                {
+                    "Installing PlayMaker Actions",
+                    "Looks like you haven't installed PlayMaker, please install it to use these actions.",
+                    "Continue Anyway",
+                    "Cancel"))
                     DoInstallPlayMakerActions(interactive);
-                }
             }
             else
             {
@@ -421,4 +428,3 @@ namespace EasyMobile.Editor
         }
     }
 }
-

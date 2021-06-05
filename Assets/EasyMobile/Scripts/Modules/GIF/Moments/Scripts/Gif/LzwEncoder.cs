@@ -33,9 +33,9 @@ namespace EM_Moments.Encoder
 
         // General DEFINEs
 
-        static readonly int BITS = 12;
+        private static readonly int BITS = 12;
 
-        static readonly int HSIZE = 5003; // 80% occupancy
+        private static readonly int HSIZE = 5003; // 80% occupancy
 
         // GIF Image compression - modified 'compress'
         //
@@ -48,21 +48,21 @@ namespace EM_Moments.Encoder
         //              James A. Woods         (decvax!ihnp4!ames!jaw)
         //              Joe Orost              (decvax!vax135!petsd!joe)
 
-        int n_bits; // number of bits/code
-        int maxbits = BITS; // user settable max # bits/code
-        int maxcode; // maximum code, given n_bits
-        int maxmaxcode = 1 << BITS; // should NEVER generate this code
+        private int n_bits; // number of bits/code
+        private int maxbits = BITS; // user settable max # bits/code
+        private int maxcode; // maximum code, given n_bits
+        private int maxmaxcode = 1 << BITS; // should NEVER generate this code
 
-        int[] htab = new int[HSIZE];
-        int[] codetab = new int[HSIZE];
+        private int[] htab = new int[HSIZE];
+        private int[] codetab = new int[HSIZE];
 
-        int hsize = HSIZE; // for dynamic table sizing
+        private int hsize = HSIZE; // for dynamic table sizing
 
-        int free_ent = 0; // first unused entry
+        private int free_ent = 0; // first unused entry
 
         // block compression parameters -- after all codes are used up,
         // and compression rate changes, start over.
-        bool clear_flg = false;
+        private bool clear_flg = false;
 
         // Algorithm:  use open addressing double hashing (no chaining) on the
         // prefix code / next character combination.  We do a variant of Knuth's
@@ -76,10 +76,10 @@ namespace EM_Moments.Encoder
         // file size for noticeable speed improvement on small files.  Please direct
         // questions about this implementation to ames!jaw.
 
-        int g_init_bits;
+        private int g_init_bits;
 
-        int ClearCode;
-        int EOFCode;
+        private int ClearCode;
+        private int EOFCode;
 
         // output
         //
@@ -96,10 +96,10 @@ namespace EM_Moments.Encoder
         // fit in it exactly).  Use the VAX insv instruction to insert each
         // code in turn.  When the buffer fills up empty it and start over.
 
-        int cur_accum = 0;
-        int cur_bits = 0;
+        private int cur_accum = 0;
+        private int cur_bits = 0;
 
-        int[] masks =
+        private int[] masks =
         {
             0x0000,
             0x0001,
@@ -117,13 +117,14 @@ namespace EM_Moments.Encoder
             0x1FFF,
             0x3FFF,
             0x7FFF,
-            0xFFFF };
+            0xFFFF
+        };
 
         // Number of characters so far in this 'packet'
-        int a_count;
+        private int a_count;
 
         // Define the storage for the packet accumulator
-        byte[] accum = new byte[256];
+        private byte[] accum = new byte[256];
 
         //----------------------------------------------------------------------------
         public LzwEncoder(int width, int height, byte[] pixels, int color_depth)
@@ -134,7 +135,7 @@ namespace EM_Moments.Encoder
 
         // Add a character to the end of the current packet, and if it is 254
         // characters, flush the packet to disk.
-        void Add(byte c, Stream outs)
+        private void Add(byte c, Stream outs)
         {
             accum[a_count++] = c;
             if (a_count >= 254)
@@ -144,7 +145,7 @@ namespace EM_Moments.Encoder
         // Clear out the hash table
 
         // table clear for block compress
-        void ClearTable(Stream outs)
+        private void ClearTable(Stream outs)
         {
             ResetCodeTable(hsize);
             free_ent = ClearCode + 2;
@@ -154,13 +155,13 @@ namespace EM_Moments.Encoder
         }
 
         // reset code table
-        void ResetCodeTable(int hsize)
+        private void ResetCodeTable(int hsize)
         {
-            for (int i = 0; i < hsize; ++i)
+            for (var i = 0; i < hsize; ++i)
                 htab[i] = -1;
         }
 
-        void Compress(int init_bits, Stream outs)
+        private void Compress(int init_bits, Stream outs)
         {
             int fcode;
             int i /* = 0 */;
@@ -196,7 +197,8 @@ namespace EM_Moments.Encoder
 
             Output(ClearCode, outs);
 
-        outer_loop: while ((c = NextPixel()) != EOF)
+            outer_loop:
+            while ((c = NextPixel()) != EOF)
             {
                 fcode = (c << maxbits) + ent;
                 i = (c << hshift) ^ ent; // xor hashing
@@ -223,6 +225,7 @@ namespace EM_Moments.Encoder
                         }
                     } while (htab[i] >= 0);
                 }
+
                 Output(ent, outs);
                 ent = c;
                 if (free_ent < maxmaxcode)
@@ -231,8 +234,11 @@ namespace EM_Moments.Encoder
                     htab[i] = fcode;
                 }
                 else
+                {
                     ClearTable(outs);
+                }
             }
+
             // Put out the final code.
             Output(ent, outs);
             Output(EOFCode, outs);
@@ -248,7 +254,7 @@ namespace EM_Moments.Encoder
         }
 
         // Flush the packet to disk, and reset the accumulator
-        void Flush(Stream outs)
+        private void Flush(Stream outs)
         {
             if (a_count > 0)
             {
@@ -258,7 +264,7 @@ namespace EM_Moments.Encoder
             }
         }
 
-        int MaxCode(int n_bits)
+        private int MaxCode(int n_bits)
         {
             return (1 << n_bits) - 1;
         }
@@ -275,12 +281,12 @@ namespace EM_Moments.Encoder
             return pixAry[curPixel - 1] & 0xff;
         }
 
-        void Output(int code, Stream outs)
+        private void Output(int code, Stream outs)
         {
             cur_accum &= masks[cur_bits];
 
             if (cur_bits > 0)
-                cur_accum |= (code << cur_bits);
+                cur_accum |= code << cur_bits;
             else
                 cur_accum = code;
 
@@ -288,7 +294,7 @@ namespace EM_Moments.Encoder
 
             while (cur_bits >= 8)
             {
-                Add((byte)(cur_accum & 0xff), outs);
+                Add((byte) (cur_accum & 0xff), outs);
                 cur_accum >>= 8;
                 cur_bits -= 8;
             }
@@ -317,7 +323,7 @@ namespace EM_Moments.Encoder
                 // At EOF, write the rest of the buffer.
                 while (cur_bits > 0)
                 {
-                    Add((byte)(cur_accum & 0xff), outs);
+                    Add((byte) (cur_accum & 0xff), outs);
                     cur_accum >>= 8;
                     cur_bits -= 8;
                 }

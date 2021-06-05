@@ -25,7 +25,7 @@ namespace EasyMobile
         private static VungleClientImpl sVungleClient;
 
         // Default ad clients for each ad types.
-        
+
         // private static AdClientImpl sDefaultBannerAdClient;
         // private static AdClientImpl sDefaultInterstitialAdClient;
         // private static AdClientImpl sDefaultRewardedAdClient;
@@ -34,7 +34,7 @@ namespace EasyMobile
         private const string AD_REMOVE_STATUS_PPKEY = "EM_REMOVE_ADS";
         private const int AD_ENABLED = 1;
         private const int AD_DISABLED = -1;
-        
+
         // Initialization warning
         private const string INITIALIZATION_WARNING = "You need to initialize the Advertising module first";
 
@@ -44,7 +44,10 @@ namespace EasyMobile
         private static AutoAdLoadingMode currentAutoLoadAdsMode = AutoAdLoadingMode.None;
         private static float lastDefaultInterstitialAdLoadTimestamp = DEFAULT_TIMESTAMP;
         private static float lastDefaultRewardedAdLoadTimestamp = DEFAULT_TIMESTAMP;
-        private static Dictionary<string, float> lastCustomInterstitialAdsLoadTimestamp = new Dictionary<string, float>();
+
+        private static Dictionary<string, float> lastCustomInterstitialAdsLoadTimestamp =
+            new Dictionary<string, float>();
+
         private static Dictionary<string, float> lastCustomRewardedAdsLoadTimestamp = new Dictionary<string, float>();
 
         /// <summary>
@@ -54,10 +57,12 @@ namespace EasyMobile
         private static bool isUpdatingAutoLoadMode = false;
 
         // Currently shown banner ads.
-        private static Dictionary<AdNetwork, List<AdPlacement>> activeBannerAds = new Dictionary<AdNetwork, List<AdPlacement>>();
-        
+        private static Dictionary<AdNetwork, List<AdPlacement>> activeBannerAds =
+            new Dictionary<AdNetwork, List<AdPlacement>>();
+
         // a flag to check if Init() has been called
         private static bool initialized = false;
+
         #region Ad Events
 
         /// <summary>
@@ -265,7 +270,8 @@ namespace EasyMobile
 #if UNITY_IOS
                 return GetWorkableAdClient((AdNetwork)EM_Settings.Advertising.IosDefaultAdNetworks.bannerAdNetwork);
 #elif UNITY_ANDROID
-                return GetWorkableAdClient((AdNetwork)EM_Settings.Advertising.AndroidDefaultAdNetworks.bannerAdNetwork);
+                return GetWorkableAdClient((AdNetwork) EM_Settings.Advertising.AndroidDefaultAdNetworks
+                    .bannerAdNetwork);
 #else
                 return GetWorkableAdClient(AdNetwork.None);
 #endif
@@ -279,7 +285,8 @@ namespace EasyMobile
 #if UNITY_IOS
                 return GetWorkableAdClient((AdNetwork)EM_Settings.Advertising.IosDefaultAdNetworks.interstitialAdNetwork);
 #elif UNITY_ANDROID
-                return GetWorkableAdClient((AdNetwork)EM_Settings.Advertising.AndroidDefaultAdNetworks.interstitialAdNetwork);
+                return GetWorkableAdClient((AdNetwork) EM_Settings.Advertising.AndroidDefaultAdNetworks
+                    .interstitialAdNetwork);
 #else
                 return GetWorkableAdClient(AdNetwork.None);
 #endif
@@ -293,7 +300,8 @@ namespace EasyMobile
 #if UNITY_IOS
                 return GetWorkableAdClient((AdNetwork)EM_Settings.Advertising.IosDefaultAdNetworks.rewardedAdNetwork);
 #elif UNITY_ANDROID
-                return GetWorkableAdClient((AdNetwork)EM_Settings.Advertising.AndroidDefaultAdNetworks.rewardedAdNetwork);
+                return GetWorkableAdClient((AdNetwork) EM_Settings.Advertising.AndroidDefaultAdNetworks
+                    .rewardedAdNetwork);
 #else
                 return GetWorkableAdClient(AdNetwork.None);
 #endif
@@ -307,6 +315,7 @@ namespace EasyMobile
                 Debug.LogError(INITIALIZATION_WARNING);
                 return false;
             }
+
             return true;
         }
 
@@ -314,7 +323,7 @@ namespace EasyMobile
 
         #region MonoBehaviour Events
 
-        void Awake()
+        private void Awake()
         {
             if (Instance != null)
                 Destroy(this);
@@ -322,22 +331,20 @@ namespace EasyMobile
                 Instance = this;
         }
 
-        void Start()
+        private void Start()
         {
             if (EM_Settings.Advertising.AutoInit)
                 Initialize();
         }
 
-        void Update()
+        private void Update()
         {
-            if(!IsInitialized()) return;
-            
+            if (!IsInitialized()) return;
+
             // Always track EM_Settings.Advertising.AutoLoadAdsMode so that we can adjust
             // accordingly if it was changed elsewhere.
             if (!isUpdatingAutoLoadMode && currentAutoLoadAdsMode != EM_Settings.Advertising.AutoAdLoadingMode)
-            {
                 AutoAdLoadingMode = EM_Settings.Advertising.AutoAdLoadingMode;
-            }
         }
 
         #endregion
@@ -349,18 +356,15 @@ namespace EasyMobile
         /// </summary>
         public static event Action<ConsentStatus> DataPrivacyConsentUpdated
         {
-            add { AdvertisingConsentManager.Instance.DataPrivacyConsentUpdated += value; }
-            remove { AdvertisingConsentManager.Instance.DataPrivacyConsentUpdated -= value; }
+            add => AdvertisingConsentManager.Instance.DataPrivacyConsentUpdated += value;
+            remove => AdvertisingConsentManager.Instance.DataPrivacyConsentUpdated -= value;
         }
 
         /// <summary>
         /// The module-level data privacy consent status, 
         /// default to ConsentStatus.Unknown.
         /// </summary>
-        public static ConsentStatus DataPrivacyConsent
-        {
-            get { return AdvertisingConsentManager.Instance.DataPrivacyConsent; }
-        }
+        public static ConsentStatus DataPrivacyConsent => AdvertisingConsentManager.Instance.DataPrivacyConsent;
 
         /// <summary>
         /// Grants module-level data privacy consent.
@@ -456,10 +460,7 @@ namespace EasyMobile
         /// </summary>
         public static AutoAdLoadingMode AutoAdLoadingMode
         {
-            get
-            {
-                return currentAutoLoadAdsMode;
-            }
+            get => currentAutoLoadAdsMode;
             set
             {
                 if (value == currentAutoLoadAdsMode)
@@ -476,18 +477,18 @@ namespace EasyMobile
                 switch (value)
                 {
                     case AutoAdLoadingMode.LoadDefaultAds:
-                        {
-                            autoLoadAdsCoroutine = CRAutoLoadDefaultAds();
-                            Instance.StartCoroutine(autoLoadAdsCoroutine);
-                            break;
-                        }
+                    {
+                        autoLoadAdsCoroutine = CRAutoLoadDefaultAds();
+                        Instance.StartCoroutine(autoLoadAdsCoroutine);
+                        break;
+                    }
 
                     case AutoAdLoadingMode.LoadAllDefinedPlacements:
-                        {
-                            autoLoadAdsCoroutine = CRAutoLoadAllAds();
-                            Instance.StartCoroutine(autoLoadAdsCoroutine);
-                            break;
-                        }
+                    {
+                        autoLoadAdsCoroutine = CRAutoLoadAllAds();
+                        Instance.StartCoroutine(autoLoadAdsCoroutine);
+                        break;
+                    }
 
                     case AutoAdLoadingMode.None:
                     default:
@@ -530,7 +531,7 @@ namespace EasyMobile
         /// <param name="size">Ad size, applicable for AdMob banner only.</param>
         public static void ShowBannerAd(BannerAdNetwork adNetwork, BannerAdPosition position, BannerAdSize size)
         {
-            ShowBannerAd(GetWorkableAdClient((AdNetwork)adNetwork), AdPlacement.Default, position, size);
+            ShowBannerAd(GetWorkableAdClient((AdNetwork) adNetwork), AdPlacement.Default, position, size);
         }
 
         /// <summary>
@@ -540,9 +541,10 @@ namespace EasyMobile
         /// <param name="placement">Placement.</param>
         /// <param name="position">Position.</param>
         /// <param name="size">Size.</param>
-        public static void ShowBannerAd(BannerAdNetwork adNetwork, AdPlacement placement, BannerAdPosition position, BannerAdSize size)
+        public static void ShowBannerAd(BannerAdNetwork adNetwork, AdPlacement placement, BannerAdPosition position,
+            BannerAdSize size)
         {
-            ShowBannerAd(GetWorkableAdClient((AdNetwork)adNetwork), placement, position, size);
+            ShowBannerAd(GetWorkableAdClient((AdNetwork) adNetwork), placement, position, size);
         }
 
         /// <summary>
@@ -560,7 +562,7 @@ namespace EasyMobile
         /// <param name="placement">Placement. Pass <c>AdPlacement.Default</c> to specify the default placement.</param>
         public static void HideBannerAd(BannerAdNetwork adNetwork, AdPlacement placement)
         {
-            HideBannerAd(GetWorkableAdClient((AdNetwork)adNetwork), placement);
+            HideBannerAd(GetWorkableAdClient((AdNetwork) adNetwork), placement);
         }
 
         /// <summary>
@@ -578,7 +580,7 @@ namespace EasyMobile
         /// <param name="placement">Placement. Pass <c>AdPlacement.Default</c> to specify the default placement.</param>
         public static void DestroyBannerAd(BannerAdNetwork adNetwork, AdPlacement placement)
         {
-            DestroyBannerAd(GetWorkableAdClient((AdNetwork)adNetwork), placement);
+            DestroyBannerAd(GetWorkableAdClient((AdNetwork) adNetwork), placement);
         }
 
         //------------------------------------------------------------
@@ -609,7 +611,7 @@ namespace EasyMobile
         /// <param name="placement">Placement. Pass <c>AdPlacement.Default</c> to specify the default placement.</param>
         public static void LoadInterstitialAd(InterstitialAdNetwork adNetwork, AdPlacement placement)
         {
-            LoadInterstitialAd(GetWorkableAdClient((AdNetwork)adNetwork), placement);
+            LoadInterstitialAd(GetWorkableAdClient((AdNetwork) adNetwork), placement);
         }
 
         /// <summary>
@@ -647,7 +649,7 @@ namespace EasyMobile
         {
             if (!IsInitialized())
                 return false;
-            return IsInterstitialAdReady(GetWorkableAdClient((AdNetwork)adNetwork), placement);
+            return IsInterstitialAdReady(GetWorkableAdClient((AdNetwork) adNetwork), placement);
         }
 
         /// <summary>
@@ -674,7 +676,7 @@ namespace EasyMobile
         /// <param name="placement">Placement. Pass <c>AdPlacement.Default</c> to specify the default placement.</param>
         public static void ShowInterstitialAd(InterstitialAdNetwork adNetwork, AdPlacement placement)
         {
-            ShowInterstitialAd(GetWorkableAdClient((AdNetwork)adNetwork), placement);
+            ShowInterstitialAd(GetWorkableAdClient((AdNetwork) adNetwork), placement);
         }
 
         //------------------------------------------------------------
@@ -705,7 +707,7 @@ namespace EasyMobile
         /// <param name="placement">Placement. Pass <c>AdPlacement.Default</c> to specify the default placement.</param>
         public static void LoadRewardedAd(RewardedAdNetwork adNetwork, AdPlacement placement)
         {
-            LoadRewardedAd(GetWorkableAdClient((AdNetwork)adNetwork), placement);
+            LoadRewardedAd(GetWorkableAdClient((AdNetwork) adNetwork), placement);
         }
 
         /// <summary>
@@ -743,7 +745,7 @@ namespace EasyMobile
         {
             if (!IsInitialized())
                 return false;
-            return IsRewardedAdReady(GetWorkableAdClient((AdNetwork)adNetwork), placement);
+            return IsRewardedAdReady(GetWorkableAdClient((AdNetwork) adNetwork), placement);
         }
 
         /// <summary>
@@ -770,7 +772,7 @@ namespace EasyMobile
         /// <param name="placement">Placement. Pass <c>AdPlacement.Default</c> to specify the default placement.</param>
         public static void ShowRewardedAd(RewardedAdNetwork adNetwork, AdPlacement placement)
         {
-            ShowRewardedAd(GetWorkableAdClient((AdNetwork)adNetwork), placement);
+            ShowRewardedAd(GetWorkableAdClient((AdNetwork) adNetwork), placement);
         }
 
         //------------------------------------------------------------
@@ -783,7 +785,7 @@ namespace EasyMobile
         /// <returns><c>true</c> if ads were removed; otherwise, <c>false</c>.</returns>
         public static bool IsAdRemoved()
         {
-            return (StorageUtil.GetInt(AD_REMOVE_STATUS_PPKEY, AD_ENABLED) == AD_DISABLED);
+            return StorageUtil.GetInt(AD_REMOVE_STATUS_PPKEY, AD_ENABLED) == AD_DISABLED;
         }
 
         /// <summary>
@@ -846,7 +848,8 @@ namespace EasyMobile
         [Obsolete("This method was deprecated. Please use AutoAdLoadingMode property instead.")]
         public static void EnableAutoLoadDefaultAds(bool isAutoLoad)
         {
-            EM_Settings.Advertising.AutoAdLoadingMode = isAutoLoad ? AutoAdLoadingMode.LoadDefaultAds : AutoAdLoadingMode.None;
+            EM_Settings.Advertising.AutoAdLoadingMode =
+                isAutoLoad ? AutoAdLoadingMode.LoadDefaultAds : AutoAdLoadingMode.None;
         }
 
         [Obsolete("This method was deprecated. Please use AutoAdLoadingMode property instead.")]
@@ -856,42 +859,42 @@ namespace EasyMobile
         }
 
         [Obsolete("This method was deprecated. Please use " +
-            "LoadInterstitialAd(InterstitialAdNetwork adNetwork, AdPlacement placement) instead.")]
+                  "LoadInterstitialAd(InterstitialAdNetwork adNetwork, AdPlacement placement) instead.")]
         public static void LoadInterstitialAd(InterstitialAdNetwork adNetwork, AdLocation location)
         {
             LoadInterstitialAd(adNetwork, location.ToAdPlacement());
         }
 
         [Obsolete("This method was deprecated. Please use " +
-            "IsInterstitialAdReady(InterstitialAdNetwork adNetwork, AdPlacement placement) instead.")]
+                  "IsInterstitialAdReady(InterstitialAdNetwork adNetwork, AdPlacement placement) instead.")]
         public static bool IsInterstitialAdReady(InterstitialAdNetwork adNetwork, AdLocation location)
         {
             return IsInterstitialAdReady(adNetwork, location.ToAdPlacement());
         }
 
         [Obsolete("This method was deprecated. Please use " +
-            "ShowInterstitialAd(InterstitialAdNetwork adNetwork, AdPlacement placement) instead.")]
+                  "ShowInterstitialAd(InterstitialAdNetwork adNetwork, AdPlacement placement) instead.")]
         public static void ShowInterstitialAd(InterstitialAdNetwork adNetwork, AdLocation location)
         {
             ShowInterstitialAd(adNetwork, location.ToAdPlacement());
         }
 
         [Obsolete("This method was deprecated. Please use " +
-            "LoadRewardedAd(RewardedAdNetwork adNetwork, AdPlacement placement) instead.")]
+                  "LoadRewardedAd(RewardedAdNetwork adNetwork, AdPlacement placement) instead.")]
         public static void LoadRewardedAd(RewardedAdNetwork adNetwork, AdLocation location)
         {
             LoadRewardedAd(adNetwork, location.ToAdPlacement());
         }
 
         [Obsolete("This method was deprecated. Please use " +
-            "IsRewardedAdReady(RewardedAdNetwork adNetwork, AdPlacement placement) instead.")]
+                  "IsRewardedAdReady(RewardedAdNetwork adNetwork, AdPlacement placement) instead.")]
         public static bool IsRewardedAdReady(RewardedAdNetwork adNetwork, AdLocation location)
         {
             return IsRewardedAdReady(adNetwork, location.ToAdPlacement());
         }
 
         [Obsolete("This method was deprecated. Please use " +
-            "ShowRewardedAd(RewardedAdNetwork adNetwork, AdPlacement placement) instead.")]
+                  "ShowRewardedAd(RewardedAdNetwork adNetwork, AdPlacement placement) instead.")]
         public static void ShowRewardedAd(RewardedAdNetwork adNetwork, AdLocation location)
         {
             ShowRewardedAd(adNetwork, location.ToAdPlacement());
@@ -915,33 +918,31 @@ namespace EasyMobile
             while (true)
             {
                 foreach (AdType type in Enum.GetValues(typeof(AdType)))
-                {
                     switch (type)
                     {
                         case AdType.Interstitial:
                             if (!IsInterstitialAdReady() && !IsAdRemoved())
-                            {
-                                if (Time.realtimeSinceStartup - lastDefaultInterstitialAdLoadTimestamp >= EM_Settings.Advertising.AdLoadingInterval)
+                                if (Time.realtimeSinceStartup - lastDefaultInterstitialAdLoadTimestamp >=
+                                    EM_Settings.Advertising.AdLoadingInterval)
                                 {
                                     LoadInterstitialAd();
                                     lastDefaultInterstitialAdLoadTimestamp = Time.realtimeSinceStartup;
                                 }
-                            }
+
                             break;
                         case AdType.Rewarded:
                             if (!IsRewardedAdReady())
-                            {
-                                if (Time.realtimeSinceStartup - lastDefaultRewardedAdLoadTimestamp >= EM_Settings.Advertising.AdLoadingInterval)
+                                if (Time.realtimeSinceStartup - lastDefaultRewardedAdLoadTimestamp >=
+                                    EM_Settings.Advertising.AdLoadingInterval)
                                 {
                                     LoadRewardedAd();
                                     lastDefaultRewardedAdLoadTimestamp = Time.realtimeSinceStartup;
                                 }
-                            }
+
                             break;
                         default:
                             break;
                     }
-                }
 
                 yield return new WaitForSeconds(EM_Settings.Advertising.AdCheckingInterval);
             }
@@ -956,8 +957,8 @@ namespace EasyMobile
             if (delay > 0)
                 yield return new WaitForSeconds(delay);
 
-            List<IAdClient> availableInterstitialNetworks = GetAvailableNetworks<InterstitialAdNetwork>();
-            List<IAdClient> availableRewardedNetworks = GetAvailableNetworks<RewardedAdNetwork>();
+            var availableInterstitialNetworks = GetAvailableNetworks<InterstitialAdNetwork>();
+            var availableRewardedNetworks = GetAvailableNetworks<RewardedAdNetwork>();
 
             while (true)
             {
@@ -980,20 +981,17 @@ namespace EasyMobile
                 /// Load all defined interstitial ad placements.
                 var customPlacements = client.DefinedCustomInterstitialAdPlacements;
 
-                if (customPlacements == null)
-                {
-                    customPlacements = new List<AdPlacement>();
-                }
+                if (customPlacements == null) customPlacements = new List<AdPlacement>();
 
                 if (!customPlacements.Contains(AdPlacement.Default))
-                    customPlacements.Add(AdPlacement.Default);  // always load the Default placement.
+                    customPlacements.Add(AdPlacement.Default); // always load the Default placement.
 
                 foreach (var placement in customPlacements)
                 {
                     if (!client.IsValidPlacement(placement, AdType.Interstitial))
                         continue;
 
-                    string tempIndex = client.Network.ToString() + placement.ToString();
+                    var tempIndex = client.Network.ToString() + placement.ToString();
 
                     if (IsInterstitialAdReady(client, placement))
                         continue;
@@ -1001,7 +999,8 @@ namespace EasyMobile
                     if (!lastCustomInterstitialAdsLoadTimestamp.ContainsKey(tempIndex))
                         lastCustomInterstitialAdsLoadTimestamp.Add(tempIndex, DEFAULT_TIMESTAMP);
 
-                    if (Time.realtimeSinceStartup - lastCustomInterstitialAdsLoadTimestamp[tempIndex] < EM_Settings.Advertising.AdLoadingInterval)
+                    if (Time.realtimeSinceStartup - lastCustomInterstitialAdsLoadTimestamp[tempIndex] <
+                        EM_Settings.Advertising.AdLoadingInterval)
                         continue;
 
                     LoadInterstitialAd(client, placement);
@@ -1020,10 +1019,7 @@ namespace EasyMobile
                 /// Load all custom rewarded ads if available.
                 var customPlacements = client.DefinedCustomRewardedAdPlacements;
 
-                if (customPlacements == null)
-                {
-                    customPlacements = new List<AdPlacement>();
-                }
+                if (customPlacements == null) customPlacements = new List<AdPlacement>();
 
                 // Add the Default placement to the loading list. Some networks
                 // may only allow loading one rewarded ad at a time (subsequent loadings can
@@ -1037,7 +1033,7 @@ namespace EasyMobile
                     if (!client.IsValidPlacement(placement, AdType.Rewarded))
                         continue;
 
-                    string tempIndex = client.Network.ToString() + placement.ToString();
+                    var tempIndex = client.Network.ToString() + placement.ToString();
 
                     if (IsRewardedAdReady(client, placement))
                         continue;
@@ -1045,7 +1041,8 @@ namespace EasyMobile
                     if (!lastCustomRewardedAdsLoadTimestamp.ContainsKey(tempIndex))
                         lastCustomRewardedAdsLoadTimestamp.Add(tempIndex, DEFAULT_TIMESTAMP);
 
-                    if (Time.realtimeSinceStartup - lastCustomRewardedAdsLoadTimestamp[tempIndex] < EM_Settings.Advertising.AdLoadingInterval)
+                    if (Time.realtimeSinceStartup - lastCustomRewardedAdsLoadTimestamp[tempIndex] <
+                        EM_Settings.Advertising.AdLoadingInterval)
                         continue;
 
                     LoadRewardedAd(client, placement);
@@ -1059,22 +1056,24 @@ namespace EasyMobile
         /// </summary>
         private static List<IAdClient> GetAvailableNetworks<T>()
         {
-            List<IAdClient> availableNetworks = new List<IAdClient>();
+            var availableNetworks = new List<IAdClient>();
             foreach (T network in Enum.GetValues(typeof(T)))
             {
-                AdClientImpl client = GetAdClient((AdNetwork)(Enum.Parse(typeof(T), network.ToString())));
+                var client = GetAdClient((AdNetwork) Enum.Parse(typeof(T), network.ToString()));
                 if (client.IsSdkAvail)
                 {
-                    var workableClient = GetWorkableAdClient((AdNetwork)(Enum.Parse(typeof(T), network.ToString())));
+                    var workableClient = GetWorkableAdClient((AdNetwork) Enum.Parse(typeof(T), network.ToString()));
                     availableNetworks.Add(workableClient);
                 }
             }
+
             return availableNetworks;
         }
 
         #endregion
 
-        private static void ShowBannerAd(IAdClient client, AdPlacement placement, BannerAdPosition position, BannerAdSize size)
+        private static void ShowBannerAd(IAdClient client, AdPlacement placement, BannerAdPosition position,
+            BannerAdSize size)
         {
             if (IsAdRemoved())
             {
@@ -1100,15 +1099,13 @@ namespace EasyMobile
 
         private static void DestroyAllBannerAds()
         {
-            foreach (KeyValuePair<AdNetwork, List<AdPlacement>> pair in activeBannerAds)
-            {
+            foreach (var pair in activeBannerAds)
                 if (pair.Value != null && pair.Value.Count > 0)
                 {
                     var client = GetWorkableAdClient(pair.Key);
                     foreach (var placement in pair.Value)
                         client.DestroyBannerAd(placement);
                 }
-            }
 
             activeBannerAds.Clear();
         }
@@ -1125,7 +1122,7 @@ namespace EasyMobile
         {
             if (!IsInitialized())
                 return false;
-            
+
             if (IsAdRemoved())
                 return false;
 
@@ -1155,7 +1152,7 @@ namespace EasyMobile
         {
             if (!IsInitialized())
                 return false;
-            
+
             return client.IsRewardedAdReady(placement);
         }
 
@@ -1185,7 +1182,7 @@ namespace EasyMobile
             // This network hasn't had any active placements yet.
             else
             {
-                activeBannerAds[network] = new List<AdPlacement>() { placement };
+                activeBannerAds[network] = new List<AdPlacement>() {placement};
             }
         }
 
@@ -1200,10 +1197,7 @@ namespace EasyMobile
             List<AdPlacement> bannerAdPlacements;
             activeBannerAds.TryGetValue(network, out bannerAdPlacements);
 
-            if (bannerAdPlacements != null)
-            {
-                bannerAdPlacements.Remove(placement);
-            }
+            if (bannerAdPlacements != null) bannerAdPlacements.Remove(placement);
         }
 
         /// <summary>
@@ -1212,10 +1206,8 @@ namespace EasyMobile
         private static void GrantAllNetworksDataPrivacyConsent()
         {
             foreach (AdNetwork network in Enum.GetValues(typeof(AdNetwork)))
-            {
                 if (network != AdNetwork.None)
                     GrantDataPrivacyConsent(network);
-            }
         }
 
         /// <summary>
@@ -1224,10 +1216,8 @@ namespace EasyMobile
         private static void RevokeAllNetworksDataPrivacyConsent()
         {
             foreach (AdNetwork network in Enum.GetValues(typeof(AdNetwork)))
-            {
                 if (network != AdNetwork.None)
                     RevokeDataPrivacyConsent(network);
-            }
         }
 
         /// <summary>
@@ -1267,7 +1257,6 @@ namespace EasyMobile
                 default:
                     throw new NotImplementedException("No client implemented for the network:" + network.ToString());
             }
-
         }
 
         /// <summary>
@@ -1278,7 +1267,7 @@ namespace EasyMobile
         /// <param name="network">Network.</param>
         private static AdClientImpl SetupAdClient(AdNetwork network)
         {
-            AdClientImpl client = GetAdClient(network);
+            var client = GetAdClient(network);
 
             if (client != null && client.Network != AdNetwork.None)
             {
@@ -1347,19 +1336,19 @@ namespace EasyMobile
         private static void OnInternalInterstitialAdCompleted(IAdClient client, AdPlacement placement)
         {
             if (InterstitialAdCompleted != null)
-                InterstitialAdCompleted((InterstitialAdNetwork)client.Network, placement);
+                InterstitialAdCompleted((InterstitialAdNetwork) client.Network, placement);
         }
 
         private static void OnInternalRewardedAdSkipped(IAdClient client, AdPlacement placement)
         {
             if (RewardedAdSkipped != null)
-                RewardedAdSkipped((RewardedAdNetwork)client.Network, placement);
+                RewardedAdSkipped((RewardedAdNetwork) client.Network, placement);
         }
 
         private static void OnInternalRewardedAdCompleted(IAdClient client, AdPlacement placement)
         {
             if (RewardedAdCompleted != null)
-                RewardedAdCompleted((RewardedAdNetwork)client.Network, placement);
+                RewardedAdCompleted((RewardedAdNetwork) client.Network, placement);
         }
 
         #endregion

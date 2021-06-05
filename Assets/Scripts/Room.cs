@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using DG.Tweening;
 using Unity.Mathematics;
 using UnityEditor.UIElements;
@@ -15,25 +16,33 @@ public class Room : MonoBehaviour
     private Vector2 offset = new Vector2(8, -8);
 
     private UnityEvent onMonsterDeath;
-
     private int remainEnemy;
 
+    private RoomDoor rd;
+
+    private bool generated;
     // Start is called before the first frame update
     private void Start()
     {
         if (!cTransform) cTransform = Camera.main.transform;
         template = GameObject.FindGameObjectWithTag("Template").GetComponent<MonsterTemplate>();
         onMonsterDeath ??= new UnityEvent();
+        rd = GetComponent<RoomDoor>();
+        StartCoroutine(nameof(Wait));
     }
 
-
+    IEnumerator Wait()
+    {
+        yield return new WaitForSeconds(3f);
+        generated = true;
+    }
     private void OnTriggerEnter2D(Collider2D other)
     {
-        Debug.Log($"Enter {other.tag}");
-        if (!other.CompareTag("Player")) return;
+        if (!other.CompareTag("Player") || !generated) return;
         var pos = transform.position;
         cTransform.DOMove(new Vector3(pos.x, pos.y, -10), 1f);
         if (!spawnable) return;
+        rd.ShowDoor();
         Invoke(nameof(SpawnMonster), 2f);
 
         spawnable = false;
@@ -59,6 +68,7 @@ public class Room : MonoBehaviour
         remainEnemy -= 1;
         if (remainEnemy <= 0)
         {
+            rd.HideDoor();
             UiManger.Instance.upgradePanel.SetActive(true);
             Debug.Log("Toggle update Panel");
         }

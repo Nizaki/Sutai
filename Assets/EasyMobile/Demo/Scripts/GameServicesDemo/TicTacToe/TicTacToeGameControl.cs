@@ -8,8 +8,7 @@ namespace EasyMobile.Demo
 {
     public class TicTacToeGameControl : GameServicesDemo_Multiplayer_BaseControl
     {
-        [SerializeField]
-        private TicTacToeGameView view = null;
+        [SerializeField] private TicTacToeGameView view = null;
 
         private TicTacToeGameModel model;
         private bool canMove;
@@ -23,12 +22,12 @@ namespace EasyMobile.Demo
 
                 return canMove && model.Match.IsMyTurn;
             }
-            set { canMove = value; }
+            set => canMove = value;
         }
 
         public bool IsMatchDelegateRegistered { get; private set; }
 
-        protected override MatchType MatchType { get { return MatchType.TurnBased; } }
+        protected override MatchType MatchType => MatchType.TurnBased;
 
         protected override void LateStart()
         {
@@ -116,68 +115,70 @@ namespace EasyMobile.Demo
 
             /// Check end conditions...
             /// Check column...
-            for (int i = 0; i < model.TransferDatas.Size; i++)
+            for (var i = 0; i < model.TransferDatas.Size; i++)
             {
                 if (model.TransferDatas.Board[x][i] != model.TransferDatas.CurrentTurn.ToTileState())
                     break;
 
                 if (i == model.TransferDatas.Size - 1)
                 {
-                    EndGame(MatchOutcome.ParticipantResult.Won, MatchOutcome.ParticipantResult.Lost, x, y, successCallback);
+                    EndGame(MatchOutcome.ParticipantResult.Won, MatchOutcome.ParticipantResult.Lost, x, y,
+                        successCallback);
                     return;
                 }
             }
 
             /// Check row...
-            for (int i = 0; i < model.TransferDatas.Size; i++)
+            for (var i = 0; i < model.TransferDatas.Size; i++)
             {
                 if (model.TransferDatas.Board[i][y] != model.TransferDatas.CurrentTurn.ToTileState())
                     break;
 
                 if (i == model.TransferDatas.Size - 1)
                 {
-                    EndGame(MatchOutcome.ParticipantResult.Won, MatchOutcome.ParticipantResult.Lost, x, y, successCallback);
+                    EndGame(MatchOutcome.ParticipantResult.Won, MatchOutcome.ParticipantResult.Lost, x, y,
+                        successCallback);
                     return;
                 }
             }
 
             /// Check diag...
             if (x == y)
-            {
                 /// On a diagonal...
-                for (int i = 0; i < model.TransferDatas.Size; i++)
+                for (var i = 0; i < model.TransferDatas.Size; i++)
                 {
                     if (model.TransferDatas.Board[i][i] != model.TransferDatas.CurrentTurn.ToTileState())
                         break;
 
                     if (i == model.TransferDatas.Size - 1)
                     {
-                        EndGame(MatchOutcome.ParticipantResult.Won, MatchOutcome.ParticipantResult.Lost, x, y, successCallback);
+                        EndGame(MatchOutcome.ParticipantResult.Won, MatchOutcome.ParticipantResult.Lost, x, y,
+                            successCallback);
                         return;
                     }
                 }
-            }
 
             /// Check anti diag...
             if (x + y == model.TransferDatas.Size - 1)
-            {
-                for (int i = 0; i < model.TransferDatas.Size; i++)
+                for (var i = 0; i < model.TransferDatas.Size; i++)
                 {
-                    if (model.TransferDatas.Board[i][(model.TransferDatas.Size - 1) - i] != model.TransferDatas.CurrentTurn.ToTileState())
+                    if (model.TransferDatas.Board[i][model.TransferDatas.Size - 1 - i] !=
+                        model.TransferDatas.CurrentTurn.ToTileState())
                         break;
 
                     if (i == model.TransferDatas.Size - 1)
                     {
-                        EndGame(MatchOutcome.ParticipantResult.Won, MatchOutcome.ParticipantResult.Lost, x, y, successCallback);
+                        EndGame(MatchOutcome.ParticipantResult.Won, MatchOutcome.ParticipantResult.Lost, x, y,
+                            successCallback);
                         return;
                     }
                 }
-            }
 
             /// Check draw...
-            if (model.TransferDatas.MoveCount == (Math.Pow(model.TransferDatas.Size, 2) - 1))
+            if (model.TransferDatas.MoveCount == Math.Pow(model.TransferDatas.Size, 2) - 1)
             {
-                EndGame(MatchOutcome.ParticipantResult.Tied, MatchOutcome.ParticipantResult.Tied, x, y, successCallback);
+                EndGame(MatchOutcome.ParticipantResult.Tied, MatchOutcome.ParticipantResult.Tied, x, y,
+                    successCallback);
                 return;
             }
 
@@ -223,28 +224,31 @@ namespace EasyMobile.Demo
             {
                 view.StartProgressUI("Leaving match (during your turn) ");
                 GameServices.TurnBased.LeaveMatchInTurn(model.Match, model.OpponentId, flag =>
-                    {
-                        if (flag)
-                            view.HideGameSection();
+                {
+                    if (flag)
+                        view.HideGameSection();
 
-                        view.StopProgressUI("");
-                        view.ShowAlert("Leave match (during your turn). Result: " + (flag ? "success. " : "failed. "), "Leave match");
-                    });
+                    view.StopProgressUI("");
+                    view.ShowAlert("Leave match (during your turn). Result: " + (flag ? "success. " : "failed. "),
+                        "Leave match");
+                });
             }
             else
             {
                 view.StartProgressUI("Leaving match (not your turn) ");
                 GameServices.TurnBased.LeaveMatch(model.Match, flag =>
-                    {
-                        if (flag)
-                            view.HideGameSection();
+                {
+                    if (flag)
+                        view.HideGameSection();
 
-                        view.StopProgressUI("");
-                        view.ShowAlert("Leave match (not your turn). Result: " + (flag ? "success. " : "failed. ") +
-                            (!flag ? "\nYou can only leave when you received a match and haven't made any change to its data." +
-                            "Wait for your next turn or click \"HIDE GAME\" button and open it again via \"SHOW MATCHES UI\". " : ""),
-                            "Leave match");
-                    });
+                    view.StopProgressUI("");
+                    view.ShowAlert("Leave match (not your turn). Result: " + (flag ? "success. " : "failed. ") +
+                                   (!flag
+                                       ? "\nYou can only leave when you received a match and haven't made any change to its data." +
+                                         "Wait for your next turn or click \"HIDE GAME\" button and open it again via \"SHOW MATCHES UI\". "
+                                       : ""),
+                        "Leave match");
+                });
             }
         }
 
@@ -254,15 +258,15 @@ namespace EasyMobile.Demo
                 return;
 
             GameServices.TurnBased.Rematch(model.Match, (flag, match) =>
+            {
+                if (!flag)
                 {
-                    if (!flag)
-                    {
-                        view.ShowAlert("Your rematch request has been failed!!!", "Rematch failed");
-                        return;
-                    }
+                    view.ShowAlert("Your rematch request has been failed!!!", "Rematch failed");
+                    return;
+                }
 
-                    OnMatchReceived(match, true, false);
-                });
+                OnMatchReceived(match, true, false);
+            });
         }
 
         private void OnMatchReceived(TurnBasedMatch match, bool autoLaunch, bool playerWantsToQuit)
@@ -275,7 +279,7 @@ namespace EasyMobile.Demo
 
             Debug.Log("A match has been arrived, matchId: " + match.MatchId);
 
-            int boardSize = 0;
+            var boardSize = 0;
             if (match.Data == null || match.Data.Length < 1)
             {
                 boardSize = view.BoardSize;
@@ -285,9 +289,11 @@ namespace EasyMobile.Demo
                 var data = match.Data.ToTicTacToeGameTranferDatas();
                 if (data == null)
                 {
-                    view.ShowAlert("The arrived match can't be opened in this scene. You might want to open it in the kitchen sink demo instead.");
+                    view.ShowAlert(
+                        "The arrived match can't be opened in this scene. You might want to open it in the kitchen sink demo instead.");
                     return;
                 }
+
                 boardSize = data.Size;
             }
 
@@ -299,10 +305,10 @@ namespace EasyMobile.Demo
             else
             {
                 view.ShowYesNoPopup("Accept match", "A match has been arrived. Do you want to play it now?", accept =>
-                    {
-                        if (accept)
-                            CheckAndPlayMatch(match, playerWantsToQuit, boardSize);
-                    });
+                {
+                    if (accept)
+                        CheckAndPlayMatch(match, playerWantsToQuit, boardSize);
+                });
             }
         }
 
@@ -321,10 +327,10 @@ namespace EasyMobile.Demo
                 }
 
                 var nextParticipant = match.Participants.FirstOrDefault(
-                                          p => p.ParticipantId != match.SelfParticipantId &&
-                                          (p.Status == Participant.ParticipantStatus.Joined ||
-                                          p.Status == Participant.ParticipantStatus.Invited ||
-                                          p.Status == Participant.ParticipantStatus.Matching));
+                    p => p.ParticipantId != match.SelfParticipantId &&
+                         (p.Status == Participant.ParticipantStatus.Joined ||
+                          p.Status == Participant.ParticipantStatus.Invited ||
+                          p.Status == Participant.ParticipantStatus.Matching));
 
                 if (nextParticipant != default(Participant))
                 {
@@ -339,12 +345,13 @@ namespace EasyMobile.Demo
                     // No valid next participant, match ends here.
                     // In this case we'll set the outcome for all players as Tied for demo purpose.
                     // In a real game you may determine the outcome based on the game data and your game logic.
-                    MatchOutcome outcome = new MatchOutcome();
+                    var outcome = new MatchOutcome();
                     foreach (var id in match.Participants.Select(p => p.ParticipantId))
                     {
                         var result = MatchOutcome.ParticipantResult.Tied;
                         outcome.SetParticipantResult(id, result);
                     }
+
                     GameServices.TurnBased.Finish(match, match.Data, outcome, null);
                 }
 
@@ -358,18 +365,18 @@ namespace EasyMobile.Demo
                 CanMove = false;
                 view.StartProgressUI("Acknowledging finished match");
                 GameServices.TurnBased.AcknowledgeFinished(match, flag =>
-                    {
-                        view.StopProgressUI("Acknowledging finished match: " + GetResultMessage(flag));
-                        view.CreateBoard(model);
-                        view.ShowGameOverUI(model.LocalFinalResult, true);
-
-                    });
+                {
+                    view.StopProgressUI("Acknowledging finished match: " + GetResultMessage(flag));
+                    view.CreateBoard(model);
+                    view.ShowGameOverUI(model.LocalFinalResult, true);
+                });
                 return;
             }
 
             var opponent = match.Participants.Where(p => p.ParticipantId != match.SelfParticipantId).FirstOrDefault();
             if (opponent != default(Participant) &&
-                (opponent.Status == Participant.ParticipantStatus.Done || opponent.Status == Participant.ParticipantStatus.Left))
+                (opponent.Status == Participant.ParticipantStatus.Done ||
+                 opponent.Status == Participant.ParticipantStatus.Left))
             {
                 view.ShowGameOverUI(MatchOutcome.ParticipantResult.Won, false);
                 NativeUI.Alert("Game Over", "You won. Your opponent has left the match.");
@@ -380,13 +387,14 @@ namespace EasyMobile.Demo
             view.CreateBoard(model);
         }
 
-        private void EndGame(MatchOutcome.ParticipantResult localPlayerResult, MatchOutcome.ParticipantResult opponentResult,
-                             int x, int y, Action<TicTacToeGameModel.Mark> successCallback)
+        private void EndGame(MatchOutcome.ParticipantResult localPlayerResult,
+            MatchOutcome.ParticipantResult opponentResult,
+            int x, int y, Action<TicTacToeGameModel.Mark> successCallback)
         {
             if (model == null)
                 return;
 
-            MatchOutcome outcome = new MatchOutcome();
+            var outcome = new MatchOutcome();
             outcome.SetParticipantResult(model.Match.SelfParticipantId, localPlayerResult);
             outcome.SetParticipantResult(model.Opponent.ParticipantId, opponentResult);
 
@@ -440,7 +448,7 @@ namespace EasyMobile.Demo
             {
                 MinPlayers = 2,
                 MaxPlayers = 2,
-                Variant = (uint)size,
+                Variant = (uint) size
             };
         }
 

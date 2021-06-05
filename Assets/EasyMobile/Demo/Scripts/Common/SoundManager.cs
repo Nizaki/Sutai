@@ -14,10 +14,7 @@ namespace EasyMobile.Demo
         {
             get
             {
-                if (_audioSource == null)
-                {
-                    _audioSource = GetComponent<AudioSource>();
-                }
+                if (_audioSource == null) _audioSource = GetComponent<AudioSource>();
 
                 return _audioSource;
             }
@@ -25,7 +22,7 @@ namespace EasyMobile.Demo
 
         private AudioSource _audioSource;
 
-        void Awake()
+        private void Awake()
         {
             if (Instance == null)
             {

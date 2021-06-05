@@ -15,7 +15,8 @@ namespace EasyMobile.Editor
         /// </summary>
         public new void EnableModule()
         {
-            Debug.Log("Composite module " + SelfModule.ToString() + " cannot be enabled wholly but by individual features.");
+            Debug.Log("Composite module " + SelfModule.ToString() +
+                      " cannot be enabled wholly but by individual features.");
             throw new System.NotSupportedException();
         }
 
@@ -25,8 +26,9 @@ namespace EasyMobile.Editor
         public new void DisableModule()
         {
             // Composite module is not disabled wholly but by individual features.
-            Debug.Log("Composite module " + SelfModule.ToString() + " cannot be disabled wholly but by individual features.");
-            throw new System.NotSupportedException(); 
+            Debug.Log("Composite module " + SelfModule.ToString() +
+                      " cannot be disabled wholly but by individual features.");
+            throw new System.NotSupportedException();
         }
 
         /// <summary>
@@ -35,21 +37,21 @@ namespace EasyMobile.Editor
         /// Please use <see cref="AndroidManifestTemplatePathsForSubmodule"/> instead.
         /// </summary>
         /// <value>The android manifest template paths.</value>
-        public override List<string> AndroidManifestTemplatePaths{ get { return null; } }
+        public override List<string> AndroidManifestTemplatePaths => null;
 
         /// <summary>
         /// Gets the android permissions holder. Always returns null for composite modules.
         /// Please use <see cref="AndroidPermissionHolderForSubmodule"/> instead.
         /// </summary>
         /// <value>The android permissions holder.</value>
-        public override IAndroidPermissionRequired AndroidPermissionsHolder { get { return null; } }
+        public override IAndroidPermissionRequired AndroidPermissionsHolder => null;
 
         /// <summary>
         /// Gets the iOS Info.plist items holder. Always returns null for composite modules.
         /// Please use <see cref="iOSInfoItemsHolderForSubmodule"/> instead.
         /// </summary>
         /// <value>The i OS info items holder.</value>
-        public override IIOSInfoItemRequired iOSInfoItemsHolder { get { return null; } }
+        public override IIOSInfoItemRequired iOSInfoItemsHolder => null;
 
         /// <summary>
         /// Performs necessary editor-level actions when enabling the module, e.g. define symbols.
@@ -87,7 +89,8 @@ namespace EasyMobile.Editor
         {
             if (!SelfSubmodules.Contains(submod))
             {
-                Debug.LogFormat("Submodule {0} doesn't belong to module {1}.", submod.ToString(), SelfModule.ToString());
+                Debug.LogFormat("Submodule {0} doesn't belong to module {1}.", submod.ToString(),
+                    SelfModule.ToString());
                 return;
             }
 
@@ -102,7 +105,8 @@ namespace EasyMobile.Editor
         {
             if (!SelfSubmodules.Contains(submod))
             {
-                Debug.LogFormat("Submodule {0} doesn't belong to module {1}.", submod.ToString(), SelfModule.ToString());
+                Debug.LogFormat("Submodule {0} doesn't belong to module {1}.", submod.ToString(),
+                    SelfModule.ToString());
                 return;
             }
 

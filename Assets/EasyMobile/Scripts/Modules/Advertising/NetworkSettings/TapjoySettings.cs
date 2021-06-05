@@ -13,8 +13,8 @@ namespace EasyMobile
         /// </summary>
         public bool EnableAutoReconnect
         {
-            get { return mAutoReconnect; }
-            set { mAutoReconnect = value; }
+            get => mAutoReconnect;
+            set => mAutoReconnect = value;
         }
 
         /// <summary>
@@ -22,8 +22,8 @@ namespace EasyMobile
         /// </summary>
         public float AutoReconnectInterval
         {
-            get { return mAutoReconnectInterval; }
-            set { mAutoReconnectInterval = value; }
+            get => mAutoReconnectInterval;
+            set => mAutoReconnectInterval = value;
         }
 
         /// <summary>
@@ -31,8 +31,8 @@ namespace EasyMobile
         /// </summary>
         public AdId DefaultInterstitialAdId
         {
-            get { return mDefaultInterstitialAdId; }
-            set { mDefaultInterstitialAdId = value; }
+            get => mDefaultInterstitialAdId;
+            set => mDefaultInterstitialAdId = value;
         }
 
         /// <summary>
@@ -40,8 +40,8 @@ namespace EasyMobile
         /// </summary>
         public AdId DefaultRewardedAdId
         {
-            get { return mDefaultRewardedAdId; }
-            set { mDefaultRewardedAdId = value; }
+            get => mDefaultRewardedAdId;
+            set => mDefaultRewardedAdId = value;
         }
 
         /// <summary>
@@ -50,8 +50,8 @@ namespace EasyMobile
         /// </summary>
         public Dictionary<AdPlacement, AdId> CustomInterstitialAdIds
         {
-            get { return mCustomInterstitialAdIds; }
-            set { mCustomInterstitialAdIds = value as Dictionary_AdPlacement_AdId; }
+            get => mCustomInterstitialAdIds;
+            set => mCustomInterstitialAdIds = value as Dictionary_AdPlacement_AdId;
         }
 
         /// <summary>
@@ -60,23 +60,16 @@ namespace EasyMobile
         /// </summary>
         public Dictionary<AdPlacement, AdId> CustomRewardedAdIds
         {
-            get { return mCustomRewardedAdIds; }
-            set { mCustomRewardedAdIds = value as Dictionary_AdPlacement_AdId; }
+            get => mCustomRewardedAdIds;
+            set => mCustomRewardedAdIds = value as Dictionary_AdPlacement_AdId;
         }
 
-        [SerializeField]
-        private bool mAutoReconnect = true;
-        [SerializeField]
-        [Range(5, 100)]
-        private float mAutoReconnectInterval = 10f;
+        [SerializeField] private bool mAutoReconnect = true;
+        [SerializeField] [Range(5, 100)] private float mAutoReconnectInterval = 10f;
 
-        [SerializeField]
-        private AdId mDefaultInterstitialAdId;
-        [SerializeField]
-        private AdId mDefaultRewardedAdId;
-        [SerializeField]
-        private Dictionary_AdPlacement_AdId mCustomInterstitialAdIds;
-        [SerializeField]
-        private Dictionary_AdPlacement_AdId mCustomRewardedAdIds;
+        [SerializeField] private AdId mDefaultInterstitialAdId;
+        [SerializeField] private AdId mDefaultRewardedAdId;
+        [SerializeField] private Dictionary_AdPlacement_AdId mCustomInterstitialAdIds;
+        [SerializeField] private Dictionary_AdPlacement_AdId mCustomRewardedAdIds;
     }
 }

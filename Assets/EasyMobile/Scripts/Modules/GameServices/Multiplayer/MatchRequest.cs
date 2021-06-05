@@ -31,8 +31,8 @@ namespace EasyMobile
         /// </summary>
         public uint MinPlayers
         {
-            get { return mMinPlayers; }
-            set { mMinPlayers = value; }
+            get => mMinPlayers;
+            set => mMinPlayers = value;
         }
 
         /// <summary>
@@ -45,8 +45,8 @@ namespace EasyMobile
         /// </summary>
         public uint MaxPlayers
         {
-            get { return mMaxPlayers; }
-            set { mMaxPlayers = value; }
+            get => mMaxPlayers;
+            set => mMaxPlayers = value;
         }
 
         /// <summary>
@@ -58,8 +58,8 @@ namespace EasyMobile
         /// </summary>
         public uint Variant
         {
-            get { return mVariant; }
-            set { mVariant = (uint)Mathf.Clamp(value, MinVariant, MaxVariant); }
+            get => mVariant;
+            set => mVariant = (uint) Mathf.Clamp(value, MinVariant, MaxVariant);
         }
 
         /// <summary>
@@ -74,8 +74,8 @@ namespace EasyMobile
         /// </summary>
         public uint ExclusiveBitmask
         {
-            get { return mExclusiveBitmask; }
-            set { mExclusiveBitmask = value; }
+            get => mExclusiveBitmask;
+            set => mExclusiveBitmask = value;
         }
 
         private uint mMinPlayers = 2;
@@ -93,24 +93,24 @@ namespace EasyMobile
             switch (matchType)
             {
                 case MatchType.RealTime:
-                    #if UNITY_ANDROID
+#if UNITY_ANDROID
                     // https://developers.google.com/games/services/common/concepts/realtimeMultiplayer
-                    return 8; 
-                    #elif UNITY_IOS
+                    return 8;
+#elif UNITY_IOS
                     return GKMatchRequest.MaxPlayersAllowedForMatchType(matchType.ToGKMatchType());
-                    #else
+#else
                     return 0;
-                    #endif
+#endif
 
                 case MatchType.TurnBased:
-                    #if UNITY_ANDROID && EM_GPGS
+#if UNITY_ANDROID && EM_GPGS
                     // https://developers.google.com/games/services/common/concepts/turnbasedMultiplayer
                     return 8;
-                    #elif UNITY_IOS
+#elif UNITY_IOS
                     return GKMatchRequest.MaxPlayersAllowedForMatchType(matchType.ToGKMatchType());
-                    #else
+#else
                     return 0;
-                    #endif
+#endif
 
                 case MatchType.Unknown:
                 default:

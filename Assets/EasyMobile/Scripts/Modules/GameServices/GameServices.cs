@@ -17,7 +17,6 @@ using GPGSSavedGame = GooglePlayGames.BasicApi.SavedGame;
 
 namespace EasyMobile
 {
-
 #if UNITY_ANDROID && EM_GPGS
     /// <summary> Native response status codes for GPGS UI operations.</summary>
     /// </remarks>
@@ -74,17 +73,13 @@ namespace EasyMobile
             get
             {
                 if (IsInitialized())
-                {
                     return Social.localUser;
-                }
                 else
-                {
                     return null;
-                }
             }
         }
 
-        struct LoadScoreRequest
+        private struct LoadScoreRequest
         {
             public bool useLeaderboardDefault;
             public bool loadLocalUserScore;
@@ -105,29 +100,26 @@ namespace EasyMobile
 #endif
         private const string USER_CALLED_LOG_OUT_IN_PREVIOUS_SESSION = "SGLIB_USER_CALLED_LOG_OUT_IN_PREVIOUS_SESSION";
 
-        void Awake()
+        private void Awake()
         {
             if (Instance != null)
-            {
                 Destroy(this);
-            }
             else
-            {
                 Instance = this;
-            }
         }
 
-        void Start()
+        private void Start()
         {
             // Init the module if automatic init is enabled.
             if (!EM_Settings.GameServices.IsAutoInit)
                 return;
-            if (!EM_Settings.GameServices.IsAutoInitAfterUserLogout && StorageUtil.GetInt(USER_CALLED_LOG_OUT_IN_PREVIOUS_SESSION, 0) == 1)
+            if (!EM_Settings.GameServices.IsAutoInitAfterUserLogout &&
+                StorageUtil.GetInt(USER_CALLED_LOG_OUT_IN_PREVIOUS_SESSION, 0) == 1)
                 return;
             StartCoroutine(CRAutoInit(EM_Settings.GameServices.AutoInitDelay));
         }
 
-        IEnumerator CRAutoInit(float delay)
+        private IEnumerator CRAutoInit(float delay)
         {
             yield return new WaitForSeconds(delay);
             ManagedInit();
@@ -149,9 +141,10 @@ namespace EasyMobile
 #elif UNITY_ANDROID
             if (!IsInitialized())
             {
-                int loginRequestNumber = StorageUtil.GetInt(ANDROID_LOGIN_REQUEST_NUMBER_PPKEY, 0);
+                var loginRequestNumber = StorageUtil.GetInt(ANDROID_LOGIN_REQUEST_NUMBER_PPKEY, 0);
 
-                if (loginRequestNumber < EM_Settings.GameServices.AndroidMaxLoginRequests || EM_Settings.GameServices.AndroidMaxLoginRequests <= 0)
+                if (loginRequestNumber < EM_Settings.GameServices.AndroidMaxLoginRequests ||
+                    EM_Settings.GameServices.AndroidMaxLoginRequests <= 0)
                 {
                     loginRequestNumber++;
                     StorageUtil.SetInt(ANDROID_LOGIN_REQUEST_NUMBER_PPKEY, loginRequestNumber);
@@ -160,7 +153,9 @@ namespace EasyMobile
                 }
                 else
                 {
-                    Debug.Log("Failed to initialize Game Services module: AndroidMaxLoginRequests exceeded. Requests attempted: " + loginRequestNumber);
+                    Debug.Log(
+                        "Failed to initialize Game Services module: AndroidMaxLoginRequests exceeded. Requests attempted: " +
+                        loginRequestNumber);
                 }
             }
 #endif
@@ -258,9 +253,7 @@ namespace EasyMobile
             if (IsInitialized())
                 Social.ShowLeaderboardUI();
             else
-            {
                 Debug.Log("Couldn't show leaderboard UI: user is not logged in.");
-            }
         }
 
         /// <summary>
@@ -285,7 +278,7 @@ namespace EasyMobile
                 return;
             }
 
-            Leaderboard ldb = GetLeaderboardByName(leaderboardName);
+            var ldb = GetLeaderboardByName(leaderboardName);
 
             if (ldb == null)
             {
@@ -311,9 +304,7 @@ namespace EasyMobile
             if (IsInitialized())
                 Social.ShowAchievementsUI();
             else
-            {
                 Debug.Log("Couldn't show achievements UI: user is not logged in.");
-            }
         }
 
         /// <summary>
@@ -324,16 +315,12 @@ namespace EasyMobile
         /// <param name="callback">Callback receives a <c>true</c> value if the score is reported successfully, otherwise it receives <c>false</c>.</param>
         public static void ReportScore(long score, string leaderboardName, Action<bool> callback = null)
         {
-            Leaderboard ldb = GetLeaderboardByName(leaderboardName);
+            var ldb = GetLeaderboardByName(leaderboardName);
 
             if (ldb != null)
-            {
                 DoReportScore(score, ldb.Id, callback);
-            }
             else
-            {
                 Debug.Log("Failed to report score: unknown leaderboard name.");
-            }
         }
 
         /// <summary>
@@ -343,16 +330,12 @@ namespace EasyMobile
         /// <param name="callback">Callback receives a <c>true</c> value if the achievement is revealed successfully, otherwise it receives <c>false</c>.</param>
         public static void RevealAchievement(string achievementName, Action<bool> callback = null)
         {
-            Achievement acm = GetAchievementByName(achievementName);
+            var acm = GetAchievementByName(achievementName);
 
             if (acm != null)
-            {
                 DoReportAchievementProgress(acm.Id, 0.0f, callback);
-            }
             else
-            {
                 Debug.Log("Failed to reveal achievement: unknown achievement name.");
-            }
         }
 
         /// <summary>
@@ -362,16 +345,12 @@ namespace EasyMobile
         /// <param name="callback">Callback receives a <c>true</c> value if the achievement is unlocked successfully, otherwise it receives <c>false</c>.</param>
         public static void UnlockAchievement(string achievementName, Action<bool> callback = null)
         {
-            Achievement acm = GetAchievementByName(achievementName);
+            var acm = GetAchievementByName(achievementName);
 
             if (acm != null)
-            {
                 DoReportAchievementProgress(acm.Id, 100.0f, callback);
-            }
             else
-            {
                 Debug.Log("Failed to unlocked achievement: unknown achievement name.");
-            }
         }
 
         /// <summary>
@@ -380,18 +359,15 @@ namespace EasyMobile
         /// <param name="achievementName">Achievement name.</param>
         /// <param name="progress">Progress.</param>
         /// <param name="callback">Callback receives a <c>true</c> value if the achievement progress is reported successfully, otherwise it receives <c>false</c>.</param>
-        public static void ReportAchievementProgress(string achievementName, double progress, Action<bool> callback = null)
+        public static void ReportAchievementProgress(string achievementName, double progress,
+            Action<bool> callback = null)
         {
-            Achievement acm = GetAchievementByName(achievementName);
+            var acm = GetAchievementByName(achievementName);
 
             if (acm != null)
-            {
                 DoReportAchievementProgress(acm.Id, progress, callback);
-            }
             else
-            {
                 Debug.Log("Failed to report incremental achievement progress: unknown achievement name.");
-            }
         }
 
         /// <summary>
@@ -421,18 +397,18 @@ namespace EasyMobile
             else
             {
                 Social.localUser.LoadFriends(success =>
+                {
+                    if (success)
                     {
-                        if (success)
-                        {
-                            if (callback != null)
-                                callback(Social.localUser.friends);
-                        }
-                        else
-                        {
-                            if (callback != null)
-                                callback(new IUserProfile[0]);
-                        }
-                    });
+                        if (callback != null)
+                            callback(Social.localUser.friends);
+                    }
+                    else
+                    {
+                        if (callback != null)
+                            callback(new IUserProfile[0]);
+                    }
+                });
             }
         }
 
@@ -473,7 +449,7 @@ namespace EasyMobile
                 return;
             }
 
-            Leaderboard ldb = GetLeaderboardByName(leaderboardName);
+            var ldb = GetLeaderboardByName(leaderboardName);
 
             if (ldb == null)
             {
@@ -484,7 +460,7 @@ namespace EasyMobile
             }
 
             // Create new request
-            LoadScoreRequest request = new LoadScoreRequest();
+            var request = new LoadScoreRequest();
             request.leaderboardName = ldb.Name;
             request.leaderboardId = ldb.Id;
             request.callback = callback;
@@ -509,7 +485,8 @@ namespace EasyMobile
         /// <param name="timeScope">Time scope.</param>
         /// <param name="userScope">User scope.</param>
         /// <param name="callback">Callback receives the leaderboard name and an array of loaded scores.</param>
-        public static void LoadScores(string leaderboardName, int fromRank, int scoreCount, TimeScope timeScope, UserScope userScope, Action<string, IScore[]> callback)
+        public static void LoadScores(string leaderboardName, int fromRank, int scoreCount, TimeScope timeScope,
+            UserScope userScope, Action<string, IScore[]> callback)
         {
             // IMPORTANT: On Android, the fromRank argument is ignored and the score range always starts at 1.
             // (This is not the intended behavior according to the SocialPlatform.Range documentation, and may simply be
@@ -522,7 +499,7 @@ namespace EasyMobile
                 return;
             }
 
-            Leaderboard ldb = GetLeaderboardByName(leaderboardName);
+            var ldb = GetLeaderboardByName(leaderboardName);
 
             if (ldb == null)
             {
@@ -533,7 +510,7 @@ namespace EasyMobile
             }
 
             // Create new request
-            LoadScoreRequest request = new LoadScoreRequest();
+            var request = new LoadScoreRequest();
             request.leaderboardName = ldb.Name;
             request.leaderboardId = ldb.Id;
             request.callback = callback;
@@ -561,13 +538,14 @@ namespace EasyMobile
         {
             if (!IsInitialized())
             {
-                Debug.LogFormat("Failed to load local user's score from leaderboard {0}: user is not logged in.", leaderboardName);
+                Debug.LogFormat("Failed to load local user's score from leaderboard {0}: user is not logged in.",
+                    leaderboardName);
                 if (callback != null)
                     callback(leaderboardName, null);
                 return;
             }
 
-            Leaderboard ldb = GetLeaderboardByName(leaderboardName);
+            var ldb = GetLeaderboardByName(leaderboardName);
 
             if (ldb == null)
             {
@@ -578,10 +556,10 @@ namespace EasyMobile
             }
 
             // Create new request
-            LoadScoreRequest request = new LoadScoreRequest();
+            var request = new LoadScoreRequest();
             request.leaderboardName = ldb.Name;
             request.leaderboardId = ldb.Id;
-            request.callback = delegate (string ldbName, IScore[] scores)
+            request.callback = delegate(string ldbName, IScore[] scores)
             {
                 if (scores != null)
                 {
@@ -614,11 +592,9 @@ namespace EasyMobile
         /// <param name="leaderboardName">Leaderboard name.</param>
         public static Leaderboard GetLeaderboardByName(string leaderboardName)
         {
-            foreach (Leaderboard ldb in EM_Settings.GameServices.Leaderboards)
-            {
+            foreach (var ldb in EM_Settings.GameServices.Leaderboards)
                 if (ldb.Name.Equals(leaderboardName))
                     return ldb;
-            }
 
             return null;
         }
@@ -630,11 +606,9 @@ namespace EasyMobile
         /// <param name="achievementName">Achievement name.</param>
         public static Achievement GetAchievementByName(string achievementName)
         {
-            foreach (Achievement acm in EM_Settings.GameServices.Achievements)
-            {
+            foreach (var acm in EM_Settings.GameServices.Achievements)
                 if (acm.Name.Equals(achievementName))
                     return acm;
-            }
 
             return null;
         }
@@ -645,10 +619,7 @@ namespace EasyMobile
         /// <returns></returns>
         public static string GetServerAuthCode()
         {
-            if (!IsInitialized())
-            {
-                return string.Empty;
-            }
+            if (!IsInitialized()) return string.Empty;
 
 #if UNITY_ANDROID && EM_GPGS
             return PlayGamesPlatform.Instance.GetServerAuthCode();
@@ -668,10 +639,7 @@ namespace EasyMobile
         /// <param name="callback"></param>
         public static void GetAnotherServerAuthCode(bool reAuthenticateIfNeeded, Action<string> callback)
         {
-            if (!IsInitialized())
-            {
-                return;
-            }
+            if (!IsInitialized()) return;
 
 #if UNITY_ANDROID && EM_GPGS
             PlayGamesPlatform.Instance.GetAnotherServerAuthCode(reAuthenticateIfNeeded, callback);
@@ -687,10 +655,7 @@ namespace EasyMobile
         /// </summary>
         public static void SignOut()
         {
-            if (!IsInitialized())
-            {
-                return;
-            }
+            if (!IsInitialized()) return;
 
 #if UNITY_ANDROID && EM_GPGS
             PlayGamesPlatform.Instance.SignOut();
@@ -750,7 +715,7 @@ namespace EasyMobile
 
         #region Private methods
 
-        static void DoReportScore(long score, string leaderboardId, Action<bool> callback)
+        private static void DoReportScore(long score, string leaderboardId, Action<bool> callback)
         {
             if (!IsInitialized())
             {
@@ -773,7 +738,7 @@ namespace EasyMobile
 
         // Progress of 0.0% means reveal the achievement.
         // Progress of 100.0% means unlock the achievement.
-        static void DoReportAchievementProgress(string achievementId, double progress, Action<bool> callback)
+        private static void DoReportAchievementProgress(string achievementId, double progress, Action<bool> callback)
         {
             if (!IsInitialized())
             {
@@ -794,7 +759,7 @@ namespace EasyMobile
             );
         }
 
-        static void DoNextLoadScoreRequest()
+        private static void DoNextLoadScoreRequest()
         {
             LoadScoreRequest request;
 
@@ -806,10 +771,10 @@ namespace EasyMobile
 
             isLoadingScore = true;
             request = loadScoreRequests[0]; // fetch the next request
-            loadScoreRequests.RemoveAt(0);  // then remove it from the queue
+            loadScoreRequests.RemoveAt(0); // then remove it from the queue
 
             // Now create a new leaderboard and start loading scores
-            ILeaderboard ldb = Social.CreateLeaderboard();
+            var ldb = Social.CreateLeaderboard();
             ldb.id = request.leaderboardId;
 
             if (request.useLeaderboardDefault)
@@ -821,14 +786,14 @@ namespace EasyMobile
 #if UNITY_ANDROID
                 // On Android, we'll use LoadScores directly from Social.
                 Social.LoadScores(ldb.id, (IScore[] scores) =>
-                    {
-                        if (request.callback != null)
-                            request.callback(request.leaderboardName, scores);
+                {
+                    if (request.callback != null)
+                        request.callback(request.leaderboardName, scores);
 
-                        // Load next request
-                        isLoadingScore = false;
-                        DoNextLoadScoreRequest();
-                    });
+                    // Load next request
+                    isLoadingScore = false;
+                    DoNextLoadScoreRequest();
+                });
 #elif UNITY_IOS
                 // On iOS, we use LoadScores from ILeaderboard with default parameters.
                 ldb.LoadScores((bool success) =>
@@ -849,29 +814,27 @@ namespace EasyMobile
                 ldb.userScope = request.userScope;
 
                 if (request.fromRank > 0 && request.scoreCount > 0)
-                {
                     ldb.range = new Range(request.fromRank, request.scoreCount);
-                }
 
                 ldb.LoadScores((bool success) =>
+                {
+                    if (request.loadLocalUserScore)
                     {
-                        if (request.loadLocalUserScore)
-                        {
-                            IScore[] returnScores = new IScore[] { ldb.localUserScore };
+                        var returnScores = new IScore[] {ldb.localUserScore};
 
-                            if (request.callback != null)
-                                request.callback(request.leaderboardName, returnScores);
-                        }
-                        else
-                        {
-                            if (request.callback != null)
-                                request.callback(request.leaderboardName, ldb.scores);
-                        }
+                        if (request.callback != null)
+                            request.callback(request.leaderboardName, returnScores);
+                    }
+                    else
+                    {
+                        if (request.callback != null)
+                            request.callback(request.leaderboardName, ldb.scores);
+                    }
 
-                        // Load next request
-                        isLoadingScore = false;
-                        DoNextLoadScoreRequest();
-                    });
+                    // Load next request
+                    isLoadingScore = false;
+                    DoNextLoadScoreRequest();
+                });
             }
         }
 
@@ -881,7 +844,7 @@ namespace EasyMobile
 
         // This function gets called when Authenticate completes
         // Note that if the operation is successful, Social.localUser will contain data from the server.
-        static void ProcessAuthentication(bool success)
+        private static void ProcessAuthentication(bool success)
         {
             if (success)
             {
@@ -908,16 +871,12 @@ namespace EasyMobile
             }
         }
 
-        static void ProcessLoadedAchievements(IAchievement[] achievements)
+        private static void ProcessLoadedAchievements(IAchievement[] achievements)
         {
             if (achievements.Length == 0)
-            {
                 Debug.Log("No achievements found.");
-            }
             else
-            {
                 Debug.Log("Got " + achievements.Length + " achievements.");
-            }
         }
 
         #endregion
@@ -961,6 +920,5 @@ namespace EasyMobile
 #endif
 
         #endregion
-
     }
 }

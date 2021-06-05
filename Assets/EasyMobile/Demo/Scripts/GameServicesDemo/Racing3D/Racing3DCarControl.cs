@@ -30,49 +30,36 @@ namespace EasyMobile.Demo
             }
         }
 
-        [SerializeField]
-        private Rigidbody rb = null;
+        [SerializeField] private Rigidbody rb = null;
 
-        [SerializeField]
-        private GameObject hightlightObject = null;
+        [SerializeField] private GameObject hightlightObject = null;
 
-        [SerializeField]
-        private Racing3DGameControl gameControl = null;
+        [SerializeField] private Racing3DGameControl gameControl = null;
 
-        [SerializeField]
-        private Racing3DGameView gameView = null;
+        [SerializeField] private Racing3DGameView gameView = null;
 
-        [Space]
-        [SerializeField]
-        private bool controlable;
+        [Space] [SerializeField] private bool controlable;
 
-        [SerializeField, Range(0, 50)]
-        private int nitro = 0;
+        [SerializeField] [Range(0, 50)] private int nitro = 0;
 
-        [SerializeField]
-        private string powerUpsName = "Nitro", finishLineName = "FinishLine";
+        [SerializeField] private string powerUpsName = "Nitro", finishLineName = "FinishLine";
 
-        [SerializeField]
-        private float defaultSpeed = 5f,
+        [SerializeField] private float defaultSpeed = 5f,
             maxSpeed = 50f,
             nitroBoost = 0.075f,
             nitroBoostFrame = 0.25f,
             nitroAutoFillRate = 0.5f,
             moveDistance = 0.5f;
 
-        [SerializeField]
-        private Vector3 defaultPosition = Vector3.zero;
+        [SerializeField] private Vector3 defaultPosition = Vector3.zero;
 
-        [SerializeField]
-        private int defaultRoadLine = 0,
+        [SerializeField] private int defaultRoadLine = 0,
             maxRoadLine = 3,
             finishLineSlowdownFrames = 120;
 
-        [SerializeField]
-        private Vector3 prepareCameraPosition = Vector3.zero;
+        [SerializeField] private Vector3 prepareCameraPosition = Vector3.zero;
 
-        [SerializeField]
-        private OverheadInfo info = default(OverheadInfo);
+        [SerializeField] private OverheadInfo info = default;
 
         public bool IsMoving { get; private set; }
 
@@ -82,7 +69,7 @@ namespace EasyMobile.Demo
 
         public bool Controllable
         {
-            get { return controlable; }
+            get => controlable;
             set
             {
                 controlable = value;
@@ -92,19 +79,19 @@ namespace EasyMobile.Demo
 
         public float Speed
         {
-            get { return speed; }
-            set { speed = Mathf.Clamp(value, 0, maxSpeed); }
+            get => speed;
+            set => speed = Mathf.Clamp(value, 0, maxSpeed);
         }
 
         public int Nitro
         {
-            get { return nitro; }
-            set { nitro = Mathf.Clamp(value, 0, 50); }
+            get => nitro;
+            set => nitro = Mathf.Clamp(value, 0, 50);
         }
 
         public int CurrentRoadLine { get; private set; }
 
-        public Vector3 PrepareCameraPosition { get { return prepareCameraPosition; } }
+        public Vector3 PrepareCameraPosition => prepareCameraPosition;
 
         private Coroutine useNitroCoroutine = null;
         private float speed;
@@ -191,22 +178,21 @@ namespace EasyMobile.Demo
 
             if (IsUsingNitro && useNitroCoroutine != null)
                 StopCoroutine(useNitroCoroutine);
-
         }
 
         public void Move(Racing3DGameModel.MoveDirections direction)
         {
-            if ((direction == Racing3DGameModel.MoveDirections.Left && CurrentRoadLine < 1) ||
-                (direction == Racing3DGameModel.MoveDirections.Right && CurrentRoadLine >= maxRoadLine))
+            if (direction == Racing3DGameModel.MoveDirections.Left && CurrentRoadLine < 1 ||
+                direction == Racing3DGameModel.MoveDirections.Right && CurrentRoadLine >= maxRoadLine)
                 return;
 
-            int newRoadLine = direction == Racing3DGameModel.MoveDirections.Left ? CurrentRoadLine - 1 : CurrentRoadLine + 1;
+            var newRoadLine = direction == Racing3DGameModel.MoveDirections.Left
+                ? CurrentRoadLine - 1
+                : CurrentRoadLine + 1;
 
             if (gameControl.OpponentCar.CurrentRoadLine == newRoadLine)
-            {
                 if (Mathf.Abs(transform.position.y - gameControl.OpponentCar.transform.position.y) <= 0.9f)
                     return;
-            }
 
 
             if (direction == Racing3DGameModel.MoveDirections.Left)
@@ -248,12 +234,12 @@ namespace EasyMobile.Demo
 
             IsUsingNitro = true;
             int steps = 0, maxSteps = nitro;
-            float originalSpeed = speed;
-            float maxSpeed = originalSpeed + maxSteps * nitroBoost;
+            var originalSpeed = speed;
+            var maxSpeed = originalSpeed + maxSteps * nitroBoost;
 
             while (steps <= maxSteps)
             {
-                speed = Mathf.Lerp(originalSpeed, maxSpeed, (float)steps / maxSteps);
+                speed = Mathf.Lerp(originalSpeed, maxSpeed, (float) steps / maxSteps);
                 steps++;
                 nitro--;
                 yield return null;
@@ -285,12 +271,13 @@ namespace EasyMobile.Demo
                 yield break;
 
             var factor = Speed / slowdownFrames;
-            int currentFrame = 0;
+            var currentFrame = 0;
             while (currentFrame <= slowdownFrames)
             {
                 Speed -= factor;
                 yield return new WaitForEndOfFrame();
             }
+
             Speed = 0;
             IsMoving = false;
             rb.velocity = Vector3.zero;
@@ -299,12 +286,8 @@ namespace EasyMobile.Demo
         private void OnTriggerEnter(Collider other)
         {
             if (!Controllable)
-            {
                 if (other.gameObject.name.Equals(powerUpsName))
-                {
                     other.gameObject.SetActive(false);
-                }
-            }
 
             if (!Controllable || !gameControl.IsPlaying)
                 return;

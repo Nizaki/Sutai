@@ -9,8 +9,7 @@ namespace EasyMobile.Demo
 {
     public class GameServicesDemo : MonoBehaviour
     {
-        [Header("Object References")]
-        public GameObject curtain;
+        [Header("Object References")] public GameObject curtain;
         public GameObject isAutoInitInfo;
         public GameObject isInitializedInfo;
         public Text selectedAchievementInfo;
@@ -20,44 +19,40 @@ namespace EasyMobile.Demo
         public GameObject scrollableListPrefab;
         public GameObject requestFriendListConsentUI;
 
-        Achievement selectedAchievement;
-        Leaderboard selectedLeaderboard;
-        bool lastLoginState;
+        private Achievement selectedAchievement;
+        private Leaderboard selectedLeaderboard;
+        private bool lastLoginState;
 
-        void Awake()
+        private void Awake()
         {
             // Init EM runtime if needed (useful in case only this scene is built).
             if (!RuntimeManager.IsInitialized())
                 RuntimeManager.Init();
         }
 
-        void Start()
+        private void Start()
         {
             curtain.SetActive(!EM_Settings.IsGameServicesModuleEnable);
 
-            bool needToAskFriendListConsent = false;
+            var needToAskFriendListConsent = false;
 #if UNITY_ANDROID && EM_GPGS
             needToAskFriendListConsent = true;
 #endif
             requestFriendListConsentUI.SetActive(needToAskFriendListConsent);
         }
 
-        void Update()
+        private void Update()
         {
             // Check if autoInit is on.
             if (EM_Settings.GameServices.IsAutoInit)
-            {
                 demoUtils.DisplayBool(isAutoInitInfo, true, "Auto Initialization: ON");
-            }
             else
-            {
                 demoUtils.DisplayBool(isAutoInitInfo, false, "Auto Initialization: OFF");
-            }
 
             // Check if the module is initalized.
             if (GameServices.IsInitialized())
             {
-                demoUtils.DisplayBool(isInitializedInfo, true, "User Logged In: TRUE");  
+                demoUtils.DisplayBool(isInitializedInfo, true, "User Logged In: TRUE");
             }
             else
             {
@@ -65,6 +60,7 @@ namespace EasyMobile.Demo
                 if (lastLoginState)
                     NativeUI.Alert("User Logged Out", "User has logged out.");
             }
+
             lastLoginState = GameServices.IsInitialized();
         }
 
@@ -73,13 +69,9 @@ namespace EasyMobile.Demo
         public void Init()
         {
             if (GameServices.IsInitialized())
-            {
                 NativeUI.Alert("Alert", "The module is already initialized.");
-            }
             else
-            {
                 GameServices.Init();
-            }
         }
 
         public void ShowLeaderboardUI()
@@ -90,13 +82,13 @@ namespace EasyMobile.Demo
             }
             else
             {
-                #if UNITY_ANDROID
+#if UNITY_ANDROID
                 GameServices.Init();
-                #elif UNITY_IOS
+#elif UNITY_IOS
                 NativeUI.Alert("Service Unavailable", "The user is not logged in.");
-                #else
+#else
                 Debug.Log("Cannot show leaderboards: platform not supported.");
-                #endif
+#endif
             }
         }
 
@@ -105,41 +97,37 @@ namespace EasyMobile.Demo
             if (GameServices.IsInitialized())
             {
                 if (selectedLeaderboard != null)
-                {
                     GameServices.ShowLeaderboardUI(selectedLeaderboard.Name);
-                }
                 else
-                {
                     NativeUI.Alert("Alert", "Please select a leaderboard first.");
-                }
             }
             else
             {
-                #if UNITY_ANDROID
+#if UNITY_ANDROID
                 GameServices.Init();
-                #elif UNITY_IOS
+#elif UNITY_IOS
                 NativeUI.Alert("Service Unavailable", "The user is not logged in.");
-                #else
+#else
                 Debug.Log("Cannot show leaderboards: platform not supported.");
-                #endif
+#endif
             }
         }
 
         public void ShowAchievementUI()
-        {            
+        {
             if (GameServices.IsInitialized())
             {
                 GameServices.ShowAchievementsUI();
             }
             else
             {
-                #if UNITY_ANDROID
+#if UNITY_ANDROID
                 GameServices.Init();
-                #elif UNITY_IOS
+#elif UNITY_IOS
                 NativeUI.Alert("Service Unavailable", "The user is not logged in.");
-                #else
+#else
                 Debug.Log("Cannot show achievements: platform not supported.");
-                #endif
+#endif
             }
         }
 
@@ -149,17 +137,15 @@ namespace EasyMobile.Demo
 
             if (achievements == null || achievements.Length == 0)
             {
-                NativeUI.Alert("Alert", "You haven't added any achievement. Please go to Window > Easy Mobile > Settings and add some.");
+                NativeUI.Alert("Alert",
+                    "You haven't added any achievement. Please go to Window > Easy Mobile > Settings and add some.");
                 selectedAchievement = null;
                 return;
             }
-                                
+
             var items = new Dictionary<string, string>();
 
-            foreach (Achievement acm in achievements)
-            {
-                items.Add(acm.Name, acm.Id);
-            }
+            foreach (var acm in achievements) items.Add(acm.Name, acm.Id);
 
             var scrollableList = ScrollableList.Create(scrollableListPrefab, "ACHIEVEMENTS", items);
             scrollableList.ItemSelected += OnAchievementSelected;
@@ -174,13 +160,9 @@ namespace EasyMobile.Demo
             }
 
             if (selectedAchievement != null)
-            {
                 GameServices.UnlockAchievement(selectedAchievement.Name);
-            }
             else
-            {
                 NativeUI.Alert("Alert", "Please select an achievement to unlock.");
-            }
         }
 
         public void SelectLeaderboard()
@@ -189,17 +171,15 @@ namespace EasyMobile.Demo
 
             if (leaderboards == null || leaderboards.Length == 0)
             {
-                NativeUI.Alert("Alert", "You haven't added any leaderboard. Please go to Window > Easy Mobile > Settings and add some.");
+                NativeUI.Alert("Alert",
+                    "You haven't added any leaderboard. Please go to Window > Easy Mobile > Settings and add some.");
                 selectedAchievement = null;
                 return;
             }
 
             var items = new Dictionary<string, string>();
 
-            foreach (Leaderboard ldb in leaderboards)
-            {
-                items.Add(ldb.Name, ldb.Id);
-            }
+            foreach (var ldb in leaderboards) items.Add(ldb.Name, ldb.Id);
 
             var scrollableList = ScrollableList.Create(scrollableListPrefab, "LEADERBOARDS", items);
             scrollableList.ItemSelected += OnLeaderboardSelected;
@@ -225,9 +205,10 @@ namespace EasyMobile.Demo
                 }
                 else
                 {
-                    int score = System.Convert.ToInt32(scoreInput.text);
+                    var score = Convert.ToInt32(scoreInput.text);
                     GameServices.ReportScore(score, selectedLeaderboard.Name);
-                    NativeUI.Alert("Alert", "Reported score " + score + " to leaderboard \"" + selectedLeaderboard.Name + "\".");
+                    NativeUI.Alert("Alert",
+                        "Reported score " + score + " to leaderboard \"" + selectedLeaderboard.Name + "\".");
                 }
             }
         }
@@ -241,13 +222,9 @@ namespace EasyMobile.Demo
             }
 
             if (selectedLeaderboard == null)
-            {
                 NativeUI.Alert("Alert", "Please select a leaderboard to load score from.");
-            }
             else
-            {
                 GameServices.LoadLocalUserScore(selectedLeaderboard.Name, OnLocalUserScoreLoaded);
-            }
         }
 
 #if UNITY_ANDROID && EM_GPGS
@@ -285,42 +262,37 @@ namespace EasyMobile.Demo
 
         #region Private
 
-        void OnAchievementSelected(ScrollableList list, string title, string subtitle)
+        private void OnAchievementSelected(ScrollableList list, string title, string subtitle)
         {
             list.ItemSelected -= OnAchievementSelected;
             selectedAchievement = GameServices.GetAchievementByName(title);
             selectedAchievementInfo.text = "Selected achievement: " + title;
         }
 
-        void OnLeaderboardSelected(ScrollableList list, string title, string subtitle)
+        private void OnLeaderboardSelected(ScrollableList list, string title, string subtitle)
         {
             list.ItemSelected -= OnLeaderboardSelected;
             selectedLeaderboard = GameServices.GetLeaderboardByName(title);
             selectedLeaderboardInfo.text = "Selected leaderboard: " + title;
         }
 
-        void OnLocalUserScoreLoaded(string leaderboardName, IScore score)
+        private void OnLocalUserScoreLoaded(string leaderboardName, IScore score)
         {
             if (score != null)
-            {
-                NativeUI.Alert("Local User Score Loaded", "Your score on leaderboard \"" + leaderboardName + "\" is " + score.value);
-            }
+                NativeUI.Alert("Local User Score Loaded",
+                    "Your score on leaderboard \"" + leaderboardName + "\" is " + score.value);
             else
-            {
-                NativeUI.Alert("Local User Score Load Failed", "You don't have any score reported to leaderboard \"" + leaderboardName + "\".");
-            }
+                NativeUI.Alert("Local User Score Load Failed",
+                    "You don't have any score reported to leaderboard \"" + leaderboardName + "\".");
         }
 
-        void OnFriendsLoaded(IUserProfile[] friends)
+        private void OnFriendsLoaded(IUserProfile[] friends)
         {
             if (friends.Length > 0)
             {
                 var items = new Dictionary<string, string>();
 
-                foreach (IUserProfile user in friends)
-                {
-                    items.Add(user.userName, user.id);
-                }
+                foreach (var user in friends) items.Add(user.userName, user.id);
 
                 ScrollableList.Create(scrollableListPrefab, "FRIEND LIST", items);
             }
@@ -351,4 +323,3 @@ namespace EasyMobile.Demo
         #endregion // Multiplayer
     }
 }
-

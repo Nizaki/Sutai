@@ -39,37 +39,14 @@ namespace EasyMobile.Editor
             // Nothing.
         }
 
-        public override List<string> AndroidManifestTemplatePaths
-        {
-            get
-            {
-                return null;
-            }
-        }
+        public override List<string> AndroidManifestTemplatePaths => null;
 
-        public override IAndroidPermissionRequired AndroidPermissionsHolder
-        {
-            get
-            {
-                return EM_Settings.Privacy as IAndroidPermissionRequired;
-            }
-        }
+        public override IAndroidPermissionRequired AndroidPermissionsHolder =>
+            EM_Settings.Privacy as IAndroidPermissionRequired;
 
-        public override IIOSInfoItemRequired iOSInfoItemsHolder
-        {
-            get
-            {
-                return EM_Settings.Privacy as IIOSInfoItemRequired;
-            }
-        }
+        public override IIOSInfoItemRequired iOSInfoItemsHolder => EM_Settings.Privacy as IIOSInfoItemRequired;
 
-        public override Module SelfModule
-        {
-            get
-            {
-                return Module.Privacy;
-            }
-        }
+        public override Module SelfModule => Module.Privacy;
 
         #endregion
     }

@@ -35,37 +35,37 @@ namespace EasyMobile.Internal
                 throw new NotImplementedException("Input must be class not enum!");
 
             if (inObj == null)
-                return default(TOut);
+                return default;
 
-            TOut outObj = new TOut();
+            var outObj = new TOut();
 
-            Type fromType = inObj.GetType();
-            Type toType = outObj.GetType();
+            var fromType = inObj.GetType();
+            var toType = outObj.GetType();
 
             // Copy properties
-            PropertyInfo[] inProps = fromType.GetProperties();
+            var inProps = fromType.GetProperties();
 
-            foreach (PropertyInfo inProp in inProps)
+            foreach (var inProp in inProps)
             {
-                PropertyInfo outProp = toType.GetProperty(inProp.Name);
+                var outProp = toType.GetProperty(inProp.Name);
 
                 if (outProp != null && outProp.CanWrite)
                 {
-                    object value = inProp.GetValue(inObj, null);
+                    var value = inProp.GetValue(inObj, null);
                     outProp.SetValue(outObj, value, null);
                 }
             }
 
             // Copy fields
-            FieldInfo[] inFields = fromType.GetFields(BindingFlags.Instance | BindingFlags.Public);
+            var inFields = fromType.GetFields(BindingFlags.Instance | BindingFlags.Public);
 
-            foreach (FieldInfo inField in inFields)
+            foreach (var inField in inFields)
             {
-                FieldInfo outField = toType.GetField(inField.Name);
+                var outField = toType.GetField(inField.Name);
 
                 if (outField != null && outField.IsPublic)
                 {
-                    object value = inField.GetValue(inObj);
+                    var value = inField.GetValue(inObj);
                     outField.SetValue(outObj, value);
                 }
             }

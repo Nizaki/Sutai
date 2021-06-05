@@ -6,16 +6,17 @@ using UnityEngine.UI;
 namespace EasyMobile.Demo
 {
     [Serializable]
-    public class InterstitialSection : LoadAndShowSection<InterstitialSection.DefaultInterstitialUI, InterstitialSection.CustomInterstitialUI>
+    public class InterstitialSection : LoadAndShowSection<InterstitialSection.DefaultInterstitialUI,
+        InterstitialSection.CustomInterstitialUI>
     {
         [Serializable]
         public class DefaultInterstitialUI : DefaultElement
         {
-            protected override string AdReadyMessage { get { return "IsInterstitialAdReady: TRUE"; } }
+            protected override string AdReadyMessage => "IsInterstitialAdReady: TRUE";
 
-            protected override string AdNotReadyMessage { get { return "IsInterstitialAdReady: FALSE"; } }
+            protected override string AdNotReadyMessage => "IsInterstitialAdReady: FALSE";
 
-            protected override string UnavailableAdAlertMessage { get { return "Interstitial ad is not loaded."; } }
+            protected override string UnavailableAdAlertMessage => "Interstitial ad is not loaded.";
 
             protected override bool IsAdReady()
             {
@@ -27,11 +28,10 @@ namespace EasyMobile.Demo
             /// </summary>
             protected override void LoadAd()
             {
-                if (Advertising.AutoAdLoadingMode == AutoAdLoadingMode.LoadAllDefinedPlacements || Advertising.AutoAdLoadingMode == AutoAdLoadingMode.LoadDefaultAds)
-                {
+                if (Advertising.AutoAdLoadingMode == AutoAdLoadingMode.LoadAllDefinedPlacements ||
+                    Advertising.AutoAdLoadingMode == AutoAdLoadingMode.LoadDefaultAds)
                     NativeUI.Alert("Alert", "autoLoadDefaultAds is currently enabled. " +
-                        "Ads will be loaded automatically in background without you having to do anything.");
-                }
+                                            "Ads will be loaded automatically in background without you having to do anything.");
 
                 Advertising.LoadInterstitialAd();
             }
@@ -50,30 +50,22 @@ namespace EasyMobile.Demo
         {
             private List<InterstitialAdNetwork> allInterstitialNetworks;
 
-            protected override string AdReadyMessage
-            {
-                get { return string.Format("IsInterstitialAdReady{0}: TRUE", string.IsNullOrEmpty(CustomKey) ? "" : "(" + CustomKey + ")"); }
-            }
+            protected override string AdReadyMessage => string.Format("IsInterstitialAdReady{0}: TRUE",
+                string.IsNullOrEmpty(CustomKey) ? "" : "(" + CustomKey + ")");
 
-            protected override string AdNotReadyMessage
-            {
-                get { return string.Format("IsInterstitialAdReady{0}: FALSE", string.IsNullOrEmpty(CustomKey) ? "" : "(" + CustomKey + ")"); }
-            }
+            protected override string AdNotReadyMessage => string.Format("IsInterstitialAdReady{0}: FALSE",
+                string.IsNullOrEmpty(CustomKey) ? "" : "(" + CustomKey + ")");
 
-            protected override string UnavailableAdAlertMessage
-            {
-                get { return string.Format("The interstitial ad at the {0} placement is not loaded.", string.IsNullOrEmpty(CustomKey) ? "default" : CustomKey); }
-            }
+            protected override string UnavailableAdAlertMessage => string.Format(
+                "The interstitial ad at the {0} placement is not loaded.",
+                string.IsNullOrEmpty(CustomKey) ? "default" : CustomKey);
 
-            private InterstitialAdNetwork SelectedNetwork
-            {
-                get { return allInterstitialNetworks[networkSelector.value]; }
-            }
+            private InterstitialAdNetwork SelectedNetwork => allInterstitialNetworks[networkSelector.value];
 
             protected override void InitNetworkDropdown()
             {
                 allInterstitialNetworks = new List<InterstitialAdNetwork>();
-                List<Dropdown.OptionData> optionDatas = new List<Dropdown.OptionData>();
+                var optionDatas = new List<Dropdown.OptionData>();
 
                 foreach (InterstitialAdNetwork network in Enum.GetValues(typeof(InterstitialAdNetwork)))
                 {
@@ -102,4 +94,3 @@ namespace EasyMobile.Demo
         }
     }
 }
-    

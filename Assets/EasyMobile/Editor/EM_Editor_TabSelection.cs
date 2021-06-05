@@ -40,7 +40,9 @@ namespace EasyMobile.Editor
 
         private GUIStyle GetSectionStyle(Section section)
         {
-            return section != activeSection ? EM_GUIStyleManager.GetCustomStyle("Tab Label") : EM_GUIStyleManager.GetCustomStyle("Tab Label Selected");
+            return section != activeSection
+                ? EM_GUIStyleManager.GetCustomStyle("Tab Label")
+                : EM_GUIStyleManager.GetCustomStyle("Tab Label Selected");
         }
     }
 }

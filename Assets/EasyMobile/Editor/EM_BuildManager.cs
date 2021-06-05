@@ -17,7 +17,7 @@ namespace EasyMobile.Editor
 
     public class EM_PreBuildProcessor : IPreprocessBuildWithReport
     {
-        public int callbackOrder { get { return 0; } }
+        public int callbackOrder => 0;
 
         public void OnPreprocessBuild(BuildReport report)
         {
@@ -27,7 +27,7 @@ namespace EasyMobile.Editor
 
     public class EM_PostBuildProcessor : IPostprocessBuildWithReport
     {
-        public int callbackOrder { get { return 9999; } }
+        public int callbackOrder => 9999;
 
         public void OnPostprocessBuild(BuildReport report)
         {
@@ -78,24 +78,22 @@ namespace EasyMobile.Editor
         {
             // Auto initialization check warning
             if (!EM_Settings.IsRuntimeAutoInitializationEnabled)
-            {
                 Debug.LogWarning(
                     "Easy Mobile's Auto Runtime Initialization feature is turned off. " +
                     "Make sure you call RuntimeManager.Init() before using Easy Mobile API in your code. " +
                     "You can re-enable the feature in menu Window > Easy Mobile > Build tab > Auto Initialization.");
-            }
 
             if (target == BuildTarget.Android)
             {
                 // Force regenerating manifest at every build to avoid issues due to
                 // the generated file being removed unintentionally.
-                string jdkPath = EM_EditorUtil.GetJdkPath();
+                var jdkPath = EM_EditorUtil.GetJdkPath();
 
                 if (string.IsNullOrEmpty(jdkPath))
                     throw new BuildFailedException(
                         "A JDK path needs to be specified for the Android build. Go to Preferences > External Tools > JDK to set it.");
 
-                EM_AndroidManifestBuilder.GenerateManifest(jdkPath, forceGenerate: true);
+                EM_AndroidManifestBuilder.GenerateManifest(jdkPath, true);
             }
         }
 
@@ -148,7 +146,6 @@ namespace EasyMobile.Editor
         }
 
 #if UNITY_IOS
-
         private static PlistDocument ReadPlist(string plistPath)
         {
             PlistDocument plist = new PlistDocument();

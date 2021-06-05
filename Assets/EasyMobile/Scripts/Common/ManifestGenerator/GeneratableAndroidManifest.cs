@@ -12,14 +12,13 @@ namespace EasyMobile.ManifestGenerator
     [Serializable]
     public class GeneratableAndroidManifest
     {
-        [SerializeField]
-        private AndroidManifestElement manifestElement = new ManifestElement();
+        [SerializeField] private AndroidManifestElement manifestElement = new ManifestElement();
 
-        public AndroidManifestElement ManifestElement { get { return manifestElement; } }
+        public AndroidManifestElement ManifestElement => manifestElement;
 
         public void Save(string path, List<AndroidManifestElement> elementsFactory)
         {
-            XmlDocument RootXmlDocument = new XmlDocument();
+            var RootXmlDocument = new XmlDocument();
 
             /// Create header.
             XmlNode headerNode = RootXmlDocument.CreateXmlDeclaration("1.0", "UTF-8", null);

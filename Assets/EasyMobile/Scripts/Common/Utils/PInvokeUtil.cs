@@ -10,10 +10,7 @@ namespace EasyMobile.Internal
     {
         internal static HandleRef CheckNonNull(HandleRef reference)
         {
-            if (IsNull(reference))
-            {
-                throw new System.InvalidOperationException();
-            }
+            if (IsNull(reference)) throw new InvalidOperationException();
 
             return reference;
         }
@@ -38,18 +35,15 @@ namespace EasyMobile.Internal
             return !IsNull(pointer);
         }
 
-        internal delegate int NativeToManagedArray<T>([In, Out] T[] buffer,int length);
+        internal delegate int NativeToManagedArray<T>([In] [Out] T[] buffer, int length);
 
         internal static T[] GetNativeArray<T>(NativeToManagedArray<T> method)
         {
-            int arraySize = method(null, 0);
-        
-            if (arraySize <= 0)
-            {
-                return new T[0];
-            }
-        
-            T[] array = new T[arraySize];
+            var arraySize = method(null, 0);
+
+            if (arraySize <= 0) return new T[0];
+
+            var array = new T[arraySize];
             method(array, arraySize);
             return array;
         }
@@ -57,10 +51,9 @@ namespace EasyMobile.Internal
         internal static string GetNativeString(NativeToManagedArray<byte> nativeToManagedCharArray)
         {
             string str = null;
-            byte[] charArr = GetNativeArray(nativeToManagedCharArray);
+            var charArr = GetNativeArray(nativeToManagedCharArray);
 
             if (charArr != null && charArr.Length > 0)
-            {
                 try
                 {
                     str = Encoding.UTF8.GetString(charArr);
@@ -69,19 +62,15 @@ namespace EasyMobile.Internal
                 {
                     Debug.LogError("Exception creating string from char array: " + e);
                 }
-            }
 
             return str;
         }
 
         internal static byte[] CopyNativeByteArray(IntPtr data, int dataLength)
         {
-            if (dataLength == 0 || data.Equals(IntPtr.Zero))
-            {
-                return null;
-            }
+            if (dataLength == 0 || data.Equals(IntPtr.Zero)) return null;
 
-            byte[] convertedData = new byte[dataLength];
+            var convertedData = new byte[dataLength];
             Marshal.Copy(data, convertedData, 0, dataLength);
 
             return convertedData;
@@ -89,11 +78,7 @@ namespace EasyMobile.Internal
 
         internal static IEnumerable<T> ToEnumerable<T>(int size, Func<int, T> getElement)
         {
-            for (int i = 0; i < size; i++)
-            {
-                yield return getElement(i);
-            }
+            for (var i = 0; i < size; i++) yield return getElement(i);
         }
     }
 }
-

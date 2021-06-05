@@ -141,7 +141,7 @@ namespace EasyMobile.ManifestGenerator.Elements
         /// Lets you express an application's compatibility with one or more versions of the Android platform,
         /// by means of an API level integer.
         /// </summary>
-        UsesSdk,
+        UsesSdk
     }
 
     public static class AndroidManifestElementStyleExtension
@@ -215,58 +215,58 @@ namespace EasyMobile.ManifestGenerator.Elements
                 case AndroidManifestElementStyles.Action: return new ActionElement();
 
                 case AndroidManifestElementStyles.Activity: return new ActivityElement();
-                    
+
                 case AndroidManifestElementStyles.ActivityAlias: return new ActivityAliasElement();
-                    
+
                 case AndroidManifestElementStyles.Application: return new ApplicationElement();
-                    
+
                 case AndroidManifestElementStyles.Category: return new CategoryElement();
-                    
+
                 case AndroidManifestElementStyles.Data: return new DataElement();
-                    
+
                 case AndroidManifestElementStyles.GrantUriPermission: return new GrantUriPermissionElement();
-                    
+
                 case AndroidManifestElementStyles.Instrumentation: return new InstrumentationElement();
-                    
+
                 case AndroidManifestElementStyles.IntentFilter: return new IntentFilterElement();
-                    
+
                 case AndroidManifestElementStyles.Manifest: return new ManifestElement();
-                        
+
                 case AndroidManifestElementStyles.MetaData: return new MetaDataElement();
-                    
+
                 case AndroidManifestElementStyles.PathPermission: return new PathPermissionElement();
-                    
+
                 case AndroidManifestElementStyles.Permission: return new PermissionElement();
-                    
+
                 case AndroidManifestElementStyles.PermissionGroup: return new PermissionGroupElement();
-                    
+
                 case AndroidManifestElementStyles.PermissionTree: return new PermissionTreeElement();
-                    
+
                 case AndroidManifestElementStyles.Provider: return new ProviderElement();
-                    
+
                 case AndroidManifestElementStyles.Receiver: return new ReceiverElement();
-                    
+
                 case AndroidManifestElementStyles.Service: return new ServiceElement();
-                    
+
                 case AndroidManifestElementStyles.SupportsGlTexture: return new SupportsGlTextureElement();
-                    
+
                 case AndroidManifestElementStyles.SupportsScreens: return new SupportsScreensElement();
-                    
+
                 case AndroidManifestElementStyles.UsesConfiguration: return new UsesConfigurationElement();
-                    
+
                 case AndroidManifestElementStyles.UsesFeature: return new UsesFeatureElement();
-                    
+
                 case AndroidManifestElementStyles.UsesLibrary: return new UsesLibraryElement();
-                    
+
                 case AndroidManifestElementStyles.UsesPermission: return new UsesPermissionElement();
-                    
+
                 case AndroidManifestElementStyles.UsesPermissionSdk23: return new UsesPermissionSdk23Element();
-                    
+
                 case AndroidManifestElementStyles.UsesSdk: return new UsesSdkElement();
-                    
+
                 case AndroidManifestElementStyles.None:
                 default:
-                        return null;
+                    return null;
             }
         }
 

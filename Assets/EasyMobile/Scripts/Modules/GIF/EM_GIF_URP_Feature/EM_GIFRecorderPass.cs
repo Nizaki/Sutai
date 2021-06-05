@@ -7,7 +7,7 @@ using UnityEngine.Rendering.Universal;
 
 public class EM_GIFRecorderPass : ScriptableRenderPass
 {
-    string profilerTag;
+    private string profilerTag;
 
     private RenderTargetIdentifier cameraColorTargetIdent;
     private RenderTexture targetBlit;
@@ -33,7 +33,7 @@ public class EM_GIFRecorderPass : ScriptableRenderPass
 
     public override void Execute(ScriptableRenderContext context, ref RenderingData renderingData)
     {
-        CommandBuffer cmd = CommandBufferPool.Get(profilerTag);
+        var cmd = CommandBufferPool.Get(profilerTag);
         cmd.Clear();
         cmd.Blit(cameraColorTargetIdent, targetBlit);
         context.ExecuteCommandBuffer(cmd);

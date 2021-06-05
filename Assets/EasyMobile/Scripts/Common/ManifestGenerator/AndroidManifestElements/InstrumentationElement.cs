@@ -15,18 +15,12 @@ namespace EasyMobile.ManifestGenerator.Elements
 
         public override IEnumerable<AndroidManifestElementStyles> ParentStyles
         {
-            get
-            {
-                yield return AndroidManifestElementStyles.Manifest;
-            }
+            get { yield return AndroidManifestElementStyles.Manifest; }
         }
 
         public override IEnumerable<AndroidManifestElementStyles> ChildStyles
         {
-            get
-            {
-                yield break;
-            }
+            get { yield break; }
         }
 
         public override IEnumerable<string> AllAvailableAttributes

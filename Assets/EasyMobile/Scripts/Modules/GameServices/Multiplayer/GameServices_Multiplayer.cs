@@ -74,13 +74,7 @@ namespace EasyMobile
         /// Gets the currently registered invitation delegate.
         /// </summary>
         /// <value>The invitation delegate.</value>
-        public static InvitationReceivedDelegate InvitationDelegate
-        {
-            get
-            {
-                return sInvitationDelegate;
-            }
-        }
+        public static InvitationReceivedDelegate InvitationDelegate => sInvitationDelegate;
 
         private static ITurnBasedMultiplayerClient sTurnBasedClient;
         private static IRealTimeMultiplayerClient sRealTimeClient;
@@ -143,7 +137,6 @@ namespace EasyMobile
         #endregion
 
 #if UNITY_ANDROID && EM_GPGS && EM_OBSOLETE_GPGS
-
         internal class GPGS_PendingTurnBasedMatchDelegate
         {
             public GPGS_TurnBasedMatch Match { get; private set; }
@@ -197,7 +190,6 @@ namespace EasyMobile
 #endif
 
 #if UNITY_IOS
-        
         private static void RegisterDefaultGKLocalPlayerListener()
         {
             GKLocalPlayer.LocalPlayer.RegisterListener(new InternalGKLocalPlayerListenerImpl());
@@ -224,4 +216,3 @@ namespace EasyMobile
 #endif
     }
 }
-

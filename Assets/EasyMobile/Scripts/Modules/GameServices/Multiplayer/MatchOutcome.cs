@@ -66,7 +66,8 @@ namespace EasyMobile
         public void SetParticipantResult(string participantId, ParticipantResult result)
         {
             if (result == ParticipantResult.CustomPlacement)
-                Debug.Log("Do not set ParticipantResult.CustomPlacement directly. Use SetParticipantPlacement method instead.");
+                Debug.Log(
+                    "Do not set ParticipantResult.CustomPlacement directly. Use SetParticipantPlacement method instead.");
 
             SetParticipantResultAndPlacement(participantId, result, PlacementUnset);
         }
@@ -85,10 +86,7 @@ namespace EasyMobile
         // Sets a result and placement for the given participant.
         private void SetParticipantResultAndPlacement(string participantId, ParticipantResult result, uint placement)
         {
-            if (!mParticipantIds.Contains(participantId))
-            {
-                mParticipantIds.Add(participantId);
-            }
+            if (!mParticipantIds.Contains(participantId)) mParticipantIds.Add(participantId);
 
             mPlacements[participantId] = placement;
             mResults[participantId] = result;
@@ -98,13 +96,7 @@ namespace EasyMobile
         /// The list of the participant IDs added to this match outcome.
         /// </summary>
         /// <value>The participant ids.</value>
-        public List<string> ParticipantIds
-        {
-            get
-            {
-                return mParticipantIds;
-            }
-        }
+        public List<string> ParticipantIds => mParticipantIds;
 
         /// <summary>
         /// Returns the result for the given participant ID.
@@ -113,8 +105,7 @@ namespace EasyMobile
         /// <param name="participantId">Participant identifier.</param>
         public ParticipantResult GetParticipantResult(string participantId)
         {
-            return mResults.ContainsKey(participantId) ? mResults[participantId] :
-                                ParticipantResult.None;
+            return mResults.ContainsKey(participantId) ? mResults[participantId] : ParticipantResult.None;
         }
 
         /// <summary>
@@ -124,25 +115,21 @@ namespace EasyMobile
         /// <param name="participantId">Participant identifier.</param>
         public uint GetParticipantPlacement(string participantId)
         {
-            return mPlacements.ContainsKey(participantId) ? mPlacements[participantId] :
-                                PlacementUnset;
+            return mPlacements.ContainsKey(participantId) ? mPlacements[participantId] : PlacementUnset;
         }
 
         public override string ToString()
         {
             var sb = new StringBuilder();
             sb.Append("[MatchOutcome");
-            foreach (string pid in mParticipantIds)
-            {
+            foreach (var pid in mParticipantIds)
                 sb.Append(string.Format(" {0}->({1},{2})", pid,
-                        GetParticipantResult(pid), GetParticipantPlacement(pid)));
-            }
+                    GetParticipantResult(pid), GetParticipantPlacement(pid)));
 
             return sb.Append("]").ToString();
         }
 
 #if UNITY_ANDROID && EM_GPGS && EM_OBSOLETE_GPGS
-
         /// <summary>
         /// Construct new <see cref="GooglePlayGames.BasicApi.Multiplayer.MatchOutcome"/> based on this object.
         /// </summary>
@@ -162,7 +149,6 @@ namespace EasyMobile
     public static class ParticipantResultExtension
     {
 #if UNITY_ANDROID && EM_GPGS && EM_OBSOLETE_GPGS
-
         /// <summary>
         /// Convert from <see cref="MatchOutcome.ParticipantResult"/>
         /// to <see cref="GooglePlayGames.BasicApi.Multiplayer.MatchOutcome.ParticipantResult"/>.

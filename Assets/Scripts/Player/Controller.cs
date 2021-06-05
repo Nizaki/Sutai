@@ -6,7 +6,6 @@ namespace Player
     public class Controller : MonoBehaviour
     {
         public Joystick moveJoy;
-        public Joystick shootJoy;
         [SerializeField] private float speed = 5f;
         private Rigidbody2D rb;
         private Vector2 move;

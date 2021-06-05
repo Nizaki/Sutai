@@ -18,11 +18,12 @@ namespace EasyMobile
 
                     if (sInstance == null)
                     {
-                        #if !UNITY_EDITOR
+#if !UNITY_EDITOR
                         Debug.LogError("Easy Mobile settings not found! " +
                             "Please go to menu Windows > Easy Mobile > Settings to setup the plugin.");
-                        #endif
-                        sInstance = CreateInstance<EM_Settings>();   // Create a dummy scriptable object for temporary use.
+#endif
+                        sInstance =
+                            CreateInstance<EM_Settings>(); // Create a dummy scriptable object for temporary use.
                     }
                 }
 
@@ -37,33 +38,33 @@ namespace EasyMobile
 
         #region Module Settings
 
-        public static AdSettings Advertising { get { return Instance.mAdvertisingSettings; } }
+        public static AdSettings Advertising => Instance.mAdvertisingSettings;
 
-        public static GameServicesSettings GameServices { get { return Instance.mGameServiceSettings; } }
+        public static GameServicesSettings GameServices => Instance.mGameServiceSettings;
 
-        public static IAPSettings InAppPurchasing { get { return Instance.mInAppPurchaseSettings; } }
+        public static IAPSettings InAppPurchasing => Instance.mInAppPurchaseSettings;
 
-        public static PrivacySettings Privacy { get { return Instance.mPrivacySettings; } }
+        public static PrivacySettings Privacy => Instance.mPrivacySettings;
 
-        public static NotificationsSettings Notifications { get { return Instance.mNotificationSettings; } }
+        public static NotificationsSettings Notifications => Instance.mNotificationSettings;
 
-        public static SharingSettings Sharing { get { return Instance.mSharingSettings; } }
+        public static SharingSettings Sharing => Instance.mSharingSettings;
 
-        #if EASY_MOBILE_PRO
-        public static NativeApisSettings NativeApis { get { return Instance.mNativeApisSettings; } }
-        #endif
+#if EASY_MOBILE_PRO
+        public static NativeApisSettings NativeApis => Instance.mNativeApisSettings;
+#endif
 
         // Rating Request (Store Review) belongs to Utilities module.
-        public static RatingRequestSettings RatingRequest { get { return Instance.mRatingRequestSettings; } }
+        public static RatingRequestSettings RatingRequest => Instance.mRatingRequestSettings;
 
-        public static bool IsRuntimeAutoInitializationEnabled { get { return Instance.mRuntimeAutoInitialization; } }
-        public static bool IsAdModuleEnable { get { return Instance.mIsAdModuleEnable; } }
+        public static bool IsRuntimeAutoInitializationEnabled => Instance.mRuntimeAutoInitialization;
+        public static bool IsAdModuleEnable => Instance.mIsAdModuleEnable;
 
-        public static bool IsIAPModuleEnable { get { return Instance.mIsIAPModuleEnable; } }
+        public static bool IsIAPModuleEnable => Instance.mIsIAPModuleEnable;
 
-        public static bool IsGameServicesModuleEnable { get { return Instance.mIsGameServiceModuleEnable; } }
+        public static bool IsGameServicesModuleEnable => Instance.mIsGameServiceModuleEnable;
 
-        public static bool IsNotificationsModuleEnable { get { return Instance.mIsNotificationModuleEnable; } }
+        public static bool IsNotificationsModuleEnable => Instance.mIsNotificationModuleEnable;
 
         public static bool IsCompositeModule(Module mod)
         {
@@ -96,7 +97,7 @@ namespace EasyMobile
                 case Module.Utilities:
                     return true;
                 default:
-                    return false;   
+                    return false;
             }
         }
 
@@ -105,17 +106,17 @@ namespace EasyMobile
             switch (submod)
             {
                 case Submodule.Contacts:
-                    #if EASY_MOBILE_PRO
+#if EASY_MOBILE_PRO
                     return NativeApis.IsContactsEnabled;
-                    #else
+#else
                     return false;
-                    #endif
+#endif
                 case Submodule.Media:
-                    #if EASY_MOBILE_PRO
+#if EASY_MOBILE_PRO
                     return NativeApis.IsMediaEnabled;
-                    #else
+#else
                     return false;
-                    #endif
+#endif
                 case Submodule.RatingRequest:
                     return true;
                 default:
@@ -129,53 +130,37 @@ namespace EasyMobile
 
         private static EM_Settings sInstance;
 
-        [SerializeField]
-        private AdSettings mAdvertisingSettings = null;
-        [SerializeField]
-        private GameServicesSettings mGameServiceSettings = null;
-        [SerializeField]
-        private IAPSettings mInAppPurchaseSettings = null;
-        [SerializeField]
-        private NotificationsSettings mNotificationSettings = null;
-        [SerializeField]
-        private PrivacySettings mPrivacySettings = null;
-        [SerializeField]
-        private RatingRequestSettings mRatingRequestSettings = null;
-        [SerializeField]
-        private SharingSettings mSharingSettings = null;
+        [SerializeField] private AdSettings mAdvertisingSettings = null;
+        [SerializeField] private GameServicesSettings mGameServiceSettings = null;
+        [SerializeField] private IAPSettings mInAppPurchaseSettings = null;
+        [SerializeField] private NotificationsSettings mNotificationSettings = null;
+        [SerializeField] private PrivacySettings mPrivacySettings = null;
+        [SerializeField] private RatingRequestSettings mRatingRequestSettings = null;
+        [SerializeField] private SharingSettings mSharingSettings = null;
 
-        #if EASY_MOBILE_PRO
-        [SerializeField]
-        private NativeApisSettings mNativeApisSettings = null;
-        #endif
+#if EASY_MOBILE_PRO
+        [SerializeField] private NativeApisSettings mNativeApisSettings = null;
+#endif
 
-        [SerializeField] 
-        private bool mRuntimeAutoInitialization = true;
-        [SerializeField]
-        private bool mIsAdModuleEnable = false;
-        [SerializeField]
-        private bool mIsIAPModuleEnable = false;
-        [SerializeField]
-        private bool mIsGameServiceModuleEnable = false;
-        [SerializeField]
-        private bool mIsNotificationModuleEnable = false;
-        [SerializeField]
-        private bool mIsSharingModuleEnable = false;
+        [SerializeField] private bool mRuntimeAutoInitialization = true;
+        [SerializeField] private bool mIsAdModuleEnable = false;
+        [SerializeField] private bool mIsIAPModuleEnable = false;
+        [SerializeField] private bool mIsGameServiceModuleEnable = false;
+        [SerializeField] private bool mIsNotificationModuleEnable = false;
+        [SerializeField] private bool mIsSharingModuleEnable = false;
 
 #if UNITY_EDITOR
 
         // These fields are only used as a SerializedProperty in the editor scripts, hence the warning suppression.
-        #pragma warning disable 0414
-        [SerializeField]
-        private int mActiveModuleIndex = 0;
+#pragma warning disable 0414
+        [SerializeField] private int mActiveModuleIndex = 0;
+
         // Index of the active module on the toolbar.
-        [SerializeField]
-        private bool mIsSelectingModule = true;
-        #pragma warning restore 0414
-       
-        #endif
+        [SerializeField] private bool mIsSelectingModule = true;
+#pragma warning restore 0414
+
+#endif
 
         #endregion
     }
 }
-

@@ -11,11 +11,13 @@ namespace EasyMobile
         internal Color32[][] imageData;
         internal string filepath;
         internal int loop;
+
         /// <summary>
         /// The sample factor used in the color quantization algorithm,
         /// determining the color quality of the output GIF.
         /// </summary>
         internal int sampleFac;
+
         internal bool isExporting;
         internal bool isDone;
         internal float progress;
@@ -24,4 +26,3 @@ namespace EasyMobile
         internal System.Threading.ThreadPriority workerPriority;
     }
 }
-

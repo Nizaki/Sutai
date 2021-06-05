@@ -2,8 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 #if EM_URP
-
 using UnityEngine.Rendering.Universal;
+
 public class EM_GIFRecorderFeature : ScriptableRendererFeature
 {
     [System.Serializable]
@@ -14,7 +14,7 @@ public class EM_GIFRecorderFeature : ScriptableRendererFeature
     }
 
     public Settings settings = new Settings();
-    EM_GIFRecorderPass gifRecorderPass;
+    private EM_GIFRecorderPass gifRecorderPass;
 
     private static Dictionary<Camera, RenderTexture> cameraTargetRTDict = new Dictionary<Camera, RenderTexture>();
 

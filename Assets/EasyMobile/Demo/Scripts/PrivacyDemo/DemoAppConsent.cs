@@ -83,7 +83,6 @@ namespace EasyMobile.Demo
                 Notifications.RevokeDataPrivacyConsent();
 
             // Here you can forward the consent to other relevant 3rd-party services if needed...
-
         }
 
         /// <summary>
@@ -102,7 +101,7 @@ namespace EasyMobile.Demo
         /// <returns>The demo app consent.</returns>
         public static DemoAppConsent LoadDemoAppConsent()
         {
-            string json = PlayerPrefs.GetString(DemoStorageKey, null);
+            var json = PlayerPrefs.GetString(DemoStorageKey, null);
 
             if (!string.IsNullOrEmpty(json))
                 return JsonUtility.FromJson<DemoAppConsent>(json);

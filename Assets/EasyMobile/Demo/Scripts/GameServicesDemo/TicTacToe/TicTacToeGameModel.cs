@@ -13,7 +13,7 @@ namespace EasyMobile.Demo
         {
             Blank,
             X,
-            O,
+            O
         };
 
         public enum Mark
@@ -26,7 +26,7 @@ namespace EasyMobile.Demo
             /// <summary>
             /// O. Always go second.
             /// </summary>
-            O,
+            O
         }
 
         [Serializable]
@@ -47,7 +47,7 @@ namespace EasyMobile.Demo
                 CurrentTurn = Mark.X;
 
                 Board = new TileState[Size][];
-                for (int i = 0; i < Board.Length; i++)
+                for (var i = 0; i < Board.Length; i++)
                     Board[i] = new TileState[Size];
             }
 
@@ -58,15 +58,15 @@ namespace EasyMobile.Demo
             {
                 try
                 {
-                    using (MemoryStream memoryStream = new MemoryStream())
+                    using (var memoryStream = new MemoryStream())
                     {
-                        BinaryFormatter binaryFormatter = new BinaryFormatter();
+                        var binaryFormatter = new BinaryFormatter();
                         binaryFormatter.Serialize(memoryStream, this);
                         return memoryStream.ToArray();
                     }
                 }
-                catch(Exception)
-                {                    
+                catch (Exception)
+                {
                     return null;
                 }
             }
@@ -75,9 +75,9 @@ namespace EasyMobile.Demo
             {
                 return string.Format("[TransferableDatas: Size ={0}, MoveCount ={1}, IsGameOver ={2}," +
                                      "Board ={3}, CurrentTurn ={4}, FinalResult ={5}, XPlayerId ={6}]",
-                                     Size, MoveCount, IsGameOver,
-                                     string.Join(", ", Board.SelectMany(ar => ar).Select(t => t.ToString()).ToArray()),
-                                     CurrentTurn, FinalResult, XPlayerId);
+                    Size, MoveCount, IsGameOver,
+                    string.Join(", ", Board.SelectMany(ar => ar).Select(t => t.ToString()).ToArray()),
+                    CurrentTurn, FinalResult, XPlayerId);
             }
 
             /// <summary>
@@ -88,12 +88,12 @@ namespace EasyMobile.Demo
                 if (bytes == null)
                     throw new ArgumentNullException();
 
-                using (MemoryStream memoryStream = new MemoryStream())
+                using (var memoryStream = new MemoryStream())
                 {
-                    BinaryFormatter binaryFormatter = new BinaryFormatter();
+                    var binaryFormatter = new BinaryFormatter();
                     memoryStream.Write(bytes, 0, bytes.Length);
                     memoryStream.Seek(0, SeekOrigin.Begin);
-                    object obj = binaryFormatter.Deserialize(memoryStream);
+                    var obj = binaryFormatter.Deserialize(memoryStream);
                     return obj is TransferableDatas ? obj as TransferableDatas : null;
                 }
             }
@@ -122,10 +122,8 @@ namespace EasyMobile.Demo
                     return null;
 
                 foreach (var participant in Match.Participants)
-                {
                     if (participant.ParticipantId != Match.SelfParticipantId)
                         return participant;
-                }
 
                 return null;
             }
@@ -159,16 +157,19 @@ namespace EasyMobile.Demo
                 throw new ArgumentNullException();
 
             Match = match;
-            TransferDatas = Match.Data == null ? new TransferableDatas(size) : TransferableDatas.FromByteArray(Match.Data);
+            TransferDatas = Match.Data == null
+                ? new TransferableDatas(size)
+                : TransferableDatas.FromByteArray(Match.Data);
             LocalPlayerMark = CalculateLocalPlayerTurn();
         }
 
         public override string ToString()
         {
-            return string.Format("[TicTacToeGameModel: TransferDatas ={0}, Match={1}, LocalPlayerMark={2}, Opponent={3}]",
-                                 TransferDatas != null ? TransferDatas.ToString() : "NULL",
-                                 Match != null ? Match.ToString() : "NULL", LocalPlayerMark,
-                                 Opponent != null ? Opponent.ToString() : "NULL");
+            return string.Format(
+                "[TicTacToeGameModel: TransferDatas ={0}, Match={1}, LocalPlayerMark={2}, Opponent={3}]",
+                TransferDatas != null ? TransferDatas.ToString() : "NULL",
+                Match != null ? Match.ToString() : "NULL", LocalPlayerMark,
+                Opponent != null ? Opponent.ToString() : "NULL");
         }
 
         private Mark CalculateLocalPlayerTurn()

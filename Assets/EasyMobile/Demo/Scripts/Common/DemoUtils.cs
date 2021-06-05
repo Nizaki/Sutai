@@ -27,56 +27,56 @@ namespace EasyMobile.Demo
 
         public void GameServiceDemo_SavedGames()
         {
-            #if EASY_MOBILE_PRO
+#if EASY_MOBILE_PRO
             SceneManager.LoadScene("GameServicesDemo_SavedGames");
-            #else
+#else
             NativeUI.Alert("Feature Unavailable", "Saved Games feature is only available on Easy Mobile Pro.");
-            #endif
+#endif
         }
 
         public void GameServiceDemo_Multiplayer()
         {
-            #if EASY_MOBILE_PRO
+#if EASY_MOBILE_PRO
             SceneManager.LoadScene("GameServicesDemo_Multiplayer");
-            #else
+#else
             NativeUI.Alert("Feature Unavailable", "Multiplayer feature is only available on Easy Mobile Pro.");
-            #endif
+#endif
         }
 
         public void GameServiceDemo_Multiplayer_TurnbasedKitchensink()
         {
-            #if EASY_MOBILE_PRO
+#if EASY_MOBILE_PRO
             SceneManager.LoadScene("GameServicesDemo_Multiplayer_TurnBasedKitchenSink");
-            #else
+#else
             NativeUI.Alert("Feature Unavailable", "Multiplayer feature is only available on Easy Mobile Pro.");
-            #endif
+#endif
         }
 
         public void GameServiceDemo_Multiplayer_RealtimeKitchenSink()
         {
-            #if EASY_MOBILE_PRO
+#if EASY_MOBILE_PRO
             SceneManager.LoadScene("GameServicesDemo_Multiplayer_RealtimeKitchenSink");
-            #else
+#else
             NativeUI.Alert("Feature Unavailable", "Multiplayer feature is only available on Easy Mobile Pro.");
-            #endif
+#endif
         }
 
         public void GameServiceDemo_Multiplayer_RacingGame()
         {
-            #if EASY_MOBILE_PRO
+#if EASY_MOBILE_PRO
             SceneManager.LoadScene("GameServicesDemo_Multiplayer_RacingGame");
-            #else
+#else
             NativeUI.Alert("Feature Unavailable", "Multiplayer feature is only available on Easy Mobile Pro.");
-            #endif
+#endif
         }
 
         public void GameServiceDemo_Multiplayer_TicTacToe()
         {
-            #if EASY_MOBILE_PRO
+#if EASY_MOBILE_PRO
             SceneManager.LoadScene("GameServicesDemo_Multiplayer_TicTacToe");
-            #else
+#else
             NativeUI.Alert("Feature Unavailable", "Multiplayer feature is only available on Easy Mobile Pro.");
-            #endif
+#endif
         }
 
         public void NativeAPIsDemo()
@@ -86,20 +86,20 @@ namespace EasyMobile.Demo
 
         public void NativeAPIsDemo_Media()
         {
-            #if EASY_MOBILE_PRO
+#if EASY_MOBILE_PRO
             SceneManager.LoadScene("MediaDemo");
-            #else
+#else
             NativeUI.Alert("Feature Unavailable", "Media feature is only available on Easy Mobile Pro.");
-            #endif
+#endif
         }
 
         public void NativeAPIsDemo_Contacts()
         {
-            #if EASY_MOBILE_PRO
+#if EASY_MOBILE_PRO
             SceneManager.LoadScene("ContactsDemo");
-            #else
+#else
             NativeUI.Alert("Feature Unavailable", "Contacts feature is only available on Easy Mobile Pro.");
-            #endif
+#endif
         }
 
         public void GifDemo()
@@ -139,13 +139,11 @@ namespace EasyMobile.Demo
 
         public void DisplayBool(GameObject infoObj, bool state, string msg)
         {
-            Image img = infoObj.GetComponentInChildren<Image>();
-            Text txt = infoObj.GetComponentInChildren<Text>();
+            var img = infoObj.GetComponentInChildren<Image>();
+            var txt = infoObj.GetComponentInChildren<Text>();
 
             if (img == null || txt == null)
-            {
                 Debug.LogError("Could not found Image or Text component beneath object: " + infoObj.name);
-            }
 
             if (state)
             {

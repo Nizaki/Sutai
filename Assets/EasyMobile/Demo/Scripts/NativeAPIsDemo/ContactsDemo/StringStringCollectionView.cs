@@ -9,24 +9,19 @@ namespace EasyMobile.Demo
 {
     public class StringStringCollectionView : MonoBehaviour
     {
-        [SerializeField]
-        private string title = "title";
+        [SerializeField] private string title = "title";
 
-        [SerializeField]
-        private GameObject root = null;
+        [SerializeField] private GameObject root = null;
 
-        [SerializeField]
-        private AddedStringStringView elementTemplate = null;
+        [SerializeField] private AddedStringStringView elementTemplate = null;
 
-        [SerializeField]
-        private Transform addedElementsScrollView = null;
+        [SerializeField] private Transform addedElementsScrollView = null;
 
-        [SerializeField]
-        private Text titleText = null;
+        [SerializeField] private Text titleText = null;
 
         public string Title
         {
-            get { return title; }
+            get => title;
             set
             {
                 title = value;
@@ -66,7 +61,7 @@ namespace EasyMobile.Demo
 
         private void ClearAddedElement()
         {
-            foreach(var element in addedElements)
+            foreach (var element in addedElements)
                 element.Destroy(false);
             addedElements.Clear();
         }

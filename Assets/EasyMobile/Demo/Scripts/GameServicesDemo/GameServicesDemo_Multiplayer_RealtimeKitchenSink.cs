@@ -9,7 +9,8 @@ using UnityEngine.UI;
 
 namespace EasyMobile.Demo
 {
-    public class GameServicesDemo_Multiplayer_RealtimeKitchenSink : GameServicesDemo_Multiplayer_BaseControl, IRealTimeMultiplayerListener
+    public class GameServicesDemo_Multiplayer_RealtimeKitchenSink : GameServicesDemo_Multiplayer_BaseControl,
+        IRealTimeMultiplayerListener
     {
         #region Inner classes
 
@@ -50,9 +51,9 @@ namespace EasyMobile.Demo
 
             public byte[] ToByteArray()
             {
-                using (MemoryStream memoryStream = new MemoryStream())
+                using (var memoryStream = new MemoryStream())
                 {
-                    BinaryFormatter binaryFormatter = new BinaryFormatter();
+                    var binaryFormatter = new BinaryFormatter();
                     binaryFormatter.Serialize(memoryStream, this);
                     return memoryStream.ToArray();
                 }
@@ -63,24 +64,24 @@ namespace EasyMobile.Demo
                 if (bytes == null)
                     throw new ArgumentNullException();
 
-                using (MemoryStream memoryStream = new MemoryStream())
+                using (var memoryStream = new MemoryStream())
                 {
-                    BinaryFormatter binaryFormatter = new BinaryFormatter();
+                    var binaryFormatter = new BinaryFormatter();
                     memoryStream.Write(bytes, 0, bytes.Length);
                     memoryStream.Seek(0, SeekOrigin.Begin);
-                    SampleData obj = (SampleData)binaryFormatter.Deserialize(memoryStream);
+                    var obj = (SampleData) binaryFormatter.Deserialize(memoryStream);
                     return obj;
                 }
             }
 
             public override string ToString()
             {
-                string result = "[SampleData]\n";
+                var result = "[SampleData]\n";
                 result += "Text(string): " + Text + "\n";
                 result += "Value(float): " + Value + "\n";
                 result += "Timestamp(DateTime): " + TimeStamp + "\n";
 
-                byte[] bytes = ToByteArray();
+                var bytes = ToByteArray();
                 result += "Size: " + (bytes != null ? bytes.Length.ToString() : "0") + " byte(s)";
 
                 return result;
@@ -97,13 +98,14 @@ namespace EasyMobile.Demo
                                            "Setting it to a nonzero number to match the player only with players whose match request shares the same variant number. " +
                                            "This value must be between 1 and 1023 (inclusive).";
 
-        private const string ExclusiveBitmaskHint = "If your game has multiple player roles (such as farmer, archer, and wizard) " +
-                                                    "and you want to restrict auto-matched games to one player of each role, " +
-                                                    "add an exclusive bitmask to your match request.When auto-matching with this option, " +
-                                                    "players will only be considered for a match when the logical AND of their exclusive bitmasks is equal to 0. " +
-                                                    "In other words, this value represents the exclusive role the player making this request wants to play in the created match. " +
-                                                    "If this value is 0 (default) it will be ignored. " +
-                                                    "If you're creating a match with the standard matchmaker UI, this value will also be ignored.";
+        private const string ExclusiveBitmaskHint =
+            "If your game has multiple player roles (such as farmer, archer, and wizard) " +
+            "and you want to restrict auto-matched games to one player of each role, " +
+            "add an exclusive bitmask to your match request.When auto-matching with this option, " +
+            "players will only be considered for a match when the logical AND of their exclusive bitmasks is equal to 0. " +
+            "In other words, this value represents the exclusive role the player making this request wants to play in the created match. " +
+            "If this value is 0 (default) it will be ignored. " +
+            "If you're creating a match with the standard matchmaker UI, this value will also be ignored.";
 
         private const string MinPlayersHint = "The minimum number of players that may join the match, " +
                                               "including the player who is making the match request. Must be at least 2 (default).";
@@ -158,13 +160,11 @@ namespace EasyMobile.Demo
 
         private const string OnRoomSetupProgressMessage = "Called during room setup to notify of room setup progress.";
 
-        [SerializeField]
-        private GameObject matchRequestRoot = null,
+        [SerializeField] private GameObject matchRequestRoot = null,
             matchCreationRoot = null,
             ingameRoot = null;
 
-        [SerializeField]
-        private Button acceptFromInboxButton = null,
+        [SerializeField] private Button acceptFromInboxButton = null,
             sendMessageButton = null,
             sendMessageToAllButton = null,
             getConnectedParticipantsButton = null,
@@ -173,8 +173,7 @@ namespace EasyMobile.Demo
             leaveRoomButton = null,
             clearReceivedMessagesButton = null;
 
-        [SerializeField]
-        private InputField variantInputField = null,
+        [SerializeField] private InputField variantInputField = null,
             exclusiveBitmaskInputField = null,
             minPlayersInputField = null,
             maxPlayersInputField = null,
@@ -182,17 +181,13 @@ namespace EasyMobile.Demo
             sampleDataValueInputField = null,
             dummySizeInputField = null;
 
-        [SerializeField]
-        private Dropdown targetParticipantDropdown = null;
+        [SerializeField] private Dropdown targetParticipantDropdown = null;
 
-        [SerializeField]
-        private Text finalSizeText = null;
+        [SerializeField] private Text finalSizeText = null;
 
-        [SerializeField]
-        private Scrollbar receivedMessagesVerticalScrollbar = null;
+        [SerializeField] private Scrollbar receivedMessagesVerticalScrollbar = null;
 
-        [SerializeField]
-        private Button variantHintButton = null,
+        [SerializeField] private Button variantHintButton = null,
             bitmaskHintButton = null,
             minPlayersHintButton = null,
             maxPlayersHintButton = null,
@@ -207,23 +202,18 @@ namespace EasyMobile.Demo
             reiniviteDisconnectedPlayerHintButton = null,
             receivedMessagesHintButton = null;
 
-        [SerializeField]
-        private GameObject isRoomConnectedUI = null,
+        [SerializeField] private GameObject isRoomConnectedUI = null,
             receivedMessagesRoot = null;
 
-        [SerializeField]
-        private Text receivedMessagesTextPrefab = null;
+        [SerializeField] private Text receivedMessagesTextPrefab = null;
 
-        [Space]
-        [SerializeField]
-        private Toggle useMinimalDataToggle = null;
+        [Space] [SerializeField] private Toggle useMinimalDataToggle = null;
 
-        [SerializeField]
-        private GameObject sampleDataTextRoot = null,
+        [SerializeField] private GameObject sampleDataTextRoot = null,
             sampleDataValueRoot = null,
             sampleDataDummySizeRoot = null;
 
-        [SerializeField, Tooltip("Show waiting room UI when accepting invitation?")]
+        [SerializeField] [Tooltip("Show waiting room UI when accepting invitation?")]
         private bool showInvitationWaitingRoomUI = true;
 
         public uint Variant { get; private set; }
@@ -265,7 +255,7 @@ namespace EasyMobile.Demo
                 if (Opponents == null)
                     return null;
 
-                int index = targetParticipantDropdown.value;
+                var index = targetParticipantDropdown.value;
                 if (index < 0 || index >= Opponents.Count)
                     return null;
 
@@ -273,7 +263,7 @@ namespace EasyMobile.Demo
             }
         }
 
-        protected override MatchType MatchType { get { return MatchType.RealTime; } }
+        protected override MatchType MatchType => MatchType.RealTime;
 
         private List<Participant> Opponents = new List<Participant>();
         private List<Text> ReceivedMessages = new List<Text>();
@@ -346,11 +336,11 @@ namespace EasyMobile.Demo
 
         public void AcceptFromInbox()
         {
-            #if UNITY_IOS
+#if UNITY_IOS
             NativeUI.Alert("Unsupported Feature", "\"Accept From Inbox\" feature is not available on Game Center platform");
-            #else
+#else
             GameServices.RealTime.ShowInvitationsUI(this);
-            #endif
+#endif
         }
 
         public void SendMessageToAll()
@@ -393,7 +383,8 @@ namespace EasyMobile.Demo
                 return;
             }
 
-            var message = string.Join("\n\n", connectedParticipants.Select(p => GetParticipantDisplayString(p)).ToArray());
+            var message = string.Join("\n\n",
+                connectedParticipants.Select(p => GetParticipantDisplayString(p)).ToArray());
             NativeUI.Alert("Connected Participants", message);
         }
 
@@ -437,7 +428,7 @@ namespace EasyMobile.Demo
             if (IsDestroyed)
                 return;
 
-            string message = OnParticipantLeftMessage + "\n" + GetParticipantDisplayString(participant);
+            var message = OnParticipantLeftMessage + "\n" + GetParticipantDisplayString(participant);
             NativeUI.Alert("On Participant Left", message);
             Debug.Log("[OnParticipantLeft]. Participant: " + GetParticipantDisplayString(participant));
         }
@@ -454,7 +445,7 @@ namespace EasyMobile.Demo
             }
 
             var message = "Connected Participant(s):\n";
-            for (int i = 0; i < participantIds.Length; i++)
+            for (var i = 0; i < participantIds.Length; i++)
             {
                 var participant = GetParticipant(participantIds[i]);
                 message += "\n" + GetParticipantDisplayString(participant);
@@ -478,7 +469,7 @@ namespace EasyMobile.Demo
             }
 
             var message = "Disconnected Participant(s):\n";
-            for (int i = 0; i < participantIds.Length; i++)
+            for (var i = 0; i < participantIds.Length; i++)
             {
                 var participant = GetParticipant(participantIds[i]);
 
@@ -514,11 +505,13 @@ namespace EasyMobile.Demo
             try
             {
                 var sampleData = SampleData.FromByteArray(data);
-                AddReceivedMessage("SenderId: " + senderId + "\nData: " + (sampleData != null ? "\n" + sampleData.ToString() : "null"));
+                AddReceivedMessage("SenderId: " + senderId + "\nData: " +
+                                   (sampleData != null ? "\n" + sampleData.ToString() : "null"));
             }
             catch (Exception e)
             {
-                AddReceivedMessage("[Error]. Error orcurs when trying to parse data: \n" + e.Message + "\n" + e.StackTrace);
+                AddReceivedMessage("[Error]. Error orcurs when trying to parse data: \n" + e.Message + "\n" +
+                                   e.StackTrace);
             }
         }
 
@@ -715,7 +708,7 @@ namespace EasyMobile.Demo
         private byte[] GetSentData()
         {
             if (useMinimalData)
-                return new byte[] { 6, 6, 6, 6 };
+                return new byte[] {6, 6, 6, 6};
 
             float value = 0;
             if (!float.TryParse(sampleDataValueInputField.text, out value))
@@ -725,10 +718,10 @@ namespace EasyMobile.Demo
             {
                 TimeStamp = DateTime.UtcNow,
                 Text = sampleDataTextInputField.text,
-                Value = value,
+                Value = value
             };
 
-            int dummySize = 0;
+            var dummySize = 0;
             if (int.TryParse(dummySizeInputField.text, out dummySize))
                 sampleData.UpdateDummySize(dummySize);
 
@@ -762,6 +755,7 @@ namespace EasyMobile.Demo
                 options.Add(new Dropdown.OptionData(participant.DisplayName));
                 Opponents.Add(participant);
             }
+
             targetParticipantDropdown.AddOptions(options);
             targetParticipantDropdown.value = 0;
         }
@@ -868,8 +862,8 @@ namespace EasyMobile.Demo
 
             if (MaxPlayers < minPlayers)
             {
-                MaxPlayers = (uint)Mathf.Clamp(minPlayers, 2, MaxPlayersAllowed);
-                maxPlayersInputField.text = MaxPlayers.ToString();               
+                MaxPlayers = (uint) Mathf.Clamp(minPlayers, 2, MaxPlayersAllowed);
+                maxPlayersInputField.text = MaxPlayers.ToString();
             }
 
             if (minPlayers > MaxPlayersAllowed)

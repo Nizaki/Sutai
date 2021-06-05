@@ -36,29 +36,25 @@ namespace EasyMobile.Demo
         }
 
         [Serializable]
-        public class IntEvent : UnityEvent<ButtonName> { }
+        public class IntEvent : UnityEvent<ButtonName>
+        {
+        }
 
-        [SerializeField]
-        private GameObject rootView = null;
+        [SerializeField] private GameObject rootView = null;
 
-        [SerializeField]
-        private Button buttonA = null, buttonB = null, buttonC = null;
+        [SerializeField] private Button buttonA = null, buttonB = null, buttonC = null;
 
-        [SerializeField]
-        private Text buttonAText = null, buttonBText = null, buttonCText = null;
+        [SerializeField] private Text buttonAText = null, buttonBText = null, buttonCText = null;
 
-        [SerializeField]
-        private Text titleText = null, messageText = null;
+        [SerializeField] private Text titleText = null, messageText = null;
 
-        [SerializeField]
-        private string title = "Title", message = "Message";
+        [SerializeField] private string title = "Title", message = "Message";
 
-        [SerializeField]
-        private IntEvent onClosed = null;
+        [SerializeField] private IntEvent onClosed = null;
 
         public string Title
         {
-            get { return title; }
+            get => title;
             set
             {
                 title = value;
@@ -68,7 +64,7 @@ namespace EasyMobile.Demo
 
         public string Message
         {
-            get { return message; }
+            get => message;
             set
             {
                 message = value;
@@ -83,9 +79,9 @@ namespace EasyMobile.Demo
         /// 2: closed with <see cref="buttonC"/>
         /// -1: closed with <see cref="Hide()"/> method or if there was any error.
         /// </summary>
-        public UnityEvent<ButtonName> OnClosed { get { return onClosed; } }
+        public UnityEvent<ButtonName> OnClosed => onClosed;
 
-        public bool IsShowing { get { return isShowing; } }
+        public bool IsShowing => isShowing;
 
         private const string defaultButtonText = "Ok";
         private bool isShowing;
@@ -157,7 +153,8 @@ namespace EasyMobile.Demo
         /// <summary>
         /// Show an alert popup with specific title, message and 3 buttons with specific messages.
         /// </summary>
-        public void Alert(string title, string message, string buttonAMessage, string buttonBMessage, string buttonCMessage)
+        public void Alert(string title, string message, string buttonAMessage, string buttonBMessage,
+            string buttonCMessage)
         {
             if (IsShowing)
                 return;

@@ -14,6 +14,6 @@
         /// default and custom placements registered in the module settings (with valid IDs
         /// where applicable), and whose network SDKs were imported.
         /// </summary>
-        LoadAllDefinedPlacements,
+        LoadAllDefinedPlacements
     }
 }

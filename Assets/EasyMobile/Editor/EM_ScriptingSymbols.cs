@@ -32,9 +32,8 @@ namespace EasyMobile.Editor
 
         public static string[] GetAllSymbols()
         {
-            return EM_EditorUtil.GetConstants(typeof(EM_ScriptingSymbols)).Select(c => c.GetRawConstantValue() as string).ToArray();
+            return EM_EditorUtil.GetConstants(typeof(EM_ScriptingSymbols))
+                .Select(c => c.GetRawConstantValue() as string).ToArray();
         }
-
     }
 }
-

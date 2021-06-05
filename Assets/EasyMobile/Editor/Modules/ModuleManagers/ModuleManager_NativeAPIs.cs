@@ -8,7 +8,9 @@ namespace EasyMobile.Editor
     internal class ModuleManager_NativeAPIs : CompositeModuleManager
     {
         private const string iOSContactsLibPath = EM_Constants.RootPath + "/Plugins/iOS/libEasyMobile_Contacts.a";
-        private const string iOSCameraGalleryLibPath = EM_Constants.RootPath + "/Plugins/iOS/libEasyMobile_CameraGallery.a";
+
+        private const string iOSCameraGalleryLibPath =
+            EM_Constants.RootPath + "/Plugins/iOS/libEasyMobile_CameraGallery.a";
 
         #region Singleton
 
@@ -32,13 +34,7 @@ namespace EasyMobile.Editor
 
         #region implemented abstract members of ModuleManager
 
-        public override Module SelfModule
-        {
-            get
-            {
-                return Module.NativeApis;
-            }
-        }
+        public override Module SelfModule => Module.NativeApis;
 
         #endregion
 
@@ -50,9 +46,11 @@ namespace EasyMobile.Editor
             switch (submod)
             {
                 case Submodule.Contacts:
-                    return new List<string>() { FileIO.ToAbsolutePath("EasyMobile/Editor/Templates/Manifests/Manifest_Contacts.xml") };
+                    return new List<string>()
+                        {FileIO.ToAbsolutePath("EasyMobile/Editor/Templates/Manifests/Manifest_Contacts.xml")};
                 case Submodule.Media:
-                    return new List<string>() { FileIO.ToAbsolutePath("EasyMobile/Editor/Templates/Manifests/Manifest_CameraGallery.xml") };
+                    return new List<string>()
+                        {FileIO.ToAbsolutePath("EasyMobile/Editor/Templates/Manifests/Manifest_CameraGallery.xml")};
                 default:
                     return null;
             }
@@ -149,13 +147,7 @@ namespace EasyMobile.Editor
 #endif
         }
 
-        public override List<Submodule> SelfSubmodules
-        {
-            get
-            {
-                return new List<Submodule> { Submodule.Media, Submodule.Contacts };
-            }
-        }
+        public override List<Submodule> SelfSubmodules => new List<Submodule> {Submodule.Media, Submodule.Contacts};
 
         #endregion
     }

@@ -6,6 +6,7 @@ using EasyMobile;
 using System.IO;
 #if UNITY_2018_3_OR_NEWER
 using UnityEngine.Networking;
+
 #endif
 
 namespace EasyMobile.Demo
@@ -18,30 +19,26 @@ namespace EasyMobile.Demo
         // In a real project, you can store your GIF files in the StreamingAssets
         // folder so you can get their filepath directly (except on Android).
         public const string DemoGifFileName = "demoGifPlaying.gif";
+
         public string demoGifLink = "https://media.giphy.com/media/f8c0hyn3leSAXhAK9k/giphy.gif";
         public System.Threading.ThreadPriority decodeThreadPriority;
 
-        [Header("GIF Playing UI Stuff")]
-        public GameObject gifPlayingPanel;
+        [Header("GIF Playing UI Stuff")] public GameObject gifPlayingPanel;
         public Text demoGifDownloadingText;
         public GameObject retryDownloadButton;
         public ClipPlayerUI decodedClipPlayer;
         public Text displayGifFilePath;
 
-        [Header("GIF Generation Settings")]
-        public Recorder recorder;
+        [Header("GIF Generation Settings")] public Recorder recorder;
         public string gifFilename = "easy_mobile_demo";
         public int loop = 0;
-        [Range(1, 100)]
-        public int quality = 90;
+        [Range(1, 100)] public int quality = 90;
         public System.Threading.ThreadPriority exportThreadPriority;
 
-        [Header("Giphy Upload Key")]
-        public string giphyUsername;
+        [Header("Giphy Upload Key")] public string giphyUsername;
         public string giphyApiKey;
 
-        [Header("GIF Generation UI Stuff")]
-        public GameObject recordingMark;
+        [Header("GIF Generation UI Stuff")] public GameObject recordingMark;
         public GameObject startRecordingButton;
         public GameObject stopRecordingButton;
         public GameObject playbackPanel;
@@ -51,15 +48,15 @@ namespace EasyMobile.Demo
         public Text activityText;
         public Text progressText;
 
-        AnimatedClip decodedClip;
-        AnimatedClip recordedClip;
-        bool isExportingGif;
-        bool isUploadingGif;
-        string exportedGifPath;
-        string uploadedGifUrl;
-        string demoGifFilePath;
+        private AnimatedClip decodedClip;
+        private AnimatedClip recordedClip;
+        private bool isExportingGif;
+        private bool isUploadingGif;
+        private string exportedGifPath;
+        private string uploadedGifUrl;
+        private string demoGifFilePath;
 
-        void OnDestroy()
+        private void OnDestroy()
         {
             // Dispose the used clips if needed
             if (recordedClip != null)
@@ -69,14 +66,14 @@ namespace EasyMobile.Demo
                 decodedClip.Dispose();
         }
 
-        void Awake()
+        private void Awake()
         {
             // Init EM runtime if needed (useful in case only this scene is built).
             if (!RuntimeManager.IsInitialized())
                 RuntimeManager.Init();
         }
 
-        void Start()
+        private void Start()
         {
             gifPlayingPanel.SetActive(true);
             decodedClipPlayer.gameObject.SetActive(false);
@@ -92,7 +89,7 @@ namespace EasyMobile.Demo
             DownloadDemoGif();
         }
 
-        void Update()
+        private void Update()
         {
             giphyLogo.SetActive(Giphy.IsUsingAPI);
             activityProgress.SetActive(isExportingGif || isUploadingGif);
@@ -103,7 +100,7 @@ namespace EasyMobile.Demo
             StartCoroutine(CRDownloadDemoGif());
         }
 
-        IEnumerator CRDownloadDemoGif()
+        private IEnumerator CRDownloadDemoGif()
         {
             yield return null;
             // Download the demo GIF from the internet & store it in Application.persistentDataPath.
@@ -171,18 +168,18 @@ namespace EasyMobile.Demo
             }
 
             Gif.DecodeGif(demoGifFilePath, decodeThreadPriority, clip =>
-             {
-                 if (clip != null)
-                 {
-                     decodedClip = clip;
-                     clip.SetFilterMode(FilterMode.Point);
-                     Gif.PlayClip(decodedClipPlayer, decodedClip);
-                 }
-                 else
-                 {
-                     Debug.LogError("Error decoding GIF: received null AnimatedClip object.");
-                 }
-             });
+            {
+                if (clip != null)
+                {
+                    decodedClip = clip;
+                    clip.SetFilterMode(FilterMode.Point);
+                    Gif.PlayClip(decodedClipPlayer, decodedClip);
+                }
+                else
+                {
+                    Debug.LogError("Error decoding GIF: received null AnimatedClip object.");
+                }
+            });
         }
 
         public void ShowDemoGifFirstFrame()
@@ -275,7 +272,8 @@ namespace EasyMobile.Demo
             }
 
             isExportingGif = true;
-            Gif.ExportGif(recordedClip, gifFilename, loop, quality, exportThreadPriority, OnGifExportProgress, OnGifExportCompleted);
+            Gif.ExportGif(recordedClip, gifFilename, loop, quality, exportThreadPriority, OnGifExportProgress,
+                OnGifExportCompleted);
         }
 
         public void UploadGIFToGiphy()
@@ -298,10 +296,12 @@ namespace EasyMobile.Demo
             content.tags = "demo, easy mobile, sglib games, unity3d";
 
             if (!string.IsNullOrEmpty(giphyUsername) && !string.IsNullOrEmpty(giphyApiKey))
-                Giphy.Upload(giphyUsername, giphyApiKey, content, OnGiphyUploadProgress, OnGiphyUploadCompleted, OnGiphyUploadFailed);
+                Giphy.Upload(giphyUsername, giphyApiKey, content, OnGiphyUploadProgress, OnGiphyUploadCompleted,
+                    OnGiphyUploadFailed);
             else
 #if UNITY_EDITOR
-                Debug.LogError("Upload failed: please provide valid Giphy username and API key in the GifDemo game object.");
+                Debug.LogError(
+                    "Upload failed: please provide valid Giphy username and API key in the GifDemo game object.");
 #else
                 NativeUI.Alert("Upload Failed", "Please provide valid Giphy username and API key in the GifDemo game object.");
 #endif
@@ -320,7 +320,7 @@ namespace EasyMobile.Demo
 
         // This callback is called repeatedly during the GIF exporting process.
         // It receives a progress value ranging from 0 to 1.
-        void OnGifExportProgress(AnimatedClip clip, float progress)
+        private void OnGifExportProgress(AnimatedClip clip, float progress)
         {
             activityText.text = "GENERATING GIF...";
             progressText.text = string.Format("{0:P0}", progress);
@@ -328,7 +328,7 @@ namespace EasyMobile.Demo
 
         // This callback is called once the GIF exporting has completed.
         // It receives the filepath of the generated image.
-        void OnGifExportCompleted(AnimatedClip clip, string path)
+        private void OnGifExportCompleted(AnimatedClip clip, string path)
         {
             progressText.text = "DONE";
 
@@ -336,11 +336,13 @@ namespace EasyMobile.Demo
             exportedGifPath = path;
 
 #if UNITY_EDITOR
-            bool shouldUpload = UnityEditor.EditorUtility.DisplayDialog("Export Completed", "A GIF file has been created. Do you want to upload it to Giphy?", "Yes", "No");
+            var shouldUpload = UnityEditor.EditorUtility.DisplayDialog("Export Completed",
+                "A GIF file has been created. Do you want to upload it to Giphy?", "Yes", "No");
             if (shouldUpload)
                 UploadGIFToGiphy();
 #else
-			NativeUI.AlertPopup popup = NativeUI.ShowTwoButtonAlert("Export Completed", "A GIF file has been created. Do you want to upload it to Giphy?", "Yes", "No");
+			NativeUI.AlertPopup popup =
+ NativeUI.ShowTwoButtonAlert("Export Completed", "A GIF file has been created. Do you want to upload it to Giphy?", "Yes", "No");
 			if (popup != null)
 			{
 				popup.OnComplete += (int buttonId) =>
@@ -354,7 +356,7 @@ namespace EasyMobile.Demo
 
         // This callback is called repeatedly during the uploading process.
         // It receives a progress value ranging from 0 to 1.
-        void OnGiphyUploadProgress(float progress)
+        private void OnGiphyUploadProgress(float progress)
         {
             activityText.text = "UPLOADING TO GIPHY...";
             progressText.text = string.Format("{0:P0}", progress);
@@ -362,18 +364,20 @@ namespace EasyMobile.Demo
 
         // This callback is called once the uploading has completed.
         // It receives the URL of the uploaded image.
-        void OnGiphyUploadCompleted(string url)
+        private void OnGiphyUploadCompleted(string url)
         {
             progressText.text = "DONE";
 
             isUploadingGif = false;
             uploadedGifUrl = url;
 #if UNITY_EDITOR
-            bool shouldOpen = UnityEditor.EditorUtility.DisplayDialog("Upload Completed", "The GIF image has been uploaded to Giphy at " + url + ". Open it in the browser?", "Yes", "No");
+            var shouldOpen = UnityEditor.EditorUtility.DisplayDialog("Upload Completed",
+                "The GIF image has been uploaded to Giphy at " + url + ". Open it in the browser?", "Yes", "No");
             if (shouldOpen)
                 Application.OpenURL(uploadedGifUrl);
 #else
-			NativeUI.AlertPopup alert = NativeUI.ShowTwoButtonAlert("Upload Completed", "The GIF image has been uploaded to Giphy at " + url + ". Open it in the browser?", "Yes", "No");
+			NativeUI.AlertPopup alert =
+ NativeUI.ShowTwoButtonAlert("Upload Completed", "The GIF image has been uploaded to Giphy at " + url + ". Open it in the browser?", "Yes", "No");
 
 			if (alert != null)
 			{
@@ -388,11 +392,10 @@ namespace EasyMobile.Demo
 
         // This callback is called if the upload has failed.
         // It receives the error message.
-        void OnGiphyUploadFailed(string error)
+        private void OnGiphyUploadFailed(string error)
         {
             isUploadingGif = false;
             NativeUI.Alert("Upload Failed", "Uploading to Giphy has failed with error " + error);
         }
     }
 }
-

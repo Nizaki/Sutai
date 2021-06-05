@@ -9,10 +9,8 @@ namespace EasyMobile
         /// Whether the Multiplayer feature is enabled.
         /// </summary>
         /// <value><c>true</c> if Multiplayer is enabled; otherwise, <c>false</c>.</value>
-        public bool IsMultiplayerEnabled { get { return mEnableMultiplayer; } }
+        public bool IsMultiplayerEnabled => mEnableMultiplayer;
 
-        [SerializeField]
-        private bool mEnableMultiplayer = false;
+        [SerializeField] private bool mEnableMultiplayer = false;
     }
 }
-

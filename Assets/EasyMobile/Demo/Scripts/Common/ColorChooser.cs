@@ -4,15 +4,16 @@ using UnityEngine.UI;
 
 namespace EasyMobile.Demo
 {
-    [RequireComponent(typeof(Image)), RequireComponent(typeof(Button))]
+    [RequireComponent(typeof(Image))]
+    [RequireComponent(typeof(Button))]
     public class ColorChooser : MonoBehaviour
     {
-        public static event System.Action<Color> colorSelected = delegate{};
+        public static event System.Action<Color> colorSelected = delegate { };
 
-        Image imgComp;
-        Button btnComp;
+        private Image imgComp;
+        private Button btnComp;
 
-        void Start()
+        private void Start()
         {
             imgComp = GetComponent<Image>();
             btnComp = GetComponent<Button>();

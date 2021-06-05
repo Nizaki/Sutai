@@ -11,28 +11,22 @@ namespace EasyMobile.Demo
     /// </summary>
     public abstract class GameServicesDemo_Multiplayer_BaseControl : MonoBehaviour
     {
-        [SerializeField]
-        private LoadingPanelController loadingPanel = null;
+        [SerializeField] private LoadingPanelController loadingPanel = null;
 
-        [SerializeField]
-        protected DemoUtils demoUtils = null;
+        [SerializeField] protected DemoUtils demoUtils = null;
 
-        [SerializeField]
-        private Button createQuickMatchButton = null,
+        [SerializeField] private Button createQuickMatchButton = null,
             createWithMatchmakerButton = null,
             acceptInvitationButton = null,
             declineInvitationButton = null,
             closeInvitationPanelButton = null,
             showInvitationDetailsButton = null;
 
-        [SerializeField]
-        private Text invitationInfoText = null;
+        [SerializeField] private Text invitationInfoText = null;
 
-        [SerializeField]
-        private GameObject invitationPanel = null;
+        [SerializeField] private GameObject invitationPanel = null;
 
-        [SerializeField]
-        private Image createQuickMatchSpinningCircle = null;
+        [SerializeField] private Image createQuickMatchSpinningCircle = null;
 
         public bool IsInvitationDelegateRegistered { get; private set; }
         protected bool ShouldShowInvitationPanel { get; set; }
@@ -78,11 +72,14 @@ namespace EasyMobile.Demo
             {
                 if (!loadingPanel.IsShowing)
                 {
-                    loadingPanel.SetMessageText(Application.isEditor ? "Please test on a real mobile device." : "Wait until authenticated or exit.");
+                    loadingPanel.SetMessageText(Application.isEditor
+                        ? "Please test on a real mobile device."
+                        : "Wait until authenticated or exit.");
                     loadingPanel.SetButtonLabel("Exit");
                     loadingPanel.RegisterButtonCallback(() => demoUtils.GameServiceDemo_Multiplayer());
                     loadingPanel.Show();
                 }
+
                 yield return null;
             }
 
@@ -102,11 +99,14 @@ namespace EasyMobile.Demo
         /// Will be called after the user has logged in the invitation delegate is registered.
         /// Use this instead of Start.
         /// </summary>
-        protected virtual void LateStart() { }
+        protected virtual void LateStart()
+        {
+        }
 
         protected void OnInvitationReceived(Invitation invitation, bool shouldAutoAccept)
         {
-            Debug.Log("[OnInvitationReceived].\n" + GetInvitationDisplayString(invitation) + "shouldAutoAccept: " + shouldAutoAccept);
+            Debug.Log("[OnInvitationReceived].\n" + GetInvitationDisplayString(invitation) + "shouldAutoAccept: " +
+                      shouldAutoAccept);
 
             if (IsDestroyed)
                 return;
@@ -191,7 +191,7 @@ namespace EasyMobile.Demo
         private IEnumerator ShowInvitationCoroutine(Invitation invitation)
         {
             yield return new WaitUntil(() => ShouldShowInvitationPanel);
-            invitationInfoText.text = "<b>Inviter:</b>\n" + (invitation.Inviter.DisplayName);
+            invitationInfoText.text = "<b>Inviter:</b>\n" + invitation.Inviter.DisplayName;
             invitationPanel.SetActive(true);
         }
 
@@ -206,7 +206,7 @@ namespace EasyMobile.Demo
             if (invitation == null)
                 return "null\n";
 
-            string result = "[Invitation]\n";
+            var result = "[Invitation]\n";
             result += "InvitationType: " + invitation.InvitationType + "\n";
             result += "Variant: " + invitation.Variant + "\n";
             result += "Inviter: " + GetParticipantDisplayString(invitation.Inviter);
@@ -219,7 +219,7 @@ namespace EasyMobile.Demo
             if (participant == null)
                 return "null\n";
 
-            string result = "[Participant]\n";
+            var result = "[Participant]\n";
             result += "DisplayName: " + participant.DisplayName + "\n";
             result += "IsConnectedToRoom: " + participant.IsConnectedToRoom + "\n";
             result += "ParticipantId: " + participant.ParticipantId + "\n";
@@ -245,7 +245,7 @@ namespace EasyMobile.Demo
             if (match == null)
                 return "null\n";
 
-            string result = "[TurnBasedMatch]\n";
+            var result = "[TurnBasedMatch]\n";
             result += "MatchId: " + (match.MatchId ?? "null") + "\n";
             result += "Status: " + match.Status + "\n";
             result += "CurrentParticipantId: " + (match.CurrentParticipantId ?? "null") + "\n";
@@ -253,7 +253,7 @@ namespace EasyMobile.Demo
             result += "PlayerCount: " + match.PlayerCount + "\n";
             result += "IsMyTurn: " + match.IsMyTurn + "\n";
 
-            bool hasData = (match.Data != null && match.Data.Length > 0);
+            var hasData = match.Data != null && match.Data.Length > 0;
             result += "Has Data: " + hasData + "\n";
 
             if (hasData)
@@ -284,7 +284,7 @@ namespace EasyMobile.Demo
 
         protected IEnumerator CreateQuickMatchSpinningCoroutine()
         {
-            float fillAmount = 0f;
+            var fillAmount = 0f;
             while (true)
             {
                 fillAmount += createQuickMatchSpinningFillSpeed;

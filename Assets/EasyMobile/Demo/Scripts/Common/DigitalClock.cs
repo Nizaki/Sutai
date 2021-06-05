@@ -4,22 +4,22 @@ using UnityEngine.UI;
 
 namespace EasyMobile.Demo
 {
-    [AddComponentMenu(""), RequireComponent(typeof(UnityEngine.UI.Text))]
+    [AddComponentMenu("")]
+    [RequireComponent(typeof(Text))]
     public class DigitalClock : MonoBehaviour
     {
-        Text clockText;
+        private Text clockText;
 
         // Use this for initialization
-        void Start()
+        private void Start()
         {
             clockText = GetComponent<Text>();
         }
 
         // Update is called once per frame
-        void Update()
+        private void Update()
         {
             clockText.text = System.DateTime.Now.ToString("hh:mm:ss");
         }
     }
 }
-

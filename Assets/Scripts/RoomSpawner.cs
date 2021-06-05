@@ -12,11 +12,14 @@ public class RoomSpawner : MonoBehaviour
     private RoomTemplates template;
     private int rand;
     public bool spawned = false;
+    private Transform root;
 
     private void Start()
     {
         template = GameObject.FindGameObjectWithTag("Template").GetComponent<RoomTemplates>();
+        root = GameObject.FindGameObjectWithTag("RootRoom").transform;
         Invoke(nameof(SpawnRoom), 0.2f);
+        DataBank.score += 1;
     }
 
     // Update is called once per frame
@@ -54,8 +57,10 @@ public class RoomSpawner : MonoBehaviour
 
         if (go != null)
         {
+            go.transform.parent = root;
             var room = go.AddComponent<Room>();
             room.spawnable = true;
+            template.rooms.Add(go);
         }
 
         spawned = true;

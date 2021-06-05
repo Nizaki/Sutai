@@ -114,7 +114,8 @@ namespace EasyMobile.Internal.Gif.iOS
             for (int i = 0; i < frameCount; i++)
             {
                 gcHandleArray[i] = GCHandle.Alloc(new GifFrameMetadata(), GCHandleType.Pinned);
-                ptrArray[i] = gcHandleArray[i].AddrOfPinnedObject();   // fill the pointers sent by native code with the object pointer we've just pinned.
+                ptrArray[i] =
+ gcHandleArray[i].AddrOfPinnedObject();   // fill the pointers sent by native code with the object pointer we've just pinned.
             }
 
             // Copy pointers to unmanaged holder.
@@ -146,7 +147,8 @@ namespace EasyMobile.Internal.Gif.iOS
             for (int i = 0; i < buff.Length; i++)
             {
                 gcHandleArray[i] = GCHandle.Alloc(buff[i], GCHandleType.Pinned);
-                ptrArray[i] = gcHandleArray[i].AddrOfPinnedObject();   // fill the pointers sent by native code with the object pointer we've just pinned.
+                ptrArray[i] =
+ gcHandleArray[i].AddrOfPinnedObject();   // fill the pointers sent by native code with the object pointer we've just pinned.
             }
 
             // Copy pointers to unmanaged holder.
@@ -188,7 +190,8 @@ namespace EasyMobile.Internal.Gif.iOS
 
                 if (taskResources.completeCallback != null)
                 {
-                    var callback = taskResources.completeCallback;  // cache the callback reference as we'll reset taskResources soon.
+                    var callback =
+ taskResources.completeCallback;  // cache the callback reference as we'll reset taskResources soon.
                     RuntimeHelper.RunOnMainThread(() =>
                     {
                         callback(taskId, gifMetadata, gifFrameMetadata, imageData);

@@ -7,61 +7,44 @@ namespace EasyMobile.Demo
 {
     public class MediaDemo : MonoBehaviour
     {
-        [SerializeField]
-        private GameObject curtain = null;
+        [SerializeField] private GameObject curtain = null;
 
-        [SerializeField]
-        private uint randomTextureWidth = 512, randomTextureHeight = 256;
+        [SerializeField] private uint randomTextureWidth = 512, randomTextureHeight = 256;
 
-        [SerializeField]
-        private Color[] randomTextureColors = null;
+        [SerializeField] private Color[] randomTextureColors = null;
 
-        [SerializeField]
-        private Color videoBackground = Color.white;
+        [SerializeField] private Color videoBackground = Color.white;
 
-        [SerializeField]
-        private float imagePadding = 5;
+        [SerializeField] private float imagePadding = 5;
 
 #if UNITY_IOS || UNITY_ANDROID
 
-        [SerializeField]
-        private FullScreenMovieControlMode videoControlMode = FullScreenMovieControlMode.Full;
+        [SerializeField] private FullScreenMovieControlMode videoControlMode = FullScreenMovieControlMode.Full;
 
-        [SerializeField]
-        private FullScreenMovieScalingMode videoScalingMode = FullScreenMovieScalingMode.None;
+        [SerializeField] private FullScreenMovieScalingMode videoScalingMode = FullScreenMovieScalingMode.None;
 
 #endif
 
-        [SerializeField]
-        private MediaResultView viewPrefab = null;
+        [SerializeField] private MediaResultView viewPrefab = null;
 
-        [SerializeField]
-        private Transform viewRoot = null;
+        [SerializeField] private Transform viewRoot = null;
 
-        [SerializeField]
-        private RawImage displayImage = null;
+        [SerializeField] private RawImage displayImage = null;
 
-        [SerializeField]
-        private RectTransform displayImageTransform = null, parentTransform = null;
+        [SerializeField] private RectTransform displayImageTransform = null, parentTransform = null;
 
-        [SerializeField]
-        private InputField imageNameInputField = null;
+        [SerializeField] private InputField imageNameInputField = null;
 
-        [SerializeField]
-        private Dropdown imageFormatDropdown = null;
+        [SerializeField] private Dropdown imageFormatDropdown = null;
 
-        [SerializeField]
-        private Dropdown cameraTypeDropdown = null;
+        [SerializeField] private Dropdown cameraTypeDropdown = null;
 
-        [SerializeField]
-        private DemoUtils demoUtils = null;
+        [SerializeField] private DemoUtils demoUtils = null;
 
-        [SerializeField]
-        private GameObject frontCameraSupportedToggle = null,
+        [SerializeField] private GameObject frontCameraSupportedToggle = null,
             backCameraSupportedToggle = null;
 
-        [SerializeField]
-        private Button takePictureButton = null,
+        [SerializeField] private Button takePictureButton = null,
             recordVideoButton = null,
             pickButton = null,
             saveImageButton = null,
@@ -95,13 +78,15 @@ namespace EasyMobile.Demo
             InitDropdownWithEnum(imageFormatDropdown, typeof(ImageFormat));
 
             InitDropdownWithEnum(cameraTypeDropdown, typeof(CameraType));
-            cameraTypeDropdown.onValueChanged.AddListener(index => currentCameraType = (CameraType)index);
+            cameraTypeDropdown.onValueChanged.AddListener(index => currentCameraType = (CameraType) index);
 
-            bool hasFrontCamera = Media.Camera.IsCameraAvailable(CameraType.Front);
-            bool hasRearCamera = Media.Camera.IsCameraAvailable(CameraType.Rear);
+            var hasFrontCamera = Media.Camera.IsCameraAvailable(CameraType.Front);
+            var hasRearCamera = Media.Camera.IsCameraAvailable(CameraType.Rear);
 
-            demoUtils.DisplayBool(frontCameraSupportedToggle, hasFrontCamera, hasFrontCamera ? "Front Camera Available" : "Front Camera Unavailable");
-            demoUtils.DisplayBool(backCameraSupportedToggle, hasRearCamera, hasRearCamera ? "Rear Camera Available" : "Rear Camera Unavailable");
+            demoUtils.DisplayBool(frontCameraSupportedToggle, hasFrontCamera,
+                hasFrontCamera ? "Front Camera Available" : "Front Camera Unavailable");
+            demoUtils.DisplayBool(backCameraSupportedToggle, hasRearCamera,
+                hasRearCamera ? "Rear Camera Available" : "Rear Camera Unavailable");
         }
 
         public void TakePicture()
@@ -134,9 +119,9 @@ namespace EasyMobile.Demo
             }
 
             Media.Gallery.SaveImage(
-                (Texture2D)displayImage.texture,
+                (Texture2D) displayImage.texture,
                 imageNameInputField.text,
-                (ImageFormat)imageFormatDropdown.value,
+                (ImageFormat) imageFormatDropdown.value,
                 SaveImageCallback);
         }
 
@@ -178,7 +163,8 @@ namespace EasyMobile.Demo
 
         public void SaveImageCallback(string error)
         {
-            NativeUI.Alert("Save image", error == null ? "The image has been saved successfully." : "Failed to save image. Error: " + error);
+            NativeUI.Alert("Save image",
+                error == null ? "The image has been saved successfully." : "Failed to save image. Error: " + error);
         }
 
         public void AddViewWithError(string error)
@@ -242,17 +228,15 @@ namespace EasyMobile.Demo
 
         private Texture2D GenerateRandomTexture2D()
         {
-            Texture2D texture = new Texture2D((int)randomTextureWidth, (int)randomTextureHeight);
-            Color[] colors = texture.GetPixels();
+            var texture = new Texture2D((int) randomTextureWidth, (int) randomTextureHeight);
+            var colors = texture.GetPixels();
 
-            for (int x = 0; x < texture.width; x++)
+            for (var x = 0; x < texture.width; x++)
+            for (var y = 0; y < texture.height; y++)
             {
-                for (int y = 0; y < texture.height; y++)
-                {
-                    int index = x + y * texture.width;
-                    Color color = randomTextureColors[UnityEngine.Random.Range(0, randomTextureColors.Length)];
-                    colors[index] = color;
-                }
+                var index = x + y * texture.width;
+                var color = randomTextureColors[UnityEngine.Random.Range(0, randomTextureColors.Length)];
+                colors[index] = color;
             }
 
             texture.SetPixels(colors);
@@ -260,7 +244,8 @@ namespace EasyMobile.Demo
             return texture;
         }
 
-        private Vector2 SizeToParent(RectTransform parent, RectTransform imageTransform, RawImage image, float padding = 0)
+        private Vector2 SizeToParent(RectTransform parent, RectTransform imageTransform, RawImage image,
+            float padding = 0)
         {
             float width = 0, height = 0;
 
@@ -270,7 +255,7 @@ namespace EasyMobile.Demo
                     return imageTransform.sizeDelta;
 
                 padding = 1 - padding;
-                float ratio = image.texture.width / (float)image.texture.height;
+                var ratio = image.texture.width / (float) image.texture.height;
                 var bounds = new Rect(0, 0, parent.rect.width, parent.rect.height);
 
                 if (Mathf.RoundToInt(imageTransform.eulerAngles.z) % 180 == 90)

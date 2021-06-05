@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using UnityEngine.SceneManagement;
 using UnityEditor.SceneManagement;
 using System.Linq;
+using Object = UnityEngine.Object;
 
 namespace EasyMobile.Editor
 {
@@ -71,11 +72,8 @@ namespace EasyMobile.Editor
         {
             if (prefab != null)
             {
-                Module comp = prefab.GetComponent<Module>();
-                if (comp == null)
-                {
-                    prefab.AddComponent<Module>();
-                }
+                var comp = prefab.GetComponent<Module>();
+                if (comp == null) prefab.AddComponent<Module>();
             }
         }
 
@@ -88,11 +86,8 @@ namespace EasyMobile.Editor
         {
             if (prefab != null)
             {
-                Module comp = prefab.GetComponent<Module>();
-                if (comp != null)
-                {
-                    Component.DestroyImmediate(comp, true);
-                }
+                var comp = prefab.GetComponent<Module>();
+                if (comp != null) Object.DestroyImmediate(comp, true);
             }
         }
 
@@ -103,19 +98,16 @@ namespace EasyMobile.Editor
         /// <returns>The GPGS identifiers.</returns>
         public static Dictionary<string, string> GetGPGSIds()
         {
-            Dictionary<string, string> dict = new Dictionary<string, string>();
+            var dict = new Dictionary<string, string>();
 
             // Find the GPGSIds class and get all its public static members.
-            System.Type gpgsClass = FindClass(EM_Constants.AndroidGPGSConstantClassName);
+            var gpgsClass = FindClass(EM_Constants.AndroidGPGSConstantClassName);
 
             if (gpgsClass != null)
             {
-                FieldInfo[] fields = gpgsClass.GetFields(BindingFlags.Static | BindingFlags.Public);
+                var fields = gpgsClass.GetFields(BindingFlags.Static | BindingFlags.Public);
 
-                foreach (var f in fields)
-                {
-                    dict.Add(f.Name, f.GetValue(null).ToString());
-                }
+                foreach (var f in fields) dict.Add(f.Name, f.GetValue(null).ToString());
             }
 
             return dict;
@@ -128,19 +120,16 @@ namespace EasyMobile.Editor
         /// <returns>The game service constants.</returns>
         public static Dictionary<string, string> GetGameServiceConstants()
         {
-            Dictionary<string, string> dict = new Dictionary<string, string>();
+            var dict = new Dictionary<string, string>();
 
             // Find the GameServiceConstants class and get all its public static members.
-            System.Type constantsClass = FindClass(EM_Constants.GameServicesConstantsClassName, EM_Constants.RootNameSpace);
+            var constantsClass = FindClass(EM_Constants.GameServicesConstantsClassName, EM_Constants.RootNameSpace);
 
             if (constantsClass != null)
             {
-                FieldInfo[] fields = constantsClass.GetFields(BindingFlags.Static | BindingFlags.Public);
+                var fields = constantsClass.GetFields(BindingFlags.Static | BindingFlags.Public);
 
-                foreach (var f in fields)
-                {
-                    dict.Add(f.Name, f.GetValue(null).ToString());
-                }
+                foreach (var f in fields) dict.Add(f.Name, f.GetValue(null).ToString());
             }
 
             return dict;
@@ -153,19 +142,16 @@ namespace EasyMobile.Editor
         /// <returns>The game service constants.</returns>
         public static Dictionary<string, string> GetIAPConstants()
         {
-            Dictionary<string, string> dict = new Dictionary<string, string>();
+            var dict = new Dictionary<string, string>();
 
             // Find the GameServiceConstants class and get all its public static members.
-            System.Type constantsClass = FindClass(EM_Constants.IAPConstantsClassName, EM_Constants.RootNameSpace);
+            var constantsClass = FindClass(EM_Constants.IAPConstantsClassName, EM_Constants.RootNameSpace);
 
             if (constantsClass != null)
             {
-                FieldInfo[] fields = constantsClass.GetFields(BindingFlags.Static | BindingFlags.Public);
+                var fields = constantsClass.GetFields(BindingFlags.Static | BindingFlags.Public);
 
-                foreach (var f in fields)
-                {
-                    dict.Add(f.Name, f.GetValue(null).ToString());
-                }
+                foreach (var f in fields) dict.Add(f.Name, f.GetValue(null).ToString());
             }
 
             return dict;
@@ -177,9 +163,10 @@ namespace EasyMobile.Editor
         /// <returns><c>true</c>, if exists, <c>false</c> otherwise.</returns>
         public static bool AppleTangleClassExists()
         {
-            System.Type appleTangle = FindClass(AppleTangleClassName, EM_ExternalPluginManager.UnityPurchasingSecurityNameSpace);
+            var appleTangle = FindClass(AppleTangleClassName,
+                EM_ExternalPluginManager.UnityPurchasingSecurityNameSpace);
 
-            return (appleTangle != null);
+            return appleTangle != null;
         }
 
         /// <summary>
@@ -188,16 +175,15 @@ namespace EasyMobile.Editor
         /// <returns><c>true</c> if valid; otherwise, <c>false</c>.</returns>
         public static bool IsValidAppleTangleClass()
         {
-            System.Type appleTangle = FindClass(AppleTangleClassName, EM_ExternalPluginManager.UnityPurchasingSecurityNameSpace);
+            var appleTangle = FindClass(AppleTangleClassName,
+                EM_ExternalPluginManager.UnityPurchasingSecurityNameSpace);
 
             if (appleTangle != null)
             {
-                FieldInfo isDummyField = appleTangle.GetField(IsDummyClassFieldName, BindingFlags.Static | BindingFlags.NonPublic);
+                var isDummyField =
+                    appleTangle.GetField(IsDummyClassFieldName, BindingFlags.Static | BindingFlags.NonPublic);
 
-                if (isDummyField == null)
-                {
-                    return true;
-                }
+                if (isDummyField == null) return true;
             }
 
             return false;
@@ -209,9 +195,10 @@ namespace EasyMobile.Editor
         /// <returns><c>true</c>, if exists, <c>false</c> otherwise.</returns>
         public static bool GooglePlayTangleClassExists()
         {
-            System.Type googlePlayTangle = FindClass(GooglePlayTangleClassName, EM_ExternalPluginManager.UnityPurchasingSecurityNameSpace);
+            var googlePlayTangle = FindClass(GooglePlayTangleClassName,
+                EM_ExternalPluginManager.UnityPurchasingSecurityNameSpace);
 
-            return (googlePlayTangle != null);
+            return googlePlayTangle != null;
         }
 
         /// <summary>
@@ -220,16 +207,15 @@ namespace EasyMobile.Editor
         /// <returns><c>true</c> if valid; otherwise, <c>false</c>.</returns>
         public static bool IsValidGooglePlayTangleClass()
         {
-            System.Type googlePlayTangle = FindClass(GooglePlayTangleClassName, EM_ExternalPluginManager.UnityPurchasingSecurityNameSpace);
+            var googlePlayTangle = FindClass(GooglePlayTangleClassName,
+                EM_ExternalPluginManager.UnityPurchasingSecurityNameSpace);
 
             if (googlePlayTangle != null)
             {
-                FieldInfo isDummyField = googlePlayTangle.GetField(IsDummyClassFieldName, BindingFlags.Static | BindingFlags.NonPublic);
+                var isDummyField =
+                    googlePlayTangle.GetField(IsDummyClassFieldName, BindingFlags.Static | BindingFlags.NonPublic);
 
-                if (isDummyField == null)
-                {
-                    return true;
-                }
+                if (isDummyField == null) return true;
             }
 
             return false;
@@ -243,22 +229,19 @@ namespace EasyMobile.Editor
         /// <param name="className">Class name.</param>
         /// <param name="nameSpace">Optional namespace of the class to find.</param>
         /// <param name="assemblyName">Optional simple name of the assembly.</param>
-        public static System.Type FindClass(string className, string nameSpace = null, string assemblyName = null)
+        public static Type FindClass(string className, string nameSpace = null, string assemblyName = null)
         {
-            string typeName = string.IsNullOrEmpty(nameSpace) ? className : nameSpace + "." + className;
-            Assembly[] assemblies = System.AppDomain.CurrentDomain.GetAssemblies();
+            var typeName = string.IsNullOrEmpty(nameSpace) ? className : nameSpace + "." + className;
+            var assemblies = AppDomain.CurrentDomain.GetAssemblies();
 
-            foreach (Assembly asm in assemblies)
+            foreach (var asm in assemblies)
             {
                 // The assembly must match the given one if any.
-                if (!string.IsNullOrEmpty(assemblyName) && !asm.GetName().Name.Equals(assemblyName))
-                {
-                    continue;
-                }
+                if (!string.IsNullOrEmpty(assemblyName) && !asm.GetName().Name.Equals(assemblyName)) continue;
 
                 try
                 {
-                    System.Type t = asm.GetType(typeName);
+                    var t = asm.GetType(typeName);
 
                     if (t != null && t.IsClass)
                         return t;
@@ -281,28 +264,21 @@ namespace EasyMobile.Editor
         /// <param name="assemblyName">Assembly name.</param>
         public static bool NamespaceExists(string nameSpace, string assemblyName = null)
         {
-            Assembly[] assemblies = System.AppDomain.CurrentDomain.GetAssemblies();
+            var assemblies = AppDomain.CurrentDomain.GetAssemblies();
 
-            foreach (Assembly asm in assemblies)
+            foreach (var asm in assemblies)
             {
                 // The assembly must match the given one if any.
-                if (!string.IsNullOrEmpty(assemblyName) && !asm.GetName().Name.Equals(assemblyName))
-                {
-                    continue;
-                }
+                if (!string.IsNullOrEmpty(assemblyName) && !asm.GetName().Name.Equals(assemblyName)) continue;
 
                 try
                 {
-                    System.Type[] types = asm.GetTypes();
-                    foreach (System.Type t in types)
-                    {
+                    var types = asm.GetTypes();
+                    foreach (var t in types)
                         // The namespace must match the given one if any. Note that the type may not have a namespace at all.
                         // Must be a class and of course class name must match the given one.
                         if (!string.IsNullOrEmpty(t.Namespace) && t.Namespace.Equals(nameSpace))
-                        {
                             return true;
-                        }
-                    }
                 }
                 catch (ReflectionTypeLoadException e)
                 {
@@ -337,30 +313,20 @@ namespace EasyMobile.Editor
         public static string MakeIdentifier(string key)
         {
             string s;
-            string retId = string.Empty;
+            var retId = string.Empty;
 
-            if (string.IsNullOrEmpty(key))
-            {
-                return "_";
-            }
+            if (string.IsNullOrEmpty(key)) return "_";
 
-            s = key.Trim().Replace(' ', '_');   // Spaces => Underscore _
-            s = s.Replace('.', '_');    // Punctuations => Underscore _
+            s = key.Trim().Replace(' ', '_'); // Spaces => Underscore _
+            s = s.Replace('.', '_'); // Punctuations => Underscore _
 
             // Construct the identifier, ignoring all special characters like , + - * : /
-            foreach (char c in s)
-            {
+            foreach (var c in s)
                 if (char.IsLetterOrDigit(c) || c == '_')
-                {
                     retId += c;
-                }
-            }
 
             // Prefix leading numbers with underscore.
-            if (char.IsDigit(retId[0]))
-            {
-                retId = '_' + retId;
-            }
+            if (char.IsDigit(retId[0])) retId = '_' + retId;
 
             return retId;
         }
@@ -371,61 +337,52 @@ namespace EasyMobile.Editor
         /// <param name="folder">The containing folder.</param>
         /// <param name="fullClassName">Class name with optional namespace separated by dots.</param>
         /// <param name="resourceKeys">Resource keys.</param>
-        public static void GenerateConstantsClass(string destinationFolder, string fullClassName, Hashtable resourceKeys, bool alertWhenDone = false)
+        public static void GenerateConstantsClass(string destinationFolder, string fullClassName,
+            Hashtable resourceKeys, bool alertWhenDone = false)
         {
-            string constantsValues = string.Empty;
-            string[] parts = fullClassName.Split('.');
+            var constantsValues = string.Empty;
+            var parts = fullClassName.Split('.');
 
             // If no folder is provided, use the default one and make sure it exists.
-            if (string.IsNullOrEmpty(destinationFolder))
-            {
-                destinationFolder = EM_Constants.RootPath;
-            }
+            if (string.IsNullOrEmpty(destinationFolder)) destinationFolder = EM_Constants.RootPath;
             FileIO.EnsureFolderExists(destinationFolder);
 
             // Construct the namespace based on provided className.
-            string nameSpace = string.Empty;
-            for (int i = 0; i < parts.Length - 1; i++)
+            var nameSpace = string.Empty;
+            for (var i = 0; i < parts.Length - 1; i++)
             {
-                if (nameSpace != string.Empty)
-                {
-                    nameSpace += ".";
-                }
+                if (nameSpace != string.Empty) nameSpace += ".";
 
                 nameSpace += parts[i];
             }
 
-            bool hasNameSpace = nameSpace != string.Empty;
-            string classTab = hasNameSpace ? "\t" : string.Empty;
-            string memberTab = hasNameSpace ? "\t\t" : "\t";
+            var hasNameSpace = nameSpace != string.Empty;
+            var classTab = hasNameSpace ? "\t" : string.Empty;
+            var memberTab = hasNameSpace ? "\t\t" : "\t";
 
             foreach (DictionaryEntry entry in resourceKeys)
             {
-                string key = MakeIdentifier((string)entry.Key);
+                var key = MakeIdentifier((string) entry.Key);
                 constantsValues += memberTab + "public const string " +
-                key + " = \"" + entry.Value + "\";\n";
+                                   key + " = \"" + entry.Value + "\";\n";
             }
 
             // First read the template.
-            string fileBody = ReadTemplate(ConstantsClassTemplate);
+            var fileBody = ReadTemplate(ConstantsClassTemplate);
 
             // Write the namespace start.
             if (hasNameSpace)
-            {
                 fileBody = fileBody.Replace(
                     NamespaceStartPlaceholder,
                     "namespace " + nameSpace + "\n{");
-            }
             else
-            {
                 fileBody = fileBody.Replace(NamespaceStartPlaceholder, string.Empty);
-            }
 
             // Fill in appropriate class tab.
             fileBody = fileBody.Replace(ClassTabPlaceholder, classTab);
 
             // Write the class name.
-            string className = parts[parts.Length - 1];
+            var className = parts[parts.Length - 1];
             fileBody = fileBody.Replace(ClassNamePlaceholder, className);
 
             // Write the constants.
@@ -433,25 +390,19 @@ namespace EasyMobile.Editor
 
             // Write the namespace end.
             if (hasNameSpace)
-            {
                 fileBody = fileBody.Replace(
                     NamespaceEndPlaceholder,
                     "}");
-            }
             else
-            {
                 fileBody = fileBody.Replace(NamespaceEndPlaceholder, string.Empty);
-            }
 
             // Write the file with the same name as the class.
-            string filePath = destinationFolder + "/" + className + ".cs";
+            var filePath = destinationFolder + "/" + className + ".cs";
             FileIO.WriteFile(filePath, fileBody);
             AssetDatabase.ImportAsset(filePath);
 
             if (alertWhenDone)
-            {
                 Alert("Constants Class Generated", "Successfully created constants class at " + filePath);
-            }
         }
 
         /// <summary>
@@ -460,7 +411,8 @@ namespace EasyMobile.Editor
         /// <param name="alertWhenDone">If set to <c>true</c> alert when done.</param>
         public static void GenerateDummyAppleTangleClass(bool alertWhenDone = false)
         {
-            GenerateClassFromTemplate(EM_Constants.ReceiptValidationFolder, AppleTangleClassName, AppleTangleTemplate, alertWhenDone);
+            GenerateClassFromTemplate(EM_Constants.ReceiptValidationFolder, AppleTangleClassName, AppleTangleTemplate,
+                alertWhenDone);
         }
 
         /// <summary>
@@ -469,7 +421,8 @@ namespace EasyMobile.Editor
         /// <param name="alertWhenDone">If set to <c>true</c> alert when done.</param>
         public static void GenerateDummyGooglePlayTangleClass(bool alertWhenDone = false)
         {
-            GenerateClassFromTemplate(EM_Constants.ReceiptValidationFolder, GooglePlayTangleClassName, GooglePlayTangleTemplate, alertWhenDone);
+            GenerateClassFromTemplate(EM_Constants.ReceiptValidationFolder, GooglePlayTangleClassName,
+                GooglePlayTangleTemplate, alertWhenDone);
         }
 
         /// <summary>
@@ -478,35 +431,31 @@ namespace EasyMobile.Editor
         /// <param name="className">Class name.</param>
         /// <param name="templateName">Template name.</param>
         /// <param name="alertWhenDone">If set to <c>true</c> alert when done.</param>
-        public static void GenerateClassFromTemplate(string destinationFolder, string className, string templateName, bool alertWhenDone = false)
+        public static void GenerateClassFromTemplate(string destinationFolder, string className, string templateName,
+            bool alertWhenDone = false)
         {
             // If no folder is provided, use the default one and make sure it exists.
-            if (string.IsNullOrEmpty(destinationFolder))
-            {
-                destinationFolder = EM_Constants.RootPath;
-            }
+            if (string.IsNullOrEmpty(destinationFolder)) destinationFolder = EM_Constants.RootPath;
 
             // Make sure the containing folder exists.
             FileIO.EnsureFolderExists(destinationFolder);
 
             // Read the template.
-            string fileBody = ReadTemplate(templateName);
+            var fileBody = ReadTemplate(templateName);
 
             if (string.IsNullOrEmpty(fileBody))
             {
-                Debug.LogError("Could not create class " + className + ". The template named " + templateName + " is not found or empty.");
+                Debug.LogError("Could not create class " + className + ". The template named " + templateName +
+                               " is not found or empty.");
                 return;
             }
 
             // Just copy the whole template and write a new file with the same name as the class.
-            string filePath = destinationFolder + "/" + className + ".cs";
+            var filePath = destinationFolder + "/" + className + ".cs";
             FileIO.WriteFile(filePath, fileBody);
             AssetDatabase.ImportAsset(filePath);
 
-            if (alertWhenDone)
-            {
-                Alert("Class Generated", "Successfully created " + className + " class at " + filePath);
-            }
+            if (alertWhenDone) Alert("Class Generated", "Successfully created " + className + " class at " + filePath);
         }
 
         /// <summary>
@@ -519,22 +468,18 @@ namespace EasyMobile.Editor
         {
             if (property.isArray)
             {
-                HashSet<string> addedNames = new HashSet<string>();
-                for (int i = 0; i < property.arraySize; i++)
+                var addedNames = new HashSet<string>();
+                for (var i = 0; i < property.arraySize; i++)
                 {
-                    SerializedProperty el = property.GetArrayElementAtIndex(i);
-                    string name = el.FindPropertyRelative(fieldName).stringValue;
+                    var el = property.GetArrayElementAtIndex(i);
+                    var name = el.FindPropertyRelative(fieldName).stringValue;
 
                     if (!string.IsNullOrEmpty(name))
                     {
                         if (addedNames.Contains(name))
-                        {
                             return name;
-                        }
                         else
-                        {
                             addedNames.Add(name);
-                        }
                     }
                 }
             }
@@ -549,7 +494,7 @@ namespace EasyMobile.Editor
         /// <param name="enabledScenesOnly">If set to <c>true</c> count enabled scenes only.</param>
         public static int GetSceneCountInBuildSettings(bool enabledScenesOnly = true)
         {
-            int totalScenesInBuildSetting = EditorBuildSettings.scenes.Length;
+            var totalScenesInBuildSetting = EditorBuildSettings.scenes.Length;
 
             if (!enabledScenesOnly)
             {
@@ -557,11 +502,9 @@ namespace EasyMobile.Editor
             }
             else
             {
-                int count = 0;
-                for (int i = 0; i < totalScenesInBuildSetting; i++)
-                {
+                var count = 0;
+                for (var i = 0; i < totalScenesInBuildSetting; i++)
                     count += EditorBuildSettings.scenes[i].enabled ? 1 : 0;
-                }
                 return count;
             }
         }
@@ -573,14 +516,10 @@ namespace EasyMobile.Editor
         /// <param name="enabledScenesOnly">If set to <c>true</c> get enabled scenes only.</param>
         public static string[] GetScenePathInBuildSettings(bool enabledScenesOnly = true)
         {
-            List<string> paths = new List<string>();
-            for (int i = 0; i < EditorBuildSettings.scenes.Length; i++)
-            {
+            var paths = new List<string>();
+            for (var i = 0; i < EditorBuildSettings.scenes.Length; i++)
                 if (EditorBuildSettings.scenes[i].enabled || !enabledScenesOnly)
-                {
                     paths.Add(EditorBuildSettings.scenes[i].path);
-                }
-            }
             return paths.ToArray();
         }
 
@@ -599,12 +538,9 @@ namespace EasyMobile.Editor
                 return null;
             }
 
-            List<GameObject> roots = new List<GameObject>(scene.rootCount);
+            var roots = new List<GameObject>(scene.rootCount);
             scene.GetRootGameObjects(roots);
-            GameObject go = roots.Find((GameObject g) =>
-                {
-                    return g.name.Equals(objectName);
-                });
+            var go = roots.Find((GameObject g) => { return g.name.Equals(objectName); });
 
             return go;
         }
@@ -617,10 +553,10 @@ namespace EasyMobile.Editor
         /// <param name="scenePaths">Scene paths.</param>
         public static bool IsGameObjectFoundInScenes(string objectName, string[] scenePaths)
         {
-            bool isFound = false;
-            Scene activeScene = EditorSceneManager.GetActiveScene();
+            var isFound = false;
+            var activeScene = SceneManager.GetActiveScene();
 
-            for (int i = 0; i < scenePaths.Length; i++)
+            for (var i = 0; i < scenePaths.Length; i++)
             {
                 if (activeScene.path.Equals(scenePaths[i]))
                 {
@@ -629,7 +565,7 @@ namespace EasyMobile.Editor
                 }
                 else
                 {
-                    Scene scene = EditorSceneManager.OpenScene(scenePaths[i], OpenSceneMode.Additive);
+                    var scene = EditorSceneManager.OpenScene(scenePaths[i], OpenSceneMode.Additive);
 
                     if (FindGameObjectInScene(objectName, scene))
                         isFound = true;
@@ -660,7 +596,7 @@ namespace EasyMobile.Editor
             }
 
 #if UNITY_2018_3_OR_NEWER
-            bool isNotPrefab = PrefabUtility.GetPrefabAssetType(prefab) == PrefabAssetType.NotAPrefab;
+            var isNotPrefab = PrefabUtility.GetPrefabAssetType(prefab) == PrefabAssetType.NotAPrefab;
 #else
             var prefabType = PrefabUtility.GetPrefabType(prefab);
             bool isNotPrefab = prefabType != PrefabType.Prefab && prefabType != PrefabType.ModelPrefab;
@@ -671,7 +607,7 @@ namespace EasyMobile.Editor
                 return null;
             }
 
-            GameObject[] roots = scene.GetRootGameObjects();
+            var roots = scene.GetRootGameObjects();
 
             foreach (var obj in roots)
             {
@@ -703,10 +639,10 @@ namespace EasyMobile.Editor
         /// <param name="scenePaths">Scene paths.</param>
         public static bool IsPrefabInstanceFoundInScenes(GameObject prefab, string[] scenePaths)
         {
-            bool isFound = false;
+            var isFound = false;
 
 #if UNITY_2018_3_OR_NEWER
-            bool isNotPrefab = PrefabUtility.GetPrefabAssetType(prefab) == PrefabAssetType.NotAPrefab;
+            var isNotPrefab = PrefabUtility.GetPrefabAssetType(prefab) == PrefabAssetType.NotAPrefab;
 #else
             var prefabType = PrefabUtility.GetPrefabType(prefab);
             bool isNotPrefab = prefabType != PrefabType.Prefab && prefabType != PrefabType.ModelPrefab;
@@ -717,9 +653,9 @@ namespace EasyMobile.Editor
                 return isFound;
             }
 
-            Scene activeScene = EditorSceneManager.GetActiveScene();
+            var activeScene = SceneManager.GetActiveScene();
 
-            for (int i = 0; i < scenePaths.Length; i++)
+            for (var i = 0; i < scenePaths.Length; i++)
             {
                 if (activeScene.path.Equals(scenePaths[i]))
                 {
@@ -728,7 +664,7 @@ namespace EasyMobile.Editor
                 }
                 else
                 {
-                    Scene scene = EditorSceneManager.OpenScene(scenePaths[i], OpenSceneMode.Additive);
+                    var scene = EditorSceneManager.OpenScene(scenePaths[i], OpenSceneMode.Additive);
 
                     if (FindPrefabInstanceInScene(prefab, scene) != null)
                         isFound = true;
@@ -751,14 +687,14 @@ namespace EasyMobile.Editor
         /// <param name="type">Type.</param>
         /// <param name="fieldName">Field name.</param>
         /// <param name="inherit">If set to <c>true</c> inherit.</param>
-        public static string GetFieldTooltip(System.Type type, string fieldName, bool inherit = true)
+        public static string GetFieldTooltip(Type type, string fieldName, bool inherit = true)
         {
-            string tooltip = "";
+            var tooltip = "";
             var field = type.GetField(fieldName, BindingFlags.Public | BindingFlags.Instance);
 
             if (field != null)
             {
-                TooltipAttribute[] attributes = field.GetCustomAttributes(typeof(TooltipAttribute), inherit) as TooltipAttribute[];
+                var attributes = field.GetCustomAttributes(typeof(TooltipAttribute), inherit) as TooltipAttribute[];
 
                 if (attributes.Length > 0)
                     tooltip = attributes[0].tooltip;
@@ -777,15 +713,11 @@ namespace EasyMobile.Editor
         /// <typeparam name="TVal">The 2nd type parameter.</typeparam>
         public static TKey GetKeyForValue<TKey, TVal>(IDictionary<TKey, TVal> dict, TVal val)
         {
-            foreach (KeyValuePair<TKey, TVal> entry in dict)
-            {
+            foreach (var entry in dict)
                 if (entry.Value.Equals(val))
-                {
                     return entry.Key;
-                }
-            }
 
-            return default(TKey);
+            return default;
         }
 
         /// <summary>
@@ -814,17 +746,17 @@ namespace EasyMobile.Editor
                 return sWorkingBuildTargetGroups;
 
             var groups = new List<BuildTargetGroup>();
-            Type btgType = typeof(BuildTargetGroup);
+            var btgType = typeof(BuildTargetGroup);
 
-            foreach (string name in System.Enum.GetNames(btgType))
+            foreach (var name in Enum.GetNames(btgType))
             {
                 // First check obsolete.
                 var memberInfo = btgType.GetMember(name)[0];
-                if (System.Attribute.IsDefined(memberInfo, typeof(System.ObsoleteAttribute)))
+                if (Attribute.IsDefined(memberInfo, typeof(ObsoleteAttribute)))
                     continue;
 
                 // Name -> enum value and exclude the 'Unknown'.
-                BuildTargetGroup g = (BuildTargetGroup)Enum.Parse(btgType, name);
+                var g = (BuildTargetGroup) Enum.Parse(btgType, name);
                 if (g != BuildTargetGroup.Unknown)
                     groups.Add(g);
             }
@@ -842,7 +774,7 @@ namespace EasyMobile.Editor
         {
             var type = target.GetType();
             var memberInfo = type.GetMember(target.ToString())[0];
-            return System.Attribute.IsDefined(memberInfo, typeof(System.ObsoleteAttribute));
+            return Attribute.IsDefined(memberInfo, typeof(ObsoleteAttribute));
         }
 
         /// <summary>
@@ -864,7 +796,7 @@ namespace EasyMobile.Editor
                     Debug.Log(
                         "Unity 'Preferences > External Tools > Android JDK' path is not set. " +
                         "Falling back to JAVA_HOME environment variable.");
-                jdkPath = System.Environment.GetEnvironmentVariable("JAVA_HOME");
+                jdkPath = Environment.GetEnvironmentVariable("JAVA_HOME");
             }
 
             return jdkPath;
@@ -886,8 +818,8 @@ namespace EasyMobile.Editor
         /// <returns></returns>
         public static List<FieldInfo> GetConstants(Type type)
         {
-            FieldInfo[] fieldInfos = type.GetFields(BindingFlags.Public |
-                 BindingFlags.Static | BindingFlags.FlattenHierarchy);
+            var fieldInfos = type.GetFields(BindingFlags.Public |
+                                            BindingFlags.Static | BindingFlags.FlattenHierarchy);
 
             return fieldInfos.Where(fi => fi.IsLiteral && !fi.IsInitOnly).ToList();
         }

@@ -13,4 +13,3 @@ namespace EasyMobile.Editor
         public const int versionInt = 0x021502;
     }
 }
-

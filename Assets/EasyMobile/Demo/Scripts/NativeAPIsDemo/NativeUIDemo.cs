@@ -14,19 +14,19 @@ namespace EasyMobile.Demo
 
         public DemoUtils demoUtils;
 
-        void Awake()
+        private void Awake()
         {
             // Init EM runtime if needed (useful in case only this scene is built).
             if (!RuntimeManager.IsInitialized())
                 RuntimeManager.Init();
         }
 
-        void Start()
+        private void Start()
         {
             UpdateIOSDarkModeBool();
         }
 
-        IEnumerator OnApplicationFocus(bool focus)
+        private IEnumerator OnApplicationFocus(bool focus)
         {
             if (focus)
             {
@@ -37,14 +37,16 @@ namespace EasyMobile.Demo
 
         public void ShowThreeButtonsAlert()
         {
-            NativeUI.AlertPopup alert = NativeUI.ShowThreeButtonAlert("Sample Alert", "This is a 3-button alert.", "Button 1", "Button 2", "Button 3");
+            var alert = NativeUI.ShowThreeButtonAlert("Sample Alert", "This is a 3-button alert.", "Button 1",
+                "Button 2", "Button 3");
             if (alert != null)
                 alert.OnComplete += OnAlertComplete;
         }
 
         public void ShowTwoButtonsAlert()
         {
-            NativeUI.AlertPopup alert = NativeUI.ShowTwoButtonAlert("Sample Alert", "This is a 2-button alert.", "Button 1", "Button 2");
+            var alert = NativeUI.ShowTwoButtonAlert("Sample Alert", "This is a 2-button alert.", "Button 1",
+                "Button 2");
 
             if (alert != null)
                 alert.OnComplete += OnAlertComplete;
@@ -52,7 +54,7 @@ namespace EasyMobile.Demo
 
         public void ShowOneButtonAlert()
         {
-            NativeUI.AlertPopup alert = NativeUI.Alert("Sample Alert", "This is a simple (1-button) alert.");
+            var alert = NativeUI.Alert("Sample Alert", "This is a simple (1-button) alert.");
             if (alert != null)
                 alert.OnComplete += OnAlertComplete;
         }
@@ -66,11 +68,11 @@ namespace EasyMobile.Demo
 #endif
         }
 
-        void OnAlertComplete(int buttonIndex)
+        private void OnAlertComplete(int buttonIndex)
         {
-            bool isFistButtonClicked = buttonIndex == 0;
-            bool isSecondButtonClicked = buttonIndex == 1;
-            bool isThirdButtonClicked = buttonIndex == 2;
+            var isFistButtonClicked = buttonIndex == 0;
+            var isSecondButtonClicked = buttonIndex == 1;
+            var isThirdButtonClicked = buttonIndex == 2;
 
             if (isFistButtonClicked)
                 demoUtils.DisplayBool(isFirstButtonBool, true, "isFirstButtonClicked: TRUE");

@@ -15,9 +15,15 @@ namespace EasyMobile.Editor
 
         protected static GUIContent iconPlus = IconContent("Toolbar Plus", "Add entry");
         protected static GUIContent iconMinus = IconContent("Toolbar Minus", "Remove entry");
-        protected static GUIContent warningIconConflict = IconContent("console.warnicon.sml", "Conflicting key, this entry will be lost");
+
+        protected static GUIContent warningIconConflict =
+            IconContent("console.warnicon.sml", "Conflicting key, this entry will be lost");
+
         protected static GUIContent warningIconOther = IconContent("console.infoicon.sml", "Conflicting key");
-        protected static GUIContent warningIconNull = IconContent("console.warnicon.sml", "Null key, this entry will be lost");
+
+        protected static GUIContent warningIconNull =
+            IconContent("console.warnicon.sml", "Null key, this entry will be lost");
+
         protected static GUIStyle buttonStyle = GUIStyle.none;
         protected static GUIContent tempContent = new GUIContent();
         protected static Vector2 KeyLabelSize = new Vector2(30, 0);
@@ -38,8 +44,8 @@ namespace EasyMobile.Editor
         {
             public PropertyIdentity(SerializedProperty property)
             {
-                this.instance = property.serializedObject.targetObject;
-                this.propertyPath = property.propertyPath;
+                instance = property.serializedObject.targetObject;
+                propertyPath = property.propertyPath;
             }
 
             public UnityEngine.Object instance;
@@ -53,20 +59,22 @@ namespace EasyMobile.Editor
             Remove
         }
 
-        protected static Dictionary<PropertyIdentity, ConflictState> conflictStateDict = new Dictionary<PropertyIdentity, ConflictState>();
+        protected static Dictionary<PropertyIdentity, ConflictState> conflictStateDict =
+            new Dictionary<PropertyIdentity, ConflictState>();
+
         protected static Dictionary<SerializedPropertyType, PropertyInfo> serializedPropertyValueAccessorsDict;
 
         public override void OnGUI(Rect position, SerializedProperty property, GUIContent label)
         {
             label = EditorGUI.BeginProperty(position, label, property);
 
-            Action buttonAction = Action.None;
-            int buttonActionIndex = 0;
+            var buttonAction = Action.None;
+            var buttonActionIndex = 0;
 
             var keyArrayProperty = property.FindPropertyRelative(KeysFieldName);
             var valueArrayProperty = property.FindPropertyRelative(ValuesFieldName);
 
-            ConflictState conflictState = GetConflictState(property);
+            var conflictState = GetConflictState(property);
 
             if (conflictState.conflictIndex != -1)
             {
@@ -101,6 +109,7 @@ namespace EasyMobile.Editor
                     buttonAction = Action.Add;
                     buttonActionIndex = keyArrayProperty.arraySize;
                 }
+
                 EditorGUI.EndDisabledGroup();
 
                 EditorGUI.indentLevel++;
@@ -112,9 +121,9 @@ namespace EasyMobile.Editor
                 {
                     var keyProperty = entry.keyProperty;
                     var valueProperty = entry.valueProperty;
-                    int i = entry.index;
+                    var i = entry.index;
 
-                    float lineHeight = DrawKeyValueLine(keyProperty, valueProperty, linePosition, i);
+                    var lineHeight = DrawKeyValueLine(keyProperty, valueProperty, linePosition, i);
 
                     buttonPosition = linePosition;
                     buttonPosition.x = linePosition.xMax;
@@ -173,8 +182,8 @@ namespace EasyMobile.Editor
             foreach (var entry1 in EnumerateEntries(keyArrayProperty, valueArrayProperty))
             {
                 var keyProperty1 = entry1.keyProperty;
-                int i = entry1.index;
-                object keyProperty1Value = GetPropertyValue(keyProperty1);
+                var i = entry1.index;
+                var keyProperty1Value = GetPropertyValue(keyProperty1);
 
                 if (keyProperty1Value == null)
                 {
@@ -190,8 +199,8 @@ namespace EasyMobile.Editor
                 foreach (var entry2 in EnumerateEntries(keyArrayProperty, valueArrayProperty, i + 1))
                 {
                     var keyProperty2 = entry2.keyProperty;
-                    int j = entry2.index;
-                    object keyProperty2Value = GetPropertyValue(keyProperty2);
+                    var j = entry2.index;
+                    var keyProperty2Value = GetPropertyValue(keyProperty2);
 
                     if (ComparePropertyValues(keyProperty1Value, keyProperty2Value))
                     {
@@ -204,6 +213,7 @@ namespace EasyMobile.Editor
                     }
                 }
             }
+
             breakLoops:
 
             EditorGUI.EndProperty();
@@ -211,7 +221,7 @@ namespace EasyMobile.Editor
 
         public override float GetPropertyHeight(SerializedProperty property, GUIContent label)
         {
-            float propertyHeight = EditorGUIUtility.singleLineHeight;
+            var propertyHeight = EditorGUIUtility.singleLineHeight;
 
             if (property.isExpanded)
             {
@@ -222,27 +232,25 @@ namespace EasyMobile.Editor
                 {
                     var keyProperty = entry.keyProperty;
                     var valueProperty = entry.valueProperty;
-                    float keyPropertyHeight = EditorGUI.GetPropertyHeight(keyProperty);
-                    float valuePropertyHeight = EditorGUI.GetPropertyHeight(valueProperty);
-                    float lineHeight = Mathf.Max(keyPropertyHeight, valuePropertyHeight);
+                    var keyPropertyHeight = EditorGUI.GetPropertyHeight(keyProperty);
+                    var valuePropertyHeight = EditorGUI.GetPropertyHeight(valueProperty);
+                    var lineHeight = Mathf.Max(keyPropertyHeight, valuePropertyHeight);
                     propertyHeight += lineHeight;
                 }
 
-                ConflictState conflictState = GetConflictState(property);
+                var conflictState = GetConflictState(property);
 
-                if (conflictState.conflictIndex != -1)
-                {
-                    propertyHeight += conflictState.conflictLineHeight;
-                }
+                if (conflictState.conflictIndex != -1) propertyHeight += conflictState.conflictLineHeight;
             }
 
             return propertyHeight;
         }
 
-        protected virtual float DrawKeyValueLine(SerializedProperty keyProperty, SerializedProperty valueProperty, Rect linePosition, int index)
+        protected virtual float DrawKeyValueLine(SerializedProperty keyProperty, SerializedProperty valueProperty,
+            Rect linePosition, int index)
         {
-            bool keyCanBeExpanded = CanPropertyBeExpanded(keyProperty);
-            bool valueCanBeExpanded = CanPropertyBeExpanded(valueProperty);
+            var keyCanBeExpanded = CanPropertyBeExpanded(keyProperty);
+            var valueCanBeExpanded = CanPropertyBeExpanded(valueProperty);
 
             if (!keyCanBeExpanded && valueCanBeExpanded)
             {
@@ -250,18 +258,19 @@ namespace EasyMobile.Editor
             }
             else
             {
-                var keyLabel = keyCanBeExpanded ? ("Key " + index.ToString()) : "";
-                var valueLabel = valueCanBeExpanded ? ("Value " + index.ToString()) : "";
+                var keyLabel = keyCanBeExpanded ? "Key " + index.ToString() : "";
+                var valueLabel = valueCanBeExpanded ? "Value " + index.ToString() : "";
                 return DrawKeyValueLineSimple(keyProperty, valueProperty, keyLabel, valueLabel, linePosition);
             }
         }
 
-        protected virtual float DrawKeyValueLineSimple(SerializedProperty keyProperty, SerializedProperty valueProperty, string keyLabel, string valueLabel, Rect linePosition)
+        protected virtual float DrawKeyValueLineSimple(SerializedProperty keyProperty, SerializedProperty valueProperty,
+            string keyLabel, string valueLabel, Rect linePosition)
         {
-            float labelWidth = EditorGUIUtility.labelWidth;
-            float labelWidthRelative = labelWidth / linePosition.width;
+            var labelWidth = EditorGUIUtility.labelWidth;
+            var labelWidthRelative = labelWidth / linePosition.width;
 
-            float keyPropertyHeight = EditorGUI.GetPropertyHeight(keyProperty);
+            var keyPropertyHeight = EditorGUI.GetPropertyHeight(keyProperty);
             var keyPosition = linePosition;
             keyPosition.height = keyPropertyHeight;
             keyPosition.width = labelWidth - IndentWidth;
@@ -271,15 +280,16 @@ namespace EasyMobile.Editor
             var keyPropertyPosition = new Rect(keyPosition.position + KeyLabelSize, keyPosition.size - KeyLabelSize);
             EditorGUI.PropertyField(keyPropertyPosition, keyProperty, TempContent(keyLabel), true);
 
-            float valuePropertyHeight = EditorGUI.GetPropertyHeight(valueProperty);
+            var valuePropertyHeight = EditorGUI.GetPropertyHeight(valueProperty);
             var valuePosition = linePosition;
             valuePosition.height = valuePropertyHeight;
             valuePosition.xMin += labelWidth;
             EditorGUIUtility.labelWidth = valuePosition.width * labelWidthRelative;
             EditorGUI.indentLevel--;
-           
+
             EditorGUI.LabelField(valuePosition, "Value");
-            var valuePropertyPosition = new Rect(valuePosition.position + ValueLabelSize, valuePosition.size - ValueLabelSize);
+            var valuePropertyPosition =
+                new Rect(valuePosition.position + ValueLabelSize, valuePosition.size - ValueLabelSize);
             EditorGUI.PropertyField(valuePropertyPosition, valueProperty, TempContent(valueLabel), true);
 
             EditorGUI.indentLevel++;
@@ -289,17 +299,18 @@ namespace EasyMobile.Editor
             return Mathf.Max(keyPropertyHeight, valuePropertyHeight);
         }
 
-        protected virtual float DrawKeyValueLineExpand(SerializedProperty keyProperty, SerializedProperty valueProperty, Rect linePosition)
+        protected virtual float DrawKeyValueLineExpand(SerializedProperty keyProperty, SerializedProperty valueProperty,
+            Rect linePosition)
         {
-            float labelWidth = EditorGUIUtility.labelWidth;
+            var labelWidth = EditorGUIUtility.labelWidth;
 
-            float keyPropertyHeight = EditorGUI.GetPropertyHeight(keyProperty);
+            var keyPropertyHeight = EditorGUI.GetPropertyHeight(keyProperty);
             var keyPosition = linePosition;
             keyPosition.height = keyPropertyHeight;
             keyPosition.width = labelWidth - IndentWidth;
             EditorGUI.PropertyField(keyPosition, keyProperty, GUIContent.none, true);
 
-            float valuePropertyHeight = EditorGUI.GetPropertyHeight(valueProperty);
+            var valuePropertyHeight = EditorGUI.GetPropertyHeight(valueProperty);
             var valuePosition = linePosition;
             valuePosition.height = valuePropertyHeight;
             EditorGUI.PropertyField(valuePosition, valueProperty, GUIContent.none, true);
@@ -322,13 +333,14 @@ namespace EasyMobile.Editor
             }
         }
 
-        protected virtual void SaveProperty(SerializedProperty keyProperty, SerializedProperty valueProperty, int index, int otherIndex, ConflictState conflictState)
+        protected virtual void SaveProperty(SerializedProperty keyProperty, SerializedProperty valueProperty, int index,
+            int otherIndex, ConflictState conflictState)
         {
             conflictState.conflictKey = GetPropertyValue(keyProperty);
             conflictState.conflictValue = GetPropertyValue(valueProperty);
-            float keyPropertyHeight = EditorGUI.GetPropertyHeight(keyProperty);
-            float valuePropertyHeight = EditorGUI.GetPropertyHeight(valueProperty);
-            float lineHeight = Mathf.Max(keyPropertyHeight, valuePropertyHeight);
+            var keyPropertyHeight = EditorGUI.GetPropertyHeight(keyProperty);
+            var valuePropertyHeight = EditorGUI.GetPropertyHeight(valueProperty);
+            var lineHeight = Mathf.Max(keyPropertyHeight, valuePropertyHeight);
             conflictState.conflictLineHeight = lineHeight;
             conflictState.conflictIndex = index;
             conflictState.conflictOtherIndex = otherIndex;
@@ -339,46 +351,47 @@ namespace EasyMobile.Editor
         protected virtual ConflictState GetConflictState(SerializedProperty property)
         {
             ConflictState conflictState;
-            PropertyIdentity propId = new PropertyIdentity(property);
+            var propId = new PropertyIdentity(property);
             if (!conflictStateDict.TryGetValue(propId, out conflictState))
             {
                 conflictState = new ConflictState();
                 conflictStateDict.Add(propId, conflictState);
             }
+
             return conflictState;
         }
 
         static SerializableDictionaryPropertyDrawer()
         {
-            Dictionary<SerializedPropertyType, string> serializedPropertyValueAccessorsNameDict = new Dictionary<SerializedPropertyType, string>()
+            var serializedPropertyValueAccessorsNameDict = new Dictionary<SerializedPropertyType, string>()
             {
-                { SerializedPropertyType.Integer, "intValue" },
-                { SerializedPropertyType.Boolean, "boolValue" },
-                { SerializedPropertyType.Float, "floatValue" },
-                { SerializedPropertyType.String, "stringValue" },
-                { SerializedPropertyType.Color, "colorValue" },
-                { SerializedPropertyType.ObjectReference, "objectReferenceValue" },
-                { SerializedPropertyType.LayerMask, "intValue" },
-                { SerializedPropertyType.Enum, "intValue" },
-                { SerializedPropertyType.Vector2, "vector2Value" },
-                { SerializedPropertyType.Vector3, "vector3Value" },
-                { SerializedPropertyType.Vector4, "vector4Value" },
-                { SerializedPropertyType.Rect, "rectValue" },
-                { SerializedPropertyType.ArraySize, "intValue" },
-                { SerializedPropertyType.Character, "intValue" },
-                { SerializedPropertyType.AnimationCurve, "animationCurveValue" },
-                { SerializedPropertyType.Bounds, "boundsValue" },
-                { SerializedPropertyType.Quaternion, "quaternionValue" },
+                {SerializedPropertyType.Integer, "intValue"},
+                {SerializedPropertyType.Boolean, "boolValue"},
+                {SerializedPropertyType.Float, "floatValue"},
+                {SerializedPropertyType.String, "stringValue"},
+                {SerializedPropertyType.Color, "colorValue"},
+                {SerializedPropertyType.ObjectReference, "objectReferenceValue"},
+                {SerializedPropertyType.LayerMask, "intValue"},
+                {SerializedPropertyType.Enum, "intValue"},
+                {SerializedPropertyType.Vector2, "vector2Value"},
+                {SerializedPropertyType.Vector3, "vector3Value"},
+                {SerializedPropertyType.Vector4, "vector4Value"},
+                {SerializedPropertyType.Rect, "rectValue"},
+                {SerializedPropertyType.ArraySize, "intValue"},
+                {SerializedPropertyType.Character, "intValue"},
+                {SerializedPropertyType.AnimationCurve, "animationCurveValue"},
+                {SerializedPropertyType.Bounds, "boundsValue"},
+                {SerializedPropertyType.Quaternion, "quaternionValue"}
             };
 
-            Type serializedPropertyType = typeof(SerializedProperty);
+            var serializedPropertyType = typeof(SerializedProperty);
 
             serializedPropertyValueAccessorsDict = new Dictionary<SerializedPropertyType, PropertyInfo>();
-            BindingFlags flags = BindingFlags.Instance | BindingFlags.Public;
+            var flags = BindingFlags.Instance | BindingFlags.Public;
 
             foreach (var pair in serializedPropertyValueAccessorsNameDict)
             {
-                PropertyInfo propertyInfo = serializedPropertyType.GetProperty(pair.Value, flags);
+                var propertyInfo = serializedPropertyType.GetProperty(pair.Value, flags);
                 serializedPropertyValueAccessorsDict.Add(pair.Key, propertyInfo);
             }
         }
@@ -399,10 +412,7 @@ namespace EasyMobile.Editor
         {
             var property = arrayProperty.GetArrayElementAtIndex(index);
             // if(arrayProperty.arrayElementType.StartsWith("PPtr<$"))
-            if (property.propertyType == SerializedPropertyType.ObjectReference)
-            {
-                property.objectReferenceValue = null;
-            }
+            if (property.propertyType == SerializedPropertyType.ObjectReference) property.objectReferenceValue = null;
 
             arrayProperty.DeleteArrayElementAtIndex(index);
         }
@@ -441,53 +451,55 @@ namespace EasyMobile.Editor
 
         protected static object GetPropertyValueArray(SerializedProperty property)
         {
-            object[] array = new object[property.arraySize];
-            for (int i = 0; i < property.arraySize; i++)
+            var array = new object[property.arraySize];
+            for (var i = 0; i < property.arraySize; i++)
             {
-                SerializedProperty item = property.GetArrayElementAtIndex(i);
+                var item = property.GetArrayElementAtIndex(i);
                 array[i] = GetPropertyValue(item);
             }
+
             return array;
         }
 
         protected static object GetPropertyValueGeneric(SerializedProperty property)
         {
-            Dictionary<string, object> dict = new Dictionary<string, object>();
+            var dict = new Dictionary<string, object>();
             var iterator = property.Copy();
             if (iterator.Next(true))
             {
                 var end = property.GetEndProperty();
                 do
                 {
-                    string name = iterator.name;
-                    object value = GetPropertyValue(iterator);
+                    var name = iterator.name;
+                    var value = GetPropertyValue(iterator);
                     dict.Add(name, value);
                 } while (iterator.Next(false) && iterator.propertyPath != end.propertyPath);
             }
+
             return dict;
         }
 
         protected static void SetPropertyValueArray(SerializedProperty property, object v)
         {
-            object[] array = (object[])v;
+            var array = (object[]) v;
             property.arraySize = array.Length;
-            for (int i = 0; i < property.arraySize; i++)
+            for (var i = 0; i < property.arraySize; i++)
             {
-                SerializedProperty item = property.GetArrayElementAtIndex(i);
+                var item = property.GetArrayElementAtIndex(i);
                 SetPropertyValue(item, array[i]);
             }
         }
 
         protected static void SetPropertyValueGeneric(SerializedProperty property, object v)
         {
-            Dictionary<string, object> dict = (Dictionary<string, object>)v;
+            var dict = (Dictionary<string, object>) v;
             var iterator = property.Copy();
             if (iterator.Next(true))
             {
                 var end = property.GetEndProperty();
                 do
                 {
-                    string name = iterator.name;
+                    var name = iterator.name;
                     SetPropertyValue(iterator, dict[name]);
                 } while (iterator.Next(false) && iterator.propertyPath != end.propertyPath);
             }
@@ -497,13 +509,13 @@ namespace EasyMobile.Editor
         {
             if (value1 is Dictionary<string, object> && value2 is Dictionary<string, object>)
             {
-                var dict1 = (Dictionary<string, object>)value1;
-                var dict2 = (Dictionary<string, object>)value2;
+                var dict1 = (Dictionary<string, object>) value1;
+                var dict2 = (Dictionary<string, object>) value2;
                 return CompareDictionaries(dict1, dict2);
             }
             else
             {
-                return object.Equals(value1, value2);
+                return Equals(value1, value2);
             }
         }
 
@@ -515,7 +527,7 @@ namespace EasyMobile.Editor
             foreach (var kvp1 in dict1)
             {
                 var key1 = kvp1.Key;
-                object value1 = kvp1.Value;
+                var value1 = kvp1.Value;
 
                 object value2;
                 if (!dict2.TryGetValue(key1, out value2))
@@ -542,11 +554,12 @@ namespace EasyMobile.Editor
             }
         }
 
-        protected static IEnumerable<EnumerationEntry> EnumerateEntries(SerializedProperty keyArrayProperty, SerializedProperty valueArrayProperty, int startIndex = 0)
+        protected static IEnumerable<EnumerationEntry> EnumerateEntries(SerializedProperty keyArrayProperty,
+            SerializedProperty valueArrayProperty, int startIndex = 0)
         {
             if (keyArrayProperty.arraySize > startIndex)
             {
-                int index = startIndex;
+                var index = startIndex;
                 var keyProperty = keyArrayProperty.GetArrayElementAtIndex(startIndex);
                 var valueProperty = valueArrayProperty.GetArrayElementAtIndex(startIndex);
                 var endProperty = keyArrayProperty.GetEndProperty();
@@ -555,7 +568,8 @@ namespace EasyMobile.Editor
                 {
                     yield return new EnumerationEntry(keyProperty, valueProperty, index);
                     index++;
-                } while (keyProperty.Next(false) && valueProperty.Next(false) && !SerializedProperty.EqualContents(keyProperty, endProperty));
+                } while (keyProperty.Next(false) && valueProperty.Next(false) &&
+                         !SerializedProperty.EqualContents(keyProperty, endProperty));
             }
         }
     }

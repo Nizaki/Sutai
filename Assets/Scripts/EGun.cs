@@ -26,22 +26,22 @@ public class EGun : MonoBehaviour
         if (!(ShootArea(dir) < 5f)) return;
         if (!(Time.time > nextFire)) return;
         nextFire = Time.time + Random.Range(FireRate, FireRate + 1f);
-        var go = Instantiate(bullet, shootPosition.position,Quaternion.AngleAxis(dir, Vector3.forward));
+        var go = Instantiate(bullet, shootPosition.position, Quaternion.AngleAxis(dir, Vector3.forward));
         go.GetComponent<Bullet>().targetTag = "Player";
         Debug.Log("Shoot");
     }
 
     private float ShootArea(float dir)
     {
-        return Mathf.Abs( WrapAngle(transform.eulerAngles.z) - dir);
+        return Mathf.Abs(WrapAngle(transform.eulerAngles.z) - dir);
     }
-    
+
     private static float WrapAngle(float angle)
     {
-        angle%=360;
-        if(angle >180)
+        angle %= 360;
+        if (angle > 180)
             return angle - 360;
- 
+
         return angle;
     }
 }

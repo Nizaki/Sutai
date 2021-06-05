@@ -9,11 +9,9 @@ namespace EasyMobile.Editor
     [CustomPropertyDrawer(typeof(StringAdIdSerializableDictionary))]
     public class AnySerializableDictionaryPropertyDrawer : SerializableDictionaryPropertyDrawer
     {
-
     }
 
     public class AnySerializableDictionaryStoragePropertyDrawer : SerializableDictionaryStoragePropertyDrawer
     {
-
     }
 }

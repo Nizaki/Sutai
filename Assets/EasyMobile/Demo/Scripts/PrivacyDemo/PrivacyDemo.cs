@@ -12,7 +12,6 @@ namespace EasyMobile.Demo
 {
     public class PrivacyDemo : MonoBehaviour
     {
-
         #region Privacy Policy PlaceHolders & URLs
 
         public const string EasyMobilePolicyURL = "http://sglibgames.com/privacy-policies/easy-mobile-demo.html";
@@ -54,12 +53,13 @@ namespace EasyMobile.Demo
         ///-----------------------------------------------------------------
 
         // The first paragraph of the dialog content in English
-        public const string EnFirstParagraph = "This app collects certain information about your use of our app that we would like your " +
-                                               "permission to use for advertising, analytics and notification purposes. We strictly follow " +
-                                               "our <a href=\"" + EasyMobilePolicyURL + "\">Privacy Policy</a> " +
-                                               "to access and process your information.\n" +
-                                               "Consent is optional, and you may use the app without granting consent. Please understand that some " +
-                                               "features may not function properly if you deny our access.";
+        public const string EnFirstParagraph =
+            "This app collects certain information about your use of our app that we would like your " +
+            "permission to use for advertising, analytics and notification purposes. We strictly follow " +
+            "our <a href=\"" + EasyMobilePolicyURL + "\">Privacy Policy</a> " +
+            "to access and process your information.\n" +
+            "Consent is optional, and you may use the app without granting consent. Please understand that some " +
+            "features may not function properly if you deny our access.";
 
         // The title of the toggle for the Advertising module consent in English
         public const string EnAdsToggleTitle = "Advertising";
@@ -67,20 +67,23 @@ namespace EasyMobile.Demo
         // The On description of the toggle for the Advertising module consent in English
         public const string EnAdsToggleOnDesc = "You will receive relevant ads! " +
                                                 "Our ad providers will collect data and use a unique identifier on your device. " +
-                                                "You can review their policies: <a href=\"" + AdMobPolicyURL + "\">AdMob</a> " +
+                                                "You can review their policies: <a href=\"" + AdMobPolicyURL +
+                                                "\">AdMob</a> " +
                                                 "and <a href=\"" + UnityAdsPolicyURL + "\">Unity Ads</a>.";
 
         // The Off description of the toggle for the Advertising module consent in English
-        public const string EnAdsToggleOffDesc = "Our ad providers will collect data and use a unique identifier on your device to show you relevant ads. " +
-                                                 "Here're their policies: <a href=\"" + AdMobPolicyURL + "\">AdMob</a> " +
-                                                 "and <a href=\"" + UnityAdsPolicyURL + "\">Unity Ads</a>.";
+        public const string EnAdsToggleOffDesc =
+            "Our ad providers will collect data and use a unique identifier on your device to show you relevant ads. " +
+            "Here're their policies: <a href=\"" + AdMobPolicyURL + "\">AdMob</a> " +
+            "and <a href=\"" + UnityAdsPolicyURL + "\">Unity Ads</a>.";
 
         // The title of the toggle for the Notifications module consent in English
         public const string EnNotifsToggleTitle = "Notifications";
 
         // The common description (both On & Off states) of the toggle for the Notifications module consent in English
-        public const string EnNotifsToggleDesc = "Our service provider, OneSignal, will collect data and use a unique identifier on your device to send you push notifications. " +
-                                                 "You can learn about <a href=\"" + OneSignalPolicyURL + "\">One Signal Privacy Policy</a>.";
+        public const string EnNotifsToggleDesc =
+            "Our service provider, OneSignal, will collect data and use a unique identifier on your device to send you push notifications. " +
+            "You can learn about <a href=\"" + OneSignalPolicyURL + "\">One Signal Privacy Policy</a>.";
 
         // The title of the toggle for Unity Analytics consent in English
         // Note that this toggle is On by default and cannot be changed by the user, because we can't opt-out
@@ -90,15 +93,19 @@ namespace EasyMobile.Demo
         public const string EnAnalyticsToggleTitle = "Analytics*";
 
         // The common description (both On & Off states) of the toggle for Unity Analytics consent in English
-        public const string EnAnalyticsToogleDesc = "We use Unity Analytics service to collect certain analytical information necessary for us to improve this app. " +
-                                                    "You can opt-out of this use by visiting <a href=\"" + UnityAnalyticsOptOutURLPlaceholder + "\">this link</a>.";
+        public const string EnAnalyticsToogleDesc =
+            "We use Unity Analytics service to collect certain analytical information necessary for us to improve this app. " +
+            "You can opt-out of this use by visiting <a href=\"" + UnityAnalyticsOptOutURLPlaceholder +
+            "\">this link</a>.";
 
         // The description of the toggle for Unity Analytics consent that is used if the opt-out URL can't be fetched, in English.
-        public const string EnAnalyticsToggleUnavailDesc = "We use Unity Analytics service to collect certain analytical information necessary for us to improve this app. " +
-                                                           "You can opt-out of this use by visiting an opt-out URL, which unfortunately <b>can't be fetched now</b>. But you can opt-out later in the \"Privacy\" page of this app.";
+        public const string EnAnalyticsToggleUnavailDesc =
+            "We use Unity Analytics service to collect certain analytical information necessary for us to improve this app. " +
+            "You can opt-out of this use by visiting an opt-out URL, which unfortunately <b>can't be fetched now</b>. But you can opt-out later in the \"Privacy\" page of this app.";
 
         // The second paragraph of the dialog content in English
-        public const string EnSecondParagraph = "Click the below button to confirm your consent. You can change this consent at any time in the \"Privacy\" page of this app.";
+        public const string EnSecondParagraph =
+            "Click the below button to confirm your consent. You can change this consent at any time in the \"Privacy\" page of this app.";
 
         // The button title in English.
         public const string EnButtonTitle = "Accept";
@@ -118,11 +125,12 @@ namespace EasyMobile.Demo
         public const string FrTitle = "Consentement";
 
         // The first paragraph of the dialog content in French
-        public const string FrFirstParagraph = "Cette application recueille certaines informations sur votre utilisation de notre application que nous aimerions que vous utilisiez à des fins de publicité, d'analyse et de notification. " +
-                                               "Nous suivons strictement notre <a href=\"" + EasyMobilePolicyURL + "\">Privacy Policy</a> " +
-                                               "pour accéder et traiter vos informations.\n" +
-                                               "Le consentement est facultatif et vous pouvez utiliser l'application sans donner votre consentement. " +
-                                               "S'il vous plaît comprendre que certaines fonctionnalités peuvent ne pas fonctionner correctement si vous refusez notre accès.";
+        public const string FrFirstParagraph =
+            "Cette application recueille certaines informations sur votre utilisation de notre application que nous aimerions que vous utilisiez à des fins de publicité, d'analyse et de notification. " +
+            "Nous suivons strictement notre <a href=\"" + EasyMobilePolicyURL + "\">Privacy Policy</a> " +
+            "pour accéder et traiter vos informations.\n" +
+            "Le consentement est facultatif et vous pouvez utiliser l'application sans donner votre consentement. " +
+            "S'il vous plaît comprendre que certaines fonctionnalités peuvent ne pas fonctionner correctement si vous refusez notre accès.";
 
         // The title of the toggle for the Advertising module consent in French
         public const string FrAdsToggleTitle = "La publicité";
@@ -130,36 +138,44 @@ namespace EasyMobile.Demo
         // The On description of the toggle for the Advertising module consent in French
         public const string FrAdsToggleOnDesc = "Vous recevrez des annonces pertinentes! " +
                                                 "Nos fournisseurs de publicité collecteront des données et utiliseront un identifiant unique sur votre appareil. " +
-                                                "Vous pouvez revoir leurs politiques: <a href=\"" + AdMobPolicyURL + "\">AdMob</a> " +
+                                                "Vous pouvez revoir leurs politiques: <a href=\"" + AdMobPolicyURL +
+                                                "\">AdMob</a> " +
                                                 "et <a href=\"" + UnityAdsPolicyURL + "\">Unity Ads</a>.";
 
         // The Off description of the toggle for the Advertising module consent in French
-        public const string FrAdsToggleOffDesc = "Nos fournisseurs d'annonces collecteront des données et utiliseront un identifiant unique sur votre appareil pour vous montrer les annonces pertinentes. " +
-                                                 "Voici leurs politiques: <a href=\"" + AdMobPolicyURL + "\">AdMob</a> " +
-                                                 "et <a href=\"" + UnityAdsPolicyURL + "\">Unity Ads</a>.";
+        public const string FrAdsToggleOffDesc =
+            "Nos fournisseurs d'annonces collecteront des données et utiliseront un identifiant unique sur votre appareil pour vous montrer les annonces pertinentes. " +
+            "Voici leurs politiques: <a href=\"" + AdMobPolicyURL + "\">AdMob</a> " +
+            "et <a href=\"" + UnityAdsPolicyURL + "\">Unity Ads</a>.";
 
         // The title of the toggle for the Notifications module consent in French
         public const string FrNotifsToggleTitle = "Les notifications";
 
         // The common description (both On & Off states) of the toggle for the Notifications module consent in French
-        public const string FrNotifsToggleDesc = "Notre fournisseur de services, OneSignal, collectera des données et utilisera un identifiant unique sur votre appareil pour vous envoyer des notifications push. " +
-                                                 "Vous pouvez en apprendre davantage sur <a href=\"" + OneSignalPolicyURL + "\">One Signal Privacy Policy</a>.";
+        public const string FrNotifsToggleDesc =
+            "Notre fournisseur de services, OneSignal, collectera des données et utilisera un identifiant unique sur votre appareil pour vous envoyer des notifications push. " +
+            "Vous pouvez en apprendre davantage sur <a href=\"" + OneSignalPolicyURL +
+            "\">One Signal Privacy Policy</a>.";
 
         // The title of the toggle for Unity Analytics consent in French
         public const string FrAnalyticsToggleTitle = "Analytique*";
 
         // The common description (both On & Off states) of the toggle for Unity Analytics consent in French
-        public const string FrAnalyticsToogleDesc = "Nous utilisons le service Unity Analytics pour collecter certaines informations analytiques nécessaires à l'amélioration de cette application. " +
-                                                    "Vous pouvez désactiver cette utilisation en visitant <a href=\"" + UnityAnalyticsOptOutURLPlaceholder + "\">ce lien</a>.";
+        public const string FrAnalyticsToogleDesc =
+            "Nous utilisons le service Unity Analytics pour collecter certaines informations analytiques nécessaires à l'amélioration de cette application. " +
+            "Vous pouvez désactiver cette utilisation en visitant <a href=\"" + UnityAnalyticsOptOutURLPlaceholder +
+            "\">ce lien</a>.";
 
         // The description of the toggle for Unity Analytics consent that is used if the opt-out URL can't be fetched, in French.
-        public const string FrAnalyticsToggleUnavailDesc = "Nous utilisons le service Unity Analytics pour collecter certaines informations analytiques nécessaires à l'amélioration de cette application. " +
-                                                           "Vous pouvez refuser cette utilisation en visitant une URL de désinscription, qui ne peut malheureusement pas être récupérée maintenant. " +
-                                                           "Mais vous pouvez vous désinscrire plus tard dans la page \"Privacy\" de cette application";
+        public const string FrAnalyticsToggleUnavailDesc =
+            "Nous utilisons le service Unity Analytics pour collecter certaines informations analytiques nécessaires à l'amélioration de cette application. " +
+            "Vous pouvez refuser cette utilisation en visitant une URL de désinscription, qui ne peut malheureusement pas être récupérée maintenant. " +
+            "Mais vous pouvez vous désinscrire plus tard dans la page \"Privacy\" de cette application";
 
         // The second paragraph of the dialog content in English
-        public const string FrSecondParagraph = "Cliquez sur le bouton ci-dessous pour confirmer le consentement spécifié. " +
-                                                "Vous pouvez modifier ce consentement à tout moment dans la page \"Privacy\" de cette application.";
+        public const string FrSecondParagraph =
+            "Cliquez sur le bouton ci-dessous pour confirmer le consentement spécifié. " +
+            "Vous pouvez modifier ce consentement à tout moment dans la page \"Privacy\" de cette application.";
 
         // The button title in English.
         public const string FrButtonTitle = "Acceptez";
@@ -177,12 +193,10 @@ namespace EasyMobile.Demo
 
         #region Public Settings
 
-        [Header("GDPR Settings")]
-        [Tooltip("Whether we should request user consent for this app")]
+        [Header("GDPR Settings")] [Tooltip("Whether we should request user consent for this app")]
         public bool shouldRequestConsent = true;
 
-        [Header("Object References")]
-        public GameObject isInEeaRegionDisplayer;
+        [Header("Object References")] public GameObject isInEeaRegionDisplayer;
         public DemoUtils demoUtils;
 
         #endregion
@@ -192,13 +206,10 @@ namespace EasyMobile.Demo
         private static ConsentDialog mDemoConsentDialogLocalized;
         private static bool mIsInEEARegion = false;
 
-        void Awake()
+        private void Awake()
         {
             // Checks if we're in EEA region.
-            Privacy.IsInEEARegion(result =>
-                {
-                    mIsInEEARegion = result == EEARegionStatus.InEEA;
-                });
+            Privacy.IsInEEARegion(result => { mIsInEEARegion = result == EEARegionStatus.InEEA; });
 
             // Fetch Unity Analytics URL for use in case the consent dialog
             // is shown from the demo buttons.
@@ -219,7 +230,7 @@ namespace EasyMobile.Demo
             // Here's the case where we want to ask for consent before initializing.
             // Before initialization we need to check
             // if we have user's data privacy consent or not.
-            DemoAppConsent consent = DemoAppConsent.LoadDemoAppConsent();
+            var consent = DemoAppConsent.LoadDemoAppConsent();
 
             // If there's a stored consent:
             // the implementation of this demo app guarantees
@@ -259,7 +270,7 @@ namespace EasyMobile.Demo
                 });
         }
 
-        void Update()
+        private void Update()
         {
             demoUtils.DisplayBool(isInEeaRegionDisplayer,
                 mIsInEEARegion,
@@ -299,6 +310,7 @@ namespace EasyMobile.Demo
                     mDemoConsentDialogLocalized = ConstructConsentDialog(localize);
                     SubscribeConsentDialogEvents(mDemoConsentDialogLocalized);
                 }
+
                 mDemoConsentDialogLocalized.Show(dismissible);
             }
             else
@@ -308,6 +320,7 @@ namespace EasyMobile.Demo
                     mDemoConsentDialog = ConstructConsentDialog(localize);
                     SubscribeConsentDialogEvents(mDemoConsentDialog);
                 }
+
                 mDemoConsentDialog.Show(dismissible);
             }
         }
@@ -338,10 +351,10 @@ namespace EasyMobile.Demo
             // If there is, we will set the 'isOn' state of our toggles
             // according to the saved consent to reflect the current consent
             // status on the consent dialog.
-            DemoAppConsent consent = DemoAppConsent.LoadDemoAppConsent();
+            var consent = DemoAppConsent.LoadDemoAppConsent();
 
             // First create a new consent dialog.
-            ConsentDialog dialog = new ConsentDialog();
+            var dialog = new ConsentDialog();
 
             // Title.
             dialog.Title = localize ? FrTitle : EnTitle;
@@ -353,21 +366,27 @@ namespace EasyMobile.Demo
             dialog.AppendText(localize ? FrFirstParagraph : EnFirstParagraph);
 
             // Build and append the Advertising toggle.
-            ConsentDialog.Toggle adsToggle = new ConsentDialog.Toggle(AdsToggleId);
+            var adsToggle = new ConsentDialog.Toggle(AdsToggleId);
             adsToggle.Title = localize ? FrAdsToggleTitle : EnAdsToggleTitle;
             adsToggle.OnDescription = localize ? FrAdsToggleOnDesc : EnAdsToggleOnDesc;
             adsToggle.OffDescription = localize ? FrAdsToggleOffDesc : EnAdsToggleOffDesc;
-            adsToggle.ShouldToggleDescription = true;   // make the description change with the toggle state.
-            adsToggle.IsOn = consent != null ? consent.advertisingConsent == ConsentStatus.Granted : false;     // reflect previous ads consent if any
+            adsToggle.ShouldToggleDescription = true; // make the description change with the toggle state.
+            adsToggle.IsOn =
+                consent != null
+                    ? consent.advertisingConsent == ConsentStatus.Granted
+                    : false; // reflect previous ads consent if any
 
             dialog.AppendToggle(adsToggle);
 
             // Build and append the Notifications toggle.
-            ConsentDialog.Toggle notifsToggle = new ConsentDialog.Toggle(NotifsToggleId);
+            var notifsToggle = new ConsentDialog.Toggle(NotifsToggleId);
             notifsToggle.Title = localize ? FrNotifsToggleTitle : EnNotifsToggleTitle;
             notifsToggle.OnDescription = localize ? FrNotifsToggleDesc : EnNotifsToggleDesc;
-            notifsToggle.ShouldToggleDescription = false;   // use same description for both on & off states.
-            notifsToggle.IsOn = consent != null ? consent.notificationConsent == ConsentStatus.Granted : false; // reflect previous notifs consent if any
+            notifsToggle.ShouldToggleDescription = false; // use same description for both on & off states.
+            notifsToggle.IsOn =
+                consent != null
+                    ? consent.notificationConsent == ConsentStatus.Granted
+                    : false; // reflect previous notifs consent if any
 
             dialog.AppendToggle(notifsToggle);
 
@@ -376,17 +395,20 @@ namespace EasyMobile.Demo
             // to the toggle description. Otherwise we'll use the "URL unavailable" description.
             // Note that this toggle is ON by default and is not interactable because we can't opt-out
             // Unity Analytics locally, instead the user must visit the fetched URL to opt-out.
-            ConsentDialog.Toggle uaToggle = new ConsentDialog.Toggle(UnityAnalyticsToggleId);
+            var uaToggle = new ConsentDialog.Toggle(UnityAnalyticsToggleId);
             uaToggle.Title = localize ? FrAnalyticsToggleTitle : EnAnalyticsToggleTitle;
-            uaToggle.ShouldToggleDescription = false;   // the description won't change when the toggle switches between on & off states.
+            uaToggle.ShouldToggleDescription =
+                false; // the description won't change when the toggle switches between on & off states.
             uaToggle.IsInteractable = false; // not interactable
-            uaToggle.IsOn = true;   // consent for UnityAnalytics is ON by default, can opt-out via Unity URL
+            uaToggle.IsOn = true; // consent for UnityAnalytics is ON by default, can opt-out via Unity URL
 
             if (!string.IsNullOrEmpty(UnityAnalyticsOptOutURL))
             {
                 // Unity Analytics opt-out URL is available.
                 var description = localize ? FrAnalyticsToogleDesc : EnAnalyticsToogleDesc;
-                description = description.Replace(UnityAnalyticsOptOutURLPlaceholder, UnityAnalyticsOptOutURL); // replace placeholder with actual URL
+                description =
+                    description.Replace(UnityAnalyticsOptOutURLPlaceholder,
+                        UnityAnalyticsOptOutURL); // replace placeholder with actual URL
                 uaToggle.OnDescription = description;
             }
             else
@@ -402,7 +424,7 @@ namespace EasyMobile.Demo
 
             // Build and append the accept button.
             // A consent dialog should always have at least one button!
-            ConsentDialog.Button okButton = new ConsentDialog.Button(AcceptButtonId);
+            var okButton = new ConsentDialog.Button(AcceptButtonId);
             okButton.Title = localize ? FrButtonTitle : EnButtonTitle;
             okButton.TitleColor = Color.white;
             okButton.BodyColor = new Color(66 / 255f, 179 / 255f, 1);
@@ -423,10 +445,8 @@ namespace EasyMobile.Demo
         {
             // If the URL was loaded before, just invoke the success callback immediately.
             if (!string.IsNullOrEmpty(UnityAnalyticsOptOutURL))
-            {
                 if (success != null)
                     success(UnityAnalyticsOptOutURL);
-            }
 
 #if UNITY_2018_3_OR_NEWER && UNITY_ANALYTICS
             // Since Unity 2018.3.0, the Unity Data Privacy plugin is embedded in the Analytics library,
@@ -447,9 +467,9 @@ namespace EasyMobile.Demo
             // If you're using Unity 2018.3.0 or newer, there's no need to import the plugin because
             // the methods are included in the Analytics library package already.
 
-            string dataPrivacyClassName = "UnityEngine.Analytics.DataPrivacy";
-            string initMethodName = "Initialize";
-            string fetchURLMethodName = "FetchPrivacyUrl";
+            var dataPrivacyClassName = "UnityEngine.Analytics.DataPrivacy";
+            var initMethodName = "Initialize";
+            var fetchURLMethodName = "FetchPrivacyUrl";
             Type dataPrivacyClass = null;
 
             var assemblies = AppDomain.CurrentDomain.GetAssemblies();
@@ -462,16 +482,19 @@ namespace EasyMobile.Demo
 
             if (dataPrivacyClass == null)
             {
-                OnFetchUnityAnalyticsURLFailure("DataPrivacy class not found. Have you imported Unity Data Privacy plugin?", failure);
+                OnFetchUnityAnalyticsURLFailure(
+                    "DataPrivacy class not found. Have you imported Unity Data Privacy plugin?", failure);
                 return;
             }
 
-            MethodInfo initMethod = dataPrivacyClass.GetMethod(initMethodName, BindingFlags.Public | BindingFlags.Static);
-            MethodInfo fetchURLMethod = dataPrivacyClass.GetMethod(fetchURLMethodName, BindingFlags.Public | BindingFlags.Static);
+            var initMethod = dataPrivacyClass.GetMethod(initMethodName, BindingFlags.Public | BindingFlags.Static);
+            var fetchURLMethod =
+                dataPrivacyClass.GetMethod(fetchURLMethodName, BindingFlags.Public | BindingFlags.Static);
 
             if (initMethod == null || fetchURLMethod == null)
             {
-                OnFetchUnityAnalyticsURLFailure("Method not found. Have you imported Unity Data Privacy plugin?", failure);
+                OnFetchUnityAnalyticsURLFailure("Method not found. Have you imported Unity Data Privacy plugin?",
+                    failure);
                 return;
             }
 
@@ -482,14 +505,8 @@ namespace EasyMobile.Demo
             fetchURLMethod.Invoke(null,
                 new object[]
                 {
-                    (Action<string>)((url) =>
-                    {
-                        OnFetchUnityAnalyticsURLSuccess(url, success);
-                    }),
-                    (Action<string>)((error) =>
-                    {
-                        OnFetchUnityAnalyticsURLFailure(error, failure);
-                    })
+                    (Action<string>) ((url) => { OnFetchUnityAnalyticsURLSuccess(url, success); }),
+                    (Action<string>) ((error) => { OnFetchUnityAnalyticsURLFailure(error, failure); })
                 });
 #endif
         }
@@ -536,15 +553,15 @@ namespace EasyMobile.Demo
             Debug.Log("Demo consent dialog completed with button ID: " + results.buttonId);
 
             // Construct the new consent.
-            DemoAppConsent newConsent = new DemoAppConsent();
+            var newConsent = new DemoAppConsent();
 
             if (results.toggleValues != null)
             {
                 Debug.Log("Consent toggles:");
-                foreach (KeyValuePair<string, bool> t in results.toggleValues)
+                foreach (var t in results.toggleValues)
                 {
-                    string toggleId = t.Key;
-                    bool toggleValue = t.Value;
+                    var toggleId = t.Key;
+                    var toggleValue = t.Value;
                     Debug.Log("Toggle ID: " + toggleId + "; Value: " + toggleValue);
 
                     if (toggleId == AdsToggleId)
@@ -580,16 +597,12 @@ namespace EasyMobile.Demo
             // So now we have applied the consent, we can initialize EM runtime
             // (as well as other 3rd-party SDKs in a real-world app).
             if (!RuntimeManager.IsInitialized())
-            {
                 RuntimeManager.Init();
-            }
             else
-            {
                 // The initialization has already been done. Inform the user
                 // that the changes will take effect during next initialization (next app launch).
                 NativeUI.Alert("Consent Updated", "You've updated your data privacy consent. " +
-                    "Since the initialization process has already completed, all changes will take effect in the next app launch.");
-            }
+                                                  "Since the initialization process has already completed, all changes will take effect in the next app launch.");
         }
 
         private static void DemoDialog_ToggleStateUpdated(ConsentDialog dialog, string toggleId, bool isOn)
@@ -624,10 +637,10 @@ namespace EasyMobile.Demo
             if (results.toggleValues != null)
             {
                 sb.AppendLine("Consent toggles:");
-                foreach (KeyValuePair<string, bool> t in results.toggleValues)
+                foreach (var t in results.toggleValues)
                 {
-                    string toggleId = t.Key;
-                    bool toggleValue = t.Value;
+                    var toggleId = t.Key;
+                    var toggleValue = t.Value;
                     sb.AppendLine("Toggle ID: " + toggleId + "; Value: " + toggleValue);
                 }
             }

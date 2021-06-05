@@ -50,40 +50,18 @@ namespace EasyMobile.Editor
         {
             // Remove associated scripting symbol on all platforms it was defined.
             GlobalDefineManager.SDS_RemoveDefinesOnAllPlatforms(
-                new string[] { EM_ScriptingSymbols.OneSignal, EM_ScriptingSymbols.FirebaseMessaging });
+                new string[] {EM_ScriptingSymbols.OneSignal, EM_ScriptingSymbols.FirebaseMessaging});
         }
 
-        public override List<string> AndroidManifestTemplatePaths
-        {
-            get
-            {
-                return new List<string>() { FileIO.ToAbsolutePath("EasyMobile/Editor/Templates/Manifests/Manifest_Notifications.xml") };
-            }
-        }
+        public override List<string> AndroidManifestTemplatePaths => new List<string>()
+            {FileIO.ToAbsolutePath("EasyMobile/Editor/Templates/Manifests/Manifest_Notifications.xml")};
 
-        public override IAndroidPermissionRequired AndroidPermissionsHolder
-        {
-            get
-            {
-                return EM_Settings.Notifications as IAndroidPermissionRequired;
-            }
-        }
+        public override IAndroidPermissionRequired AndroidPermissionsHolder =>
+            EM_Settings.Notifications as IAndroidPermissionRequired;
 
-        public override IIOSInfoItemRequired iOSInfoItemsHolder
-        {
-            get
-            {
-                return EM_Settings.Notifications as IIOSInfoItemRequired;
-            }
-        }
+        public override IIOSInfoItemRequired iOSInfoItemsHolder => EM_Settings.Notifications as IIOSInfoItemRequired;
 
-        public override Module SelfModule
-        {
-            get
-            {
-                return Module.Notifications;
-            }
-        }
+        public override Module SelfModule => Module.Notifications;
 
         #endregion
     }

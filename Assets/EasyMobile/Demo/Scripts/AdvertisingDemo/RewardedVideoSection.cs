@@ -6,16 +6,17 @@ using UnityEngine.UI;
 namespace EasyMobile.Demo
 {
     [Serializable]
-    public class RewardedVideoSection : LoadAndShowSection<RewardedVideoSection.DefaultRewardedVideolUI, RewardedVideoSection.CustomRewardedVideoUI>
+    public class RewardedVideoSection : LoadAndShowSection<RewardedVideoSection.DefaultRewardedVideolUI,
+        RewardedVideoSection.CustomRewardedVideoUI>
     {
         [Serializable]
         public class DefaultRewardedVideolUI : DefaultElement
         {
-            protected override string AdReadyMessage { get { return "IsRewardedAdReady: TRUE"; } }
+            protected override string AdReadyMessage => "IsRewardedAdReady: TRUE";
 
-            protected override string AdNotReadyMessage { get { return "IsRewardedAdReady: FALSE"; } }
+            protected override string AdNotReadyMessage => "IsRewardedAdReady: FALSE";
 
-            protected override string UnavailableAdAlertMessage { get { return "Rewarded ad is not loaded."; } }
+            protected override string UnavailableAdAlertMessage => "Rewarded ad is not loaded.";
 
             protected override bool IsAdReady()
             {
@@ -27,11 +28,10 @@ namespace EasyMobile.Demo
             /// </summary>
             protected override void LoadAd()
             {
-                if (Advertising.AutoAdLoadingMode == AutoAdLoadingMode.LoadAllDefinedPlacements || Advertising.AutoAdLoadingMode == AutoAdLoadingMode.LoadDefaultAds)
-                {
+                if (Advertising.AutoAdLoadingMode == AutoAdLoadingMode.LoadAllDefinedPlacements ||
+                    Advertising.AutoAdLoadingMode == AutoAdLoadingMode.LoadDefaultAds)
                     NativeUI.Alert("Alert", "autoLoadDefaultAds is currently enabled. " +
-                        "Ads will be loaded automatically in background without you having to do anything.");
-                }
+                                            "Ads will be loaded automatically in background without you having to do anything.");
 
                 Advertising.LoadRewardedAd();
             }
@@ -50,30 +50,22 @@ namespace EasyMobile.Demo
         {
             private List<RewardedAdNetwork> allRewardedNetworks;
 
-            protected override string AdReadyMessage
-            {
-                get { return string.Format("IsRewardedAdReady{0}: TRUE", string.IsNullOrEmpty(CustomKey) ? "" : "(" + CustomKey + ")"); }
-            }
+            protected override string AdReadyMessage => string.Format("IsRewardedAdReady{0}: TRUE",
+                string.IsNullOrEmpty(CustomKey) ? "" : "(" + CustomKey + ")");
 
-            protected override string AdNotReadyMessage
-            {
-                get { return string.Format("IsRewardedAdReady{0}: FALSE", string.IsNullOrEmpty(CustomKey) ? "" : "(" + CustomKey + ")"); }
-            }
+            protected override string AdNotReadyMessage => string.Format("IsRewardedAdReady{0}: FALSE",
+                string.IsNullOrEmpty(CustomKey) ? "" : "(" + CustomKey + ")");
 
-            protected override string UnavailableAdAlertMessage
-            {
-                get { return string.Format("The rewarded ad at the {0} placement is not loaded.", string.IsNullOrEmpty(CustomKey) ? "default" : CustomKey); }
-            }
+            protected override string UnavailableAdAlertMessage => string.Format(
+                "The rewarded ad at the {0} placement is not loaded.",
+                string.IsNullOrEmpty(CustomKey) ? "default" : CustomKey);
 
-            private RewardedAdNetwork SelectedNetwork
-            {
-                get { return allRewardedNetworks[networkSelector.value]; }
-            }
+            private RewardedAdNetwork SelectedNetwork => allRewardedNetworks[networkSelector.value];
 
             protected override void InitNetworkDropdown()
             {
                 allRewardedNetworks = new List<RewardedAdNetwork>();
-                List<Dropdown.OptionData> optionDatas = new List<Dropdown.OptionData>();
+                var optionDatas = new List<Dropdown.OptionData>();
 
                 foreach (RewardedAdNetwork network in Enum.GetValues(typeof(RewardedAdNetwork)))
                 {
@@ -102,4 +94,3 @@ namespace EasyMobile.Demo
         }
     }
 }
-

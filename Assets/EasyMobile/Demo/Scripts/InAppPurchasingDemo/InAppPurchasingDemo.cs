@@ -26,46 +26,49 @@ namespace EasyMobile.Demo
         private IAPProduct selectedProduct;
         private List<IAPProduct> ownedProducts = new List<IAPProduct>();
 
-        void Awake()
+        private void Awake()
         {
             // Init EM runtime if needed (useful in case only this scene is built).
             if (!RuntimeManager.IsInitialized())
                 RuntimeManager.Init();
         }
 
-        void OnEnable()
-        {            
+        private void OnEnable()
+        {
             InAppPurchasing.PurchaseCompleted += OnPurchaseCompleted;
             InAppPurchasing.PurchaseFailed += OnPurchaseFailed;
             InAppPurchasing.RestoreCompleted += OnRestoreCompleted;
         }
 
-        void OnDisable()
+        private void OnDisable()
         {
             InAppPurchasing.PurchaseCompleted -= OnPurchaseCompleted;
-            InAppPurchasing.PurchaseFailed -= OnPurchaseFailed;   
+            InAppPurchasing.PurchaseFailed -= OnPurchaseFailed;
             InAppPurchasing.RestoreCompleted -= OnRestoreCompleted;
         }
 
-        void OnPurchaseCompleted(IAPProduct product)
+        private void OnPurchaseCompleted(IAPProduct product)
         {
             if (!ownedProducts.Contains(product))
                 ownedProducts.Add(product);
-            
-            NativeUI.Alert("Purchased Completed", "The purchase of product " + product.Name + " has completed successfully. This is when you should grant the buyer digital goods.");
+
+            NativeUI.Alert("Purchased Completed",
+                "The purchase of product " + product.Name +
+                " has completed successfully. This is when you should grant the buyer digital goods.");
         }
 
-        void OnPurchaseFailed(IAPProduct product, string failureReason)
+        private void OnPurchaseFailed(IAPProduct product, string failureReason)
         {
-            NativeUI.Alert("Purchased Failed", "The purchase of product " + product.Name + " has failed with reason: " + failureReason);
+            NativeUI.Alert("Purchased Failed",
+                "The purchase of product " + product.Name + " has failed with reason: " + failureReason);
         }
 
-        void OnRestoreCompleted()
+        private void OnRestoreCompleted()
         {
             StartCoroutine(CROnRestoreCompleted());
         }
 
-        IEnumerator CROnRestoreCompleted()
+        private IEnumerator CROnRestoreCompleted()
         {
             while (NativeUI.IsShowingAlert())
                 yield return new WaitForSeconds(0.5f);
@@ -73,14 +76,14 @@ namespace EasyMobile.Demo
             NativeUI.Alert("Restore Completed", "Your purchases have been restored successfully.");
         }
 
-        void Start()
+        private void Start()
         {
-            receiptViewer.SetActive(false); 
+            receiptViewer.SetActive(false);
             curtain.SetActive(!EM_Settings.IsIAPModuleEnable);
 
             if (logProductLocalizedData)
             {
-                #if EM_UIAP
+#if EM_UIAP
                 foreach (IAPProduct p in EM_Settings.InAppPurchasing.Products)
                 {
                     UnityEngine.Purchasing.ProductMetadata data = InAppPurchasing.GetProductLocalizedData(p.Name);
@@ -96,13 +99,13 @@ namespace EasyMobile.Demo
                         Debug.Log("Localized data is null");
                     }
                 }
-                #endif
+#endif
             }
 
             StartCoroutine(CheckOwnedProducts());
         }
 
-        void Update()
+        private void Update()
         {
             ownedProductsInfo.text = "All purchased products will be listed here.";
 
@@ -112,9 +115,9 @@ namespace EasyMobile.Demo
                 demoUtils.DisplayBool(isInitInfo, true, "isInitialized: TRUE");
 
                 // Displayed own products
-                StringBuilder strBuilder = new StringBuilder();
-                bool moreThanOne = false;
-                for (int i = 0; i < ownedProducts.Count; i++)
+                var strBuilder = new StringBuilder();
+                var moreThanOne = false;
+                for (var i = 0; i < ownedProducts.Count; i++)
                 {
                     var pd = ownedProducts[i];
                     if (!moreThanOne)
@@ -128,10 +131,8 @@ namespace EasyMobile.Demo
                 var productStr = strBuilder.ToString();
 
                 if (!string.IsNullOrEmpty(productStr))
-                {
                     // Overwrite the text above.
                     ownedProductsInfo.text = productStr;
-                }
             }
             else
             {
@@ -145,17 +146,15 @@ namespace EasyMobile.Demo
 
             if (products == null || products.Length == 0)
             {
-                NativeUI.Alert("Alert", "You don't have any IAP product. Please go to Window > Easy Mobile > Settings and add some.");
+                NativeUI.Alert("Alert",
+                    "You don't have any IAP product. Please go to Window > Easy Mobile > Settings and add some.");
                 selectedProduct = null;
                 return;
             }
 
             var items = new Dictionary<string, string>();
 
-            foreach (IAPProduct pd in products)
-            {
-                items.Add(pd.Name, pd.Type.ToString());
-            }
+            foreach (var pd in products) items.Add(pd.Name, pd.Type.ToString());
 
             var scrollableList = ScrollableList.Create(scrollableListPrefab, "PRODUCTS", items);
             scrollableList.ItemSelected += OnItemSelected;
@@ -164,19 +163,15 @@ namespace EasyMobile.Demo
         public void Purchase()
         {
             if (selectedProduct != null)
-            {
                 InAppPurchasing.Purchase(selectedProduct.Name);
 
-                // You can also do
-                //InAppPurchasing.Purchase(selectedProduct);
+            // You can also do
+            //InAppPurchasing.Purchase(selectedProduct);
 
-                // The advantage of method Purchase() that uses product name is you can use it with the constant product names
-                // in the generated EM_IAPConstants class for compile-time error detecting.
-            }
+            // The advantage of method Purchase() that uses product name is you can use it with the constant product names
+            // in the generated EM_IAPConstants class for compile-time error detecting.
             else
-            {
                 NativeUI.Alert("Alert", "Please select a product.");
-            }
         }
 
         public void ViewReceipt()
@@ -186,8 +181,8 @@ namespace EasyMobile.Demo
                 NativeUI.Alert("Alert", "Please select a product.");
                 return;
             }
-                
-            #if EM_UIAP
+
+#if EM_UIAP
             if (Application.platform == RuntimePlatform.IPhonePlayer)
             {
                 AppleInAppPurchaseReceipt receipt = InAppPurchasing.GetAppleIAPReceipt(selectedProduct.Name);
@@ -236,9 +231,9 @@ namespace EasyMobile.Demo
             {
                 Debug.Log("Please test on an iOS or Android device.");
             }
-            #else
+#else
             NativeUI.Alert("Alert", "Please enable Unity IAP service.");
-            #endif
+#endif
         }
 
         public void ShowReceiptViewer(string receiptContent)
@@ -253,8 +248,8 @@ namespace EasyMobile.Demo
         }
 
         public void GetSubscriptionInfo()
-        {        
-            #if EM_UIAP
+        {
+#if EM_UIAP
             if (selectedProduct == null)
             {
                 NativeUI.Alert("Alert", "Please select a product.");
@@ -290,9 +285,9 @@ namespace EasyMobile.Demo
             sb.Append("\n- Expire Date: " + (info.getExpireDate().ToShortDateString()));
 
             NativeUI.Alert("Subscription Info", sb.ToString());
-            #else
+#else
             NativeUI.Alert("Alert", "Please enable Unity IAP service.");
-            #endif
+#endif
         }
 
         public void RestorePurchases()
@@ -300,35 +295,27 @@ namespace EasyMobile.Demo
             InAppPurchasing.RestorePurchases();
         }
 
-        void OnItemSelected(ScrollableList list, string title, string subtitle)
+        private void OnItemSelected(ScrollableList list, string title, string subtitle)
         {
             list.ItemSelected -= OnItemSelected;
             selectedProduct = InAppPurchasing.GetIAPProductByName(title);
-            selectedProductInfo.text = "Selected product: " + selectedProduct.Name + " (" + selectedProduct.Type.ToString() + ")";
+            selectedProductInfo.text = "Selected product: " + selectedProduct.Name + " (" +
+                                       selectedProduct.Type.ToString() + ")";
         }
 
-        IEnumerator CheckOwnedProducts()
+        private IEnumerator CheckOwnedProducts()
         {
             // Wait until the module is initialized
-            if (!InAppPurchasing.IsInitialized())
-            {
-                yield return new WaitForSeconds(0.5f);
-            }
+            if (!InAppPurchasing.IsInitialized()) yield return new WaitForSeconds(0.5f);
 
             // Display list of owned non-consumable products.
             var products = EM_Settings.InAppPurchasing.Products;
             if (products != null && products.Length > 0)
-            {
-                for (int i = 0; i < products.Length; i++)
+                for (var i = 0; i < products.Length; i++)
                 {
                     var pd = products[i];
-                    if (InAppPurchasing.IsProductOwned(pd.Name) && !ownedProducts.Contains(pd))
-                    {
-                        ownedProducts.Add(pd);
-                    }
+                    if (InAppPurchasing.IsProductOwned(pd.Name) && !ownedProducts.Contains(pd)) ownedProducts.Add(pd);
                 }
-            }
         }
     }
 }
-

@@ -7,16 +7,13 @@ namespace EasyMobile.Demo
 {
     public class ContactView : MonoBehaviour
     {
-        [SerializeField]
-        private RawImage avatarImage = null;
+        [SerializeField] private RawImage avatarImage = null;
 
-        [SerializeField]
-        private Text infoText = null;
+        [SerializeField] private Text infoText = null;
 
-        [SerializeField]
-        private Button deleteButton = null, loadPhotoButton = null;
+        [SerializeField] private Button deleteButton = null, loadPhotoButton = null;
 
-        public Button DeleteButton { get { return deleteButton; } }
+        public Button DeleteButton => deleteButton;
 
         private Contact contact;
 
@@ -33,7 +30,7 @@ namespace EasyMobile.Demo
 
         public Contact GetContact()
         {
-            return this.contact;
+            return contact;
         }
 
         private string GetContactInfoText()

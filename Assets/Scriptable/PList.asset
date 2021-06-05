@@ -1,0 +1,18 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c18f7d19a3f54d19aac04ad58aef21ba, type: 3}
+  m_Name: PList
+  m_EditorClassIdentifier: 
+  list:
+  - {fileID: 11400000, guid: 2ed508d9bff093e47a98c599ce49cf60, type: 2}
+  - {fileID: 11400000, guid: 4eef0cf4ec4efd04da8aec30f92468eb, type: 2}
+  - {fileID: 11400000, guid: 5340c0359aec4ff40803ed32060c6881, type: 2}

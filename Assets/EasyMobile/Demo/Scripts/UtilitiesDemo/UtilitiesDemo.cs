@@ -15,14 +15,14 @@ namespace EasyMobile.Demo
         public GameObject coolingOffRemainingTime;
         public DemoUtils demoUtils;
 
-        void Awake()
+        private void Awake()
         {
             // Init EM runtime if needed (useful in case only this scene is built).
             if (!RuntimeManager.IsInitialized())
                 RuntimeManager.Init();
         }
 
-        void Update()
+        private void Update()
         {
             // if (StoreReview.IsDisplayConstraintIgnored())
             //     demoUtils.DisplayBool(ignoreConstraints, true, "Ignore Constraints: TRUE");

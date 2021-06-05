@@ -4,17 +4,18 @@ using UnityEngine.UI;
 
 namespace EasyMobile.Demo
 {
-    [AddComponentMenu(""), DisallowMultipleComponent]
+    [AddComponentMenu("")]
+    [DisallowMultipleComponent]
     public class ColorHandler : MonoBehaviour
     {
         public float lerpTime = 1;
         public Color[] colors;
 
-        Image imgComp;
-        Material material;
-        Color currentColor;
+        private Image imgComp;
+        private Material material;
+        private Color currentColor;
 
-        void Start()
+        private void Start()
         {
             imgComp = GetComponent<Image>();
 
@@ -25,7 +26,7 @@ namespace EasyMobile.Demo
             StartCoroutine(CRChangeColor(lerpTime));
         }
 
-        IEnumerator CRChangeColor(float time)
+        private IEnumerator CRChangeColor(float time)
         {
             while (true)
             {
@@ -38,20 +39,19 @@ namespace EasyMobile.Demo
                 do
                 {
                     newColor = colors[Random.Range(0, colors.Length)];
-                }
-                while (newColor == currentColor);
+                } while (newColor == currentColor);
 
                 float elapsed = 0;
                 while (elapsed < time)
                 {
                     elapsed += Time.deltaTime;
-                    Color c = Color.Lerp(currentColor, newColor, elapsed / time);
+                    var c = Color.Lerp(currentColor, newColor, elapsed / time);
 
                     if (material != null)
                         material.color = c;
                     else if (imgComp != null)
                         imgComp.color = c;
-                    
+
                     yield return null;
                 }
             }

@@ -19,7 +19,7 @@ namespace EasyMobile.Demo
             HitPowerUp,
             FinishRace,
             RematchRequest,
-            RematchResponse,
+            RematchResponse
         }
 
         public enum MoveDirections
@@ -35,7 +35,7 @@ namespace EasyMobile.Demo
             OpponentFinishRace,
             HitPowerUp,
             OpponentHitPowerUp,
-            OpponentLeftRoom,
+            OpponentLeftRoom
         }
 
         public string SelfId { get; private set; }
@@ -43,10 +43,7 @@ namespace EasyMobile.Demo
         public List<Vector3> PowerUpsPosition { get; set; }
         public List<Vector3> SideObjectsPosition { get; set; }
 
-        public bool IsHost
-        {
-            get { return SelfId.CompareTo(OpponentId) > 0; }
-        }
+        public bool IsHost => SelfId.CompareTo(OpponentId) > 0;
 
         public Racing3DGameModel(string selfId, string opponentId)
         {
@@ -93,29 +90,27 @@ namespace EasyMobile.Demo
         {
             return new RematchResponseMaessage(accepted).ToByteArray();
         }
-        
+
         public RealtimeMultiplayerMessage FromByteArray(byte[] bytes)
         {
             if (bytes == null)
                 throw new ArgumentNullException();
 
             if (bytes.Length > 10)
-            {
                 using (var memoryStream = new MemoryStream())
                 {
                     var binaryFormatter = new BinaryFormatter();
                     memoryStream.Write(bytes, 0, bytes.Length);
                     memoryStream.Seek(0, SeekOrigin.Begin);
-                    var obj = (RealtimeMultiplayerMessage)binaryFormatter.Deserialize(memoryStream);
+                    var obj = (RealtimeMultiplayerMessage) binaryFormatter.Deserialize(memoryStream);
                     return obj;
                 }
-            }
 
             if (bytes[0] == 2)
                 return new ReadyMessage();
 
             if (bytes[0] == 3)
-                return new MoveMessage((MoveDirections)bytes[1]);
+                return new MoveMessage((MoveDirections) bytes[1]);
 
             if (bytes[0] == 4)
                 return new UseNitroMessage();
@@ -145,16 +140,16 @@ namespace EasyMobile.Demo
         [Serializable]
         public class StartGameMessage : RealtimeMultiplayerMessage
         {
-            public override MessageTypes Type { get { return MessageTypes.StartGame; } }
+            public override MessageTypes Type => MessageTypes.StartGame;
 
             public List<Vector3> PowerUpsPosition
             {
-                get { return powerUpsPosition.Select(v => (Vector3)v).ToList(); }
+                get { return powerUpsPosition.Select(v => (Vector3) v).ToList(); }
             }
 
             public List<Vector3> SideObjectsPosition
             {
-                get { return sideObjectsPosition.Select(v => (Vector3)v).ToList(); }
+                get { return sideObjectsPosition.Select(v => (Vector3) v).ToList(); }
             }
 
             private List<SerializableVector3> powerUpsPosition;
@@ -183,18 +178,18 @@ namespace EasyMobile.Demo
         [Serializable]
         public class ReadyMessage : RealtimeMultiplayerMessage
         {
-            public override MessageTypes Type { get { return MessageTypes.Ready; } }
+            public override MessageTypes Type => MessageTypes.Ready;
 
             public override byte[] ToByteArray()
             {
-                return new byte[] { 2 };
+                return new byte[] {2};
             }
         }
 
         [Serializable]
         public class MoveMessage : RealtimeMultiplayerMessage
         {
-            public override MessageTypes Type { get { return MessageTypes.Move; } }
+            public override MessageTypes Type => MessageTypes.Move;
             public MoveDirections Direction { get; private set; }
 
             public MoveMessage(MoveDirections direction) : base()
@@ -204,70 +199,70 @@ namespace EasyMobile.Demo
 
             public override byte[] ToByteArray()
             {
-                return new byte[] { 3, (byte)Direction };
+                return new byte[] {3, (byte) Direction};
             }
         }
 
         [Serializable]
         public class UseNitroMessage : RealtimeMultiplayerMessage
         {
-            public override MessageTypes Type { get { return MessageTypes.UseNitro; } }
+            public override MessageTypes Type => MessageTypes.UseNitro;
 
             public override byte[] ToByteArray()
             {
-                return new byte[] { 4 };
+                return new byte[] {4};
             }
         }
 
         [Serializable]
         public class HitPowerUpMessage : RealtimeMultiplayerMessage
         {
-            public override MessageTypes Type { get { return MessageTypes.HitPowerUp; } }
+            public override MessageTypes Type => MessageTypes.HitPowerUp;
 
             public override byte[] ToByteArray()
             {
-                return new byte[] { 5 };
+                return new byte[] {5};
             }
         }
 
         [Serializable]
         public class FinishRaceMessage : RealtimeMultiplayerMessage
         {
-            public override MessageTypes Type { get { return MessageTypes.FinishRace; } }
+            public override MessageTypes Type => MessageTypes.FinishRace;
 
             public override byte[] ToByteArray()
             {
-                return new byte[] { 6 };
+                return new byte[] {6};
             }
         }
 
         [Serializable]
         public class RematchRequestchMessage : RealtimeMultiplayerMessage
         {
-            public override MessageTypes Type { get { return MessageTypes.RematchRequest; } }
+            public override MessageTypes Type => MessageTypes.RematchRequest;
 
             public override byte[] ToByteArray()
             {
-                return new byte[] { 7 };
+                return new byte[] {7};
             }
         }
 
         [Serializable]
         public class RematchResponseMaessage : RealtimeMultiplayerMessage
         {
-            public override MessageTypes Type { get { return MessageTypes.RematchResponse; } }
-            public bool Accepted { get { return accepted == 1; } }
+            public override MessageTypes Type => MessageTypes.RematchResponse;
+            public bool Accepted => accepted == 1;
 
             private byte accepted = 0;
 
             public RematchResponseMaessage(bool accepted)
             {
-                this.accepted = accepted ? (byte)1 : (byte)0;
+                this.accepted = accepted ? (byte) 1 : (byte) 0;
             }
 
             public override byte[] ToByteArray()
             {
-                return new byte[] { 8, accepted };
+                return new byte[] {8, accepted};
             }
         }
 

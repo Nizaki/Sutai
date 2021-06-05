@@ -37,17 +37,11 @@ namespace EasyMobile.Editor
                 // Generate dummy AppleTangle and GoogleTangle classes if they don't exist.
                 // Note that AppleTangle and GooglePlayTangle only get compiled on following platforms,
                 // therefore the compilational condition is needed, otherwise the code will repeat forever.
-                #if UNITY_ANDROID || UNITY_IPHONE || UNITY_STANDALONE_OSX || UNITY_TVOS
-                if (!EM_EditorUtil.AppleTangleClassExists())
-                {
-                    EM_EditorUtil.GenerateDummyAppleTangleClass();
-                }
+#if UNITY_ANDROID || UNITY_IPHONE || UNITY_STANDALONE_OSX || UNITY_TVOS
+                if (!EM_EditorUtil.AppleTangleClassExists()) EM_EditorUtil.GenerateDummyAppleTangleClass();
 
-                if (!EM_EditorUtil.GooglePlayTangleClassExists())
-                {
-                    EM_EditorUtil.GenerateDummyGooglePlayTangleClass();
-                }
-                #endif
+                if (!EM_EditorUtil.GooglePlayTangleClassExists()) EM_EditorUtil.GenerateDummyGooglePlayTangleClass();
+#endif
 
                 GlobalDefineManager.SDS_AddDefineOnAllPlatforms(EM_ScriptingSymbols.UnityIAP);
             }
@@ -59,37 +53,14 @@ namespace EasyMobile.Editor
             GlobalDefineManager.SDS_RemoveDefineOnAllPlatforms(EM_ScriptingSymbols.UnityIAP);
         }
 
-        public override List<string> AndroidManifestTemplatePaths
-        {
-            get
-            {
-                return null;
-            }
-        }
+        public override List<string> AndroidManifestTemplatePaths => null;
 
-        public override IAndroidPermissionRequired AndroidPermissionsHolder
-        {
-            get
-            {
-                return EM_Settings.InAppPurchasing as IAndroidPermissionRequired;
-            }
-        }
+        public override IAndroidPermissionRequired AndroidPermissionsHolder =>
+            EM_Settings.InAppPurchasing as IAndroidPermissionRequired;
 
-        public override IIOSInfoItemRequired iOSInfoItemsHolder
-        {
-            get
-            {
-                return EM_Settings.InAppPurchasing as IIOSInfoItemRequired;
-            }
-        }
+        public override IIOSInfoItemRequired iOSInfoItemsHolder => EM_Settings.InAppPurchasing as IIOSInfoItemRequired;
 
-        public override Module SelfModule
-        {
-            get
-            {
-                return Module.InAppPurchasing;
-            }
-        }
+        public override Module SelfModule => Module.InAppPurchasing;
 
         #endregion
     }

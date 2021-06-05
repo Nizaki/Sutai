@@ -11,11 +11,9 @@ namespace EasyMobile
     [Serializable]
     public class CrossPlatformId
     {
-        [SerializeField]
-        [Rename("iOS ID")]
-        protected string mIosId;
-        [SerializeField]
-        [Rename("Android ID")]
+        [SerializeField] [Rename("iOS ID")] protected string mIosId;
+
+        [SerializeField] [Rename("Android ID")]
         protected string mAndroidId;
 
         /// <summary>
@@ -41,18 +39,18 @@ namespace EasyMobile
         /// Gets the ad ID for iOS platform.
         /// </summary>
         /// <value>The ios identifier.</value>
-        public virtual string IosId { get { return mIosId; } }
+        public virtual string IosId => mIosId;
 
         /// <summary>
         /// Gets the ad ID for Android platform.
         /// </summary>
         /// <value>The android identifier.</value>
-        public virtual string AndroidId { get { return mAndroidId; } }
+        public virtual string AndroidId => mAndroidId;
 
         public CrossPlatformId(string iOSId, string androidId)
         {
-            this.mIosId = iOSId;
-            this.mAndroidId = androidId;
+            mIosId = iOSId;
+            mAndroidId = androidId;
         }
 
         public override string ToString()
@@ -64,17 +62,14 @@ namespace EasyMobile
         {
             var item = obj as CrossPlatformId;
 
-            if (item == null)
-            {
-                return false;
-            }
+            if (item == null) return false;
 
-            return this.Id.Equals(item.Id);
+            return Id.Equals(item.Id);
         }
 
         public override int GetHashCode()
         {
-            return this.Id.GetHashCode();
+            return Id.GetHashCode();
         }
 
         public static bool operator ==(CrossPlatformId a, CrossPlatformId b)

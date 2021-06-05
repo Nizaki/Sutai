@@ -8,42 +8,42 @@ namespace EasyMobile.Demo
 {
     public class DemoHomeController : MonoBehaviour
     {
-        [Header("Object References")]
-        public Text installationTime;
+        [Header("Object References")] public Text installationTime;
 
-        void Awake()
+        private void Awake()
         {
             // Initialize EM runtime.
             if (!RuntimeManager.IsInitialized())
                 RuntimeManager.Init();
         }
 
-        void Start()
+        private void Start()
         {
             var installTime = RuntimeHelper.GetAppInstallationTime();
-            installationTime.text = "Install Date: " + installTime.ToShortDateString() + " " + installTime.ToShortTimeString();
+            installationTime.text = "Install Date: " + installTime.ToShortDateString() + " " +
+                                    installTime.ToShortTimeString();
         }
 
-        void Update()
+        private void Update()
         {
-            #if UNITY_ANDROID
+#if UNITY_ANDROID
             if (Input.GetKeyUp(KeyCode.Escape))
-            {   
+            {
                 // Ask if user wants to exit
-                NativeUI.AlertPopup alert = NativeUI.ShowTwoButtonAlert("Exit App",
-                                                "Do you want to exit?",
-                                                "Yes", 
-                                                "No");
+                var alert = NativeUI.ShowTwoButtonAlert("Exit App",
+                    "Do you want to exit?",
+                    "Yes",
+                    "No");
 
                 if (alert != null)
-                    alert.OnComplete += delegate (int button)
-                    { 
+                    alert.OnComplete += delegate(int button)
+                    {
                         if (button == 0)
                             Application.Quit();
                     };
             }
 
-            #endif
+#endif
         }
 
         public void Restart()
@@ -52,4 +52,3 @@ namespace EasyMobile.Demo
         }
     }
 }
-

@@ -7,6 +7,7 @@ namespace EasyMobile
 {
 #if UNITY_2018_3_OR_NEWER
     using UnityEngine.Networking;
+
 #endif
 
     [AddComponentMenu("")]
@@ -18,7 +19,7 @@ namespace EasyMobile
             {
                 if (_instance == null)
                 {
-                    GameObject ob = new GameObject("Giphy");
+                    var ob = new GameObject("Giphy");
                     _instance = ob.AddComponent<Giphy>();
                     DontDestroyOnLoad(ob);
                 }
@@ -29,23 +30,25 @@ namespace EasyMobile
 
         private static Giphy _instance;
 
-        public static bool IsUsingAPI { get { return _apiUseCount > 0; } }
+        public static bool IsUsingAPI => _apiUseCount > 0;
 
-        [Obsolete("This public beta key is now obsolete. Now you can register your app on the Giply developers dashboard and get a specific key for it.")]
+        [Obsolete(
+            "This public beta key is now obsolete. Now you can register your app on the Giply developers dashboard and get a specific key for it.")]
         public const string GIPHY_PUBLIC_BETA_KEY = "dc6zaTOxFJmzC";
+
         public const string GIPHY_UPLOAD_PATH = "https://upload.giphy.com/v1/gifs";
         public const string GIPHY_BASE_URL = "http://giphy.com/gifs/";
 
-        static int _apiUseCount = 0;
+        private static int _apiUseCount = 0;
 
         #region Child classes
 
-        [System.Serializable]
+        [Serializable]
         private class UploadSuccessResponse
         {
             public UploadSuccessData data = new UploadSuccessData();
 
-            [System.Serializable]
+            [Serializable]
             public class UploadSuccessData
             {
                 public string id = "";
@@ -65,9 +68,11 @@ namespace EasyMobile
         /// <param name="uploadCompletedCallback">Upload completed callback: the parameter is the URL of the uploaded image.</param>
         /// <param name="uploadFailedCallback">Upload failed callback: the parameter is the error message.</param>
         [Obsolete("This method was deprecated. Now you must upload with a Giphy API key specific to your app.")]
-        public static void Upload(GiphyUploadParams content, Action<float> uploadProgressCallback, Action<string> uploadCompletedCallback, Action<string> uploadFailedCallback)
+        public static void Upload(GiphyUploadParams content, Action<float> uploadProgressCallback,
+            Action<string> uploadCompletedCallback, Action<string> uploadFailedCallback)
         {
-            Upload("", GIPHY_PUBLIC_BETA_KEY, content, uploadProgressCallback, uploadCompletedCallback, uploadFailedCallback);
+            Upload("", GIPHY_PUBLIC_BETA_KEY, content, uploadProgressCallback, uploadCompletedCallback,
+                uploadFailedCallback);
         }
 
         /// <summary>
@@ -80,7 +85,9 @@ namespace EasyMobile
         /// <param name="uploadProgressCallback">Upload progress callback: the parameter indicates upload progress from 0 to 1.</param>
         /// <param name="uploadCompletedCallback">Upload completed callback: the parameter is the URL of the uploaded image.</param>
         /// <param name="uploadFailedCallback">Upload failed callback: the parameter is the error message.</param>
-        public static void Upload(string username, string apiKey, GiphyUploadParams content, Action<float> uploadProgressCallback, Action<string> uploadCompletedCallback, Action<string> uploadFailedCallback)
+        public static void Upload(string username, string apiKey, GiphyUploadParams content,
+            Action<float> uploadProgressCallback, Action<string> uploadCompletedCallback,
+            Action<string> uploadFailedCallback)
         {
 #if !UNITY_WEBPLAYER
             if (string.IsNullOrEmpty(content.localImagePath) && string.IsNullOrEmpty(content.sourceImageUrl))
@@ -95,10 +102,10 @@ namespace EasyMobile
             }
 
             // Append the API key to the upload URL itself, as simply adding it to the form doesn't really work.
-            string uploadPath = GIPHY_UPLOAD_PATH + (string.IsNullOrEmpty(apiKey) ? string.Empty : "?api_key=" + apiKey);
+            var uploadPath = GIPHY_UPLOAD_PATH + (string.IsNullOrEmpty(apiKey) ? string.Empty : "?api_key=" + apiKey);
 
             // Prepare upload form.
-            WWWForm form = new WWWForm();
+            var form = new WWWForm();
             form.AddField("api_key", apiKey);
             form.AddField("username", username);
 
@@ -118,7 +125,8 @@ namespace EasyMobile
                 form.AddField("is_hidden", "true");
 
             // Start uploading.
-            Instance.StartCoroutine(CRUpload(uploadPath, form, uploadProgressCallback, uploadCompletedCallback, uploadFailedCallback));
+            Instance.StartCoroutine(CRUpload(uploadPath, form, uploadProgressCallback, uploadCompletedCallback,
+                uploadFailedCallback));
 #endif
         }
 
@@ -128,9 +136,10 @@ namespace EasyMobile
 
 #if UNITY_2018_3_OR_NEWER
         // WWW was deprecated since Unity 2018.3.0. UnityWebRequest is the replacement.
-        static IEnumerator CRUpload(string uploadPath, WWWForm form, Action<float> uploadProgressCB, Action<string> uploadCompletedCB, Action<string> uploadFailedCB)
+        private static IEnumerator CRUpload(string uploadPath, WWWForm form, Action<float> uploadProgressCB,
+            Action<string> uploadCompletedCB, Action<string> uploadFailedCB)
         {
-            using (UnityWebRequest www = UnityWebRequest.Post(uploadPath, form))
+            using (var www = UnityWebRequest.Post(uploadPath, form))
             {
                 www.SendWebRequest();
                 _apiUseCount++;
@@ -148,7 +157,7 @@ namespace EasyMobile
                     if (uploadCompletedCB != null)
                     {
                         // Extract and return the GIF URL from the return response.
-                        UploadSuccessResponse json = JsonUtility.FromJson<UploadSuccessResponse>(www.downloadHandler.text);
+                        var json = JsonUtility.FromJson<UploadSuccessResponse>(www.downloadHandler.text);
                         uploadCompletedCB(GIPHY_BASE_URL + json.data.id);
                     }
                 }
@@ -198,7 +207,7 @@ namespace EasyMobile
 
         #region Unity events
 
-        void Awake()
+        private void Awake()
         {
             if (_instance == null)
             {
@@ -211,7 +220,7 @@ namespace EasyMobile
             }
         }
 
-        void OnDestroy()
+        private void OnDestroy()
         {
             if (this == _instance)
                 _instance = null;

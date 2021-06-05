@@ -26,25 +26,13 @@ namespace EasyMobile
         /// Gets the type of the invitation.
         /// </summary>
         /// <value>The type of the invitation (real-time or turn-based).</value>
-        public MatchType InvitationType
-        {
-            get
-            {
-                return mInvitationType;
-            }
-        }
+        public MatchType InvitationType => mInvitationType;
 
         /// <summary>
         /// Gets the participant who sent the invitation.
         /// </summary>
         /// <value>The participant who issued the invitation.</value>
-        public Participant Inviter
-        {
-            get
-            {
-                return mInviter;
-            }
-        }
+        public Participant Inviter => mInviter;
 
         /// <summary>
         /// Gets the match variant. The meaning of this parameter is defined by the game.
@@ -54,18 +42,12 @@ namespace EasyMobile
         /// be between 0 and 511 (inclusive). Default value is 0.
         /// </summary>
         /// <value>The match variant. 0 means default (unset).</value>
-        public uint Variant
-        {
-            get
-            {
-                return mVariant;
-            }
-        }
+        public uint Variant => mVariant;
 
         public override string ToString()
         {
             return string.Format("[Invitation: InvitationType={0}, Inviter={1}, " +
-                "Variant={2}]", InvitationType, Inviter, Variant);
+                                 "Variant={2}]", InvitationType, Inviter, Variant);
         }
 
         protected Invitation(MatchType invType, Participant inviter, uint variant)
@@ -76,7 +58,6 @@ namespace EasyMobile
         }
 
 #if UNITY_IOS
-        
         internal GKInvite GK_Invite { get; private set; }
 
         internal static Invitation FromGKInvite(GKInvite gkInvite, MatchType type)
@@ -96,7 +77,6 @@ namespace EasyMobile
 #endif
 
 #if UNITY_ANDROID && EM_GPGS && EM_OBSOLETE_GPGS
-
         internal GPGSInvitation GPGS_Invitation { get; private set; }
 
         /// <summary>

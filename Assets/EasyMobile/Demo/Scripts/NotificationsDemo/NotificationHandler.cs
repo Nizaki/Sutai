@@ -10,7 +10,7 @@ namespace EasyMobile.Demo
     {
         public static NotificationHandler Instance { get; private set; }
 
-        void Awake()
+        private void Awake()
         {
             if (Instance == null)
             {
@@ -23,26 +23,26 @@ namespace EasyMobile.Demo
             }
         }
 
-        void OnEnable()
+        private void OnEnable()
         {
             Notifications.PushTokenReceived += OnPushNotificationTokenReceived;
             Notifications.LocalNotificationOpened += OnLocalNotificationOpened;
             Notifications.RemoteNotificationOpened += OnPushNotificationOpened;
         }
 
-        void OnDisable()
+        private void OnDisable()
         {
             Notifications.PushTokenReceived -= OnPushNotificationTokenReceived;
             Notifications.LocalNotificationOpened -= OnLocalNotificationOpened;
             Notifications.RemoteNotificationOpened -= OnPushNotificationOpened;
         }
 
-        void OnPushNotificationTokenReceived(string token)
+        private void OnPushNotificationTokenReceived(string token)
         {
             Debug.Log("OnPushNotificationTokenReceived: " + token);
         }
 
-        void OnLocalNotificationOpened(LocalNotification delivered)
+        private void OnLocalNotificationOpened(LocalNotification delivered)
         {
             // Reset app icon badge number (iOS only)
             if (delivered.isOpened)
@@ -52,22 +52,19 @@ namespace EasyMobile.Demo
         }
 
         // Push notification opened handler
-        void OnPushNotificationOpened(RemoteNotification delivered)
+        private void OnPushNotificationOpened(RemoteNotification delivered)
         {
             DisplayNotification(delivered, true);
         }
 
-        void DisplayNotification(Notification delivered, bool isRemote)
+        private void DisplayNotification(Notification delivered, bool isRemote)
         {
             var content = delivered.content;
             var sb = new StringBuilder();
 
-            bool hasNewUpdate = content.userInfo != null ? content.userInfo.ContainsKey("newUpdate") : false;
+            var hasNewUpdate = content.userInfo != null ? content.userInfo.ContainsKey("newUpdate") : false;
 
-            if (hasNewUpdate)
-            {
-                sb.Append("A new version is available. Do you want to update now?\n");
-            }
+            if (hasNewUpdate) sb.Append("A new version is available. Do you want to update now?\n");
 
             sb.AppendLine("----- NOTIFICATION DATA -----")
                 .AppendLine("ActionID: " + delivered.actionId ?? "null")
@@ -92,7 +89,7 @@ namespace EasyMobile.Demo
             {
                 if (Notifications.CurrentPushNotificationService == PushNotificationProvider.OneSignal)
                 {
-                    var oneSignalPayload = ((RemoteNotification)delivered).oneSignalPayload;
+                    var oneSignalPayload = ((RemoteNotification) delivered).oneSignalPayload;
 
                     if (oneSignalPayload == null)
                     {
@@ -108,8 +105,12 @@ namespace EasyMobile.Demo
                             .AppendLine("body: " + oneSignalPayload.body ?? "null")
                             .AppendLine("subtitle: " + oneSignalPayload.subtitle ?? "null")
                             .AppendLine("launchURL: " + oneSignalPayload.launchURL ?? "null")
-                            .AppendLine("additionalData: " + oneSignalPayload.additionalData != null ? Json.Serialize(oneSignalPayload.additionalData) : "null")
-                            .AppendLine("actionButtons: " + oneSignalPayload.actionButtons != null ? Json.Serialize(oneSignalPayload.actionButtons) : "null")
+                            .AppendLine("additionalData: " + oneSignalPayload.additionalData != null
+                                ? Json.Serialize(oneSignalPayload.additionalData)
+                                : "null")
+                            .AppendLine("actionButtons: " + oneSignalPayload.actionButtons != null
+                                ? Json.Serialize(oneSignalPayload.actionButtons)
+                                : "null")
                             .AppendLine("contentAvailable: " + oneSignalPayload.contentAvailable.ToString())
                             .AppendLine("badge: " + oneSignalPayload.badge)
                             .AppendLine("smallIcon: " + oneSignalPayload.smallIcon ?? "null")
@@ -128,7 +129,7 @@ namespace EasyMobile.Demo
                 }
                 else if (Notifications.CurrentPushNotificationService == PushNotificationProvider.Firebase)
                 {
-                    var firebasePayload = ((RemoteNotification)delivered).firebasePayload;
+                    var firebasePayload = ((RemoteNotification) delivered).firebasePayload;
 
                     if (firebasePayload == null)
                     {
@@ -145,7 +146,9 @@ namespace EasyMobile.Demo
                             .AppendLine("Badge: " + firebasePayload.Notification.Badge)
                             .AppendLine("Tag: " + firebasePayload.Notification.Tag)
                             .AppendLine("ClickAction: " + firebasePayload.Notification.ClickAction)
-                            .AppendLine("Data: " + (firebasePayload.Data != null ? Json.Serialize(firebasePayload.Data) : "null"))
+                            .AppendLine("Data: " + (firebasePayload.Data != null
+                                ? Json.Serialize(firebasePayload.Data)
+                                : "null"))
                             .AppendLine("NotificationOpened: " + firebasePayload.NotificationOpened)
                             .AppendLine("MessageId: " + firebasePayload.MessageId)
                             .AppendLine("From: " + firebasePayload.From)
@@ -159,34 +162,32 @@ namespace EasyMobile.Demo
             }
         }
 
-        IEnumerator CRWaitAndShowPopup(bool hasNewUpdate, string title, string message)
+        private IEnumerator CRWaitAndShowPopup(bool hasNewUpdate, string title, string message)
         {
             // Wait until no other alert is showing.
             while (NativeUI.IsShowingAlert())
                 yield return new WaitForSeconds(0.1f);
 
             if (!hasNewUpdate)
+            {
                 NativeUI.Alert(title, message);
+            }
             else
             {
-                NativeUI.AlertPopup alert = NativeUI.ShowTwoButtonAlert(
-                                                title,
-                                                message,
-                                                "Yes",
-                                                "No");
+                var alert = NativeUI.ShowTwoButtonAlert(
+                    title,
+                    message,
+                    "Yes",
+                    "No");
 
                 if (alert != null)
-                {
                     alert.OnComplete += (int button) =>
                     {
                         if (button == 0)
-                        {
                             NativeUI.Alert(
-                                "Open App Store", 
+                                "Open App Store",
                                 "The user has opted to update! In a real app you would want to open the app store for them to download the new version.");
-                        }
                     };
-                }
             }
         }
     }

@@ -7,49 +7,36 @@ namespace EasyMobile.Demo
 {
     public class Racing3DGameView : MonoBehaviour
     {
-        [SerializeField]
-        private Racing3DGameControl control = null;
+        [SerializeField] private Racing3DGameControl control = null;
 
-        [SerializeField]
-        private DemoUtils utilities = null;
+        [SerializeField] private DemoUtils utilities = null;
 
-        [SerializeField]
-        private GameObject settingUIRootObject = null,
+        [SerializeField] private GameObject settingUIRootObject = null,
             ingameRootObject = null;
 
-        [SerializeField]
-        private Image nitroImage = null;
+        [SerializeField] private Image nitroImage = null;
 
-        [SerializeField]
-        private Text ingamePrepareText = null;
+        [SerializeField] private Text ingamePrepareText = null;
 
-        [SerializeField]
-        private Button acceptFromInboxButton = null;
+        [SerializeField] private Button acceptFromInboxButton = null;
 
-        [SerializeField]
-        private GameObject nitroRoot = null,
+        [SerializeField] private GameObject nitroRoot = null,
             gameoverPanel = null,
             requestResponseRoot = null;
 
-        [SerializeField]
-        private Text gameoverTitle = null,
+        [SerializeField] private Text gameoverTitle = null,
             gameoverSubtitle = null;
 
-        [SerializeField]
-        private Button gameoverDoneButton = null,
+        [SerializeField] private Button gameoverDoneButton = null,
             rematchButton = null,
             acceptRematchButton = null,
             denyRematchButton = null;
 
-        [SerializeField]
-        private GameObject header = null;
+        [SerializeField] private GameObject header = null;
 
-        [Space]
-        [SerializeField]
-        private int maxCountDown = 3;
+        [Space] [SerializeField] private int maxCountDown = 3;
 
-        [SerializeField]
-        private float countDownTime = 5f;
+        [SerializeField] private float countDownTime = 5f;
 
         public bool IsWaitingUIShowing { get; private set; }
 
@@ -138,13 +125,9 @@ namespace EasyMobile.Demo
         public void SetActiveNitro(bool active)
         {
             if (active)
-            {
                 nitroRoot.SetActive(true);
-            }
             else
-            {
                 nitroRoot.SetActive(false);
-            }
         }
 
         /// <summary>
@@ -227,9 +210,9 @@ namespace EasyMobile.Demo
                 yield break;
             }
 
-            float totalTime = countDownTime - delay;
-            float waitTime = totalTime / (maxCountDown + 1);
-            for (int i = maxCountDown; i > 0; i--)
+            var totalTime = countDownTime - delay;
+            var waitTime = totalTime / (maxCountDown + 1);
+            for (var i = maxCountDown; i > 0; i--)
             {
                 ingamePrepareText.text = i.ToString();
                 yield return new WaitForSeconds(waitTime);

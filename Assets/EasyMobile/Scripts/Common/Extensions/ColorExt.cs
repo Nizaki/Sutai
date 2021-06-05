@@ -29,7 +29,7 @@ namespace EasyMobile.Internal
 
         public static int ToRGBAHex(this Color32 c)
         {
-            return (c.r << 24) | (c.g << 16) | (c.b << 8) | (c.a);
+            return (c.r << 24) | (c.g << 16) | (c.b << 8) | c.a;
         }
 
         public static int ToRGBAHex(this Color color)
@@ -40,7 +40,7 @@ namespace EasyMobile.Internal
 
         public static int ToARGBHex(this Color32 c)
         {
-            return (c.a << 24) | (c.r << 16) | (c.g << 8) | (c.b);
+            return (c.a << 24) | (c.r << 16) | (c.g << 8) | c.b;
         }
 
         public static int ToARGBHex(this Color color)

@@ -8,11 +8,17 @@ namespace EasyMobile.Internal
     /// <typeparam name="U">Value type.</typeparam>
     public class SerializableDictionary<T, U> : SerializableDictionaryBase<T, U, U>
     {
-        public SerializableDictionary() { }
+        public SerializableDictionary()
+        {
+        }
 
-        public SerializableDictionary(IDictionary<T, U> dict) : base(dict) { }
+        public SerializableDictionary(IDictionary<T, U> dict) : base(dict)
+        {
+        }
 
-        protected SerializableDictionary(SerializationInfo info, StreamingContext context) : base(info, context) { }
+        protected SerializableDictionary(SerializationInfo info, StreamingContext context) : base(info, context)
+        {
+        }
 
         protected override U GetValue(U[] storage, int i)
         {
@@ -39,11 +45,17 @@ namespace EasyMobile.Internal
     public class SerializableDictionary<T, U, V> :
         SerializableDictionaryBase<T, U, V> where V : SerializableDictionary.Storage<U>, new()
     {
-        public SerializableDictionary() { }
+        public SerializableDictionary()
+        {
+        }
 
-        public SerializableDictionary(IDictionary<T, U> dict) : base(dict) { }
+        public SerializableDictionary(IDictionary<T, U> dict) : base(dict)
+        {
+        }
 
-        protected SerializableDictionary(SerializationInfo info, StreamingContext context) : base(info, context) { }
+        protected SerializableDictionary(SerializationInfo info, StreamingContext context) : base(info, context)
+        {
+        }
 
         protected override U GetValue(V[] storage, int i)
         {

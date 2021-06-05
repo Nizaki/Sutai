@@ -13,7 +13,7 @@ namespace ThreeDISevenZeroR.UnityGifDecoder
         /// Get color array from this Canvas
         /// For performance reasons, actual canvas array is returned, so 
         /// </summary>
-        public Color32[] Colors {get {return canvasColors;}}
+        public Color32[] Colors => canvasColors;
 
         /// <summary>
         /// <p>Since pixel rows for Texture2D start from bottom, original gif image will look upside down<br/></p>
@@ -25,7 +25,12 @@ namespace ThreeDISevenZeroR.UnityGifDecoder
         /// (which will look flipped on Texture2D) you can set this to false</p>
         /// </summary>
         private bool _flipVertically = true;
-        public bool FlipVertically {get { return _flipVertically; } set { _flipVertically = value; } }
+
+        public bool FlipVertically
+        {
+            get => _flipVertically;
+            set => _flipVertically = value;
+        }
 
         /// <summary>
         /// Color which will be used for background fill<br/>
@@ -57,7 +62,7 @@ namespace ThreeDISevenZeroR.UnityGifDecoder
         {
             canvasIsEmpty = true;
         }
-        
+
         public GifCanvas(int width, int height) : this()
         {
             SetSize(width, height);
@@ -98,7 +103,8 @@ namespace ThreeDISevenZeroR.UnityGifDecoder
 
             if (!canvasIsEmpty)
             {
-                FillWithColor(0, 0, canvasWidth, canvasHeight, new Color32(BackgroundColor.r, BackgroundColor.g, BackgroundColor.b, 0));
+                FillWithColor(0, 0, canvasWidth, canvasHeight,
+                    new Color32(BackgroundColor.r, BackgroundColor.g, BackgroundColor.b, 0));
                 canvasIsEmpty = true;
             }
         }
@@ -114,19 +120,19 @@ namespace ThreeDISevenZeroR.UnityGifDecoder
         /// <param name="transparentColorIndex">Index of transparent color, color from this index will be treated as transparent</param>
         /// <param name="isInterlaced">Apply deinterlacing during drawing</param>
         /// <param name="disposalMethod">Specifies, how to handle this frame when next frame is drawn</param>
-        public void BeginNewFrame(int x, int y, int width, int height, Color32[] palette, 
+        public void BeginNewFrame(int x, int y, int width, int height, Color32[] palette,
             int transparentColorIndex, bool isInterlaced, GifDisposalMethod disposalMethod)
         {
             switch (frameDisposalMethod)
             {
                 case GifDisposalMethod.ClearToBackgroundColor:
-                    FillWithColor(frameX, frameY, frameWidth, frameHeight, 
+                    FillWithColor(frameX, frameY, frameWidth, frameHeight,
                         new Color32(BackgroundColor.r, BackgroundColor.g, BackgroundColor.b, 0));
 
                     break;
 
                 case GifDisposalMethod.Revert:
-                    if(disposalMethod != GifDisposalMethod.Keep)
+                    if (disposalMethod != GifDisposalMethod.Keep)
                         Array.Copy(revertDisposalBuffer, 0, canvasColors, 0, revertDisposalBuffer.Length);
                     break;
             }
@@ -155,7 +161,7 @@ namespace ThreeDISevenZeroR.UnityGifDecoder
             frameRowCurrent = -1;
             frameCanvasRowEndPosition = -1;
             frameTransparentColorIndex = transparentColorIndex;
-            
+
             RouteFrameDrawing(x, y, width, height, isInterlaced);
         }
 
@@ -176,14 +182,12 @@ namespace ThreeDISevenZeroR.UnityGifDecoder
             }
 
             if (color != frameTransparentColorIndex)
-            {
                 // Debug.Log("Change color " + canvasColors[frameCanvasPosition] +"-> "+framePalette[color]);
                 canvasColors[frameCanvasPosition] = framePalette[color];
-            }
 
             frameCanvasPosition++;
         }
-        
+
         /// <summary>
         /// Fill specified region with single color
         /// </summary>
@@ -198,7 +202,7 @@ namespace ThreeDISevenZeroR.UnityGifDecoder
             {
                 int yStart;
                 int yEnd;
-                    
+
                 if (FlipVertically)
                 {
                     yEnd = (canvasHeight - y) * canvasWidth + x;

@@ -18,13 +18,7 @@ namespace EasyMobile.Editor
 
         public List<AndroidManifestElement> ManifestElementsFactory { get; set; }
 
-        private bool CanGoBack
-        {
-            get
-            {
-                return EditingElement != ManifestElement;
-            }
-        }
+        private bool CanGoBack => EditingElement != ManifestElement;
 
         private int selectedElementStyleIndex = 0, selectedAttributeIndex = 0;
         private Vector2 scrollPosition;
@@ -33,17 +27,19 @@ namespace EasyMobile.Editor
         private GUIStyle miniButtonStyle;
         private int miniButtonSize = 22;
 
-        public static void ShowWindow(SerializedProperty generatableManifestProperty, SerializedProperty manifestElementsFactory)
+        public static void ShowWindow(SerializedProperty generatableManifestProperty,
+            SerializedProperty manifestElementsFactory)
         {
             //Type inspectorType = Type.GetType("UnityEditor.InspectorWindow, UnityEditor.dll");
-            var window = GetWindow<AndroidManifestElementEditWindow>(/*new Type[] { inspectorType }*/);
+            var window = GetWindow<AndroidManifestElementEditWindow>( /*new Type[] { inspectorType }*/);
 
             var generatableManifest = generatableManifestProperty.GetTargetObject() as GeneratableAndroidManifest;
             window.GeneratableAndroidManifest = generatableManifest;
             window.ManifestElementsFactory = manifestElementsFactory.GetTargetObject() as List<AndroidManifestElement>;
             window.EditingElement = generatableManifest.ManifestElement;
             window.ManifestElement = generatableManifest.ManifestElement;
-            window.titleContent = new GUIContent("Manifest", EM_GUIStyleManager.EasyMobileIcon, "Android Manifest Generation");
+            window.titleContent =
+                new GUIContent("Manifest", EM_GUIStyleManager.EasyMobileIcon, "Android Manifest Generation");
             window.Show();
         }
 
@@ -82,7 +78,8 @@ namespace EasyMobile.Editor
         private void GenerateCustomManifest()
         {
             GeneratableAndroidManifest.Save(EM_AndroidManifestBuilder.sCustomManifestPath, ManifestElementsFactory);
-            EditorApplication.delayCall += () => EM_AndroidManifestBuilder.GenerateManifest(EM_EditorUtil.GetJdkPath(), true);
+            EditorApplication.delayCall +=
+                () => EM_AndroidManifestBuilder.GenerateManifest(EM_EditorUtil.GetJdkPath(), true);
         }
 
         private void DrawAttributesGUI()
@@ -92,7 +89,7 @@ namespace EasyMobile.Editor
             EditorGUILayout.BeginVertical(EditorStyles.helpBox);
 
             /// Add attributes
-            string[] remainedAttributes = EditingElement.RemainedAttributes.Select(attr => attr.ToString()).ToArray();
+            var remainedAttributes = EditingElement.RemainedAttributes.Select(attr => attr.ToString()).ToArray();
             EditorGUILayout.BeginHorizontal();
             EditorGUI.BeginDisabledGroup(remainedAttributes == null || remainedAttributes.Length < 1);
             selectedAttributeIndex = EditorGUILayout.Popup(selectedAttributeIndex, remainedAttributes);
@@ -106,13 +103,14 @@ namespace EasyMobile.Editor
             EditorGUILayout.EndHorizontal();
 
             // Edit or remove attributes
-            for (int i = 0; i < EditingElement.AttributesCount; i++)
+            for (var i = 0; i < EditingElement.AttributesCount; i++)
             {
                 EditorGUI.BeginDisabledGroup(EditingElement.AddedAttributesKey[i] == "xmlns:android");
 
                 EditorGUILayout.BeginHorizontal();
                 EditorGUILayout.LabelField(EditingElement.AddedAttributesKey[i]);
-                EditingElement.AddedAttributesValue[i] = EditorGUILayout.TextField(EditingElement.AddedAttributesValue[i]);
+                EditingElement.AddedAttributesValue[i] =
+                    EditorGUILayout.TextField(EditingElement.AddedAttributesValue[i]);
 
                 if (GUILayout.Button(minusContent, miniButtonStyle))
                 {
@@ -123,6 +121,7 @@ namespace EasyMobile.Editor
                 EditorGUILayout.EndHorizontal();
                 EditorGUI.EndDisabledGroup();
             }
+
             EditorGUILayout.EndVertical();
         }
 
@@ -134,7 +133,8 @@ namespace EasyMobile.Editor
 
             if (!EditingElement.CanAddChildElement)
             {
-                var message = EditingElement.Style.ToAndroidManifestFormat() + " element can't contains any child element.";
+                var message = EditingElement.Style.ToAndroidManifestFormat() +
+                              " element can't contains any child element.";
                 EditorGUILayout.HelpBox(message, MessageType.Info);
             }
             else
@@ -142,25 +142,26 @@ namespace EasyMobile.Editor
                 DrawAddChildElementGUI();
                 DrawChildElementsInfoGUI(EditingElement);
             }
+
             EditorGUILayout.EndVertical();
         }
 
         private void DrawNavigationHeader()
         {
             if (CanGoBack)
-            {
-                if (GUILayout.Button(new GUIContent("Back To Root Element", EM_GUIStyleManager.HomeIcon), EM_GUIStyleManager.GetCustomStyle("Module Back Button Text")))
+                if (GUILayout.Button(new GUIContent("Back To Root Element", EM_GUIStyleManager.HomeIcon),
+                    EM_GUIStyleManager.GetCustomStyle("Module Back Button Text")))
                     EditingElement = ManifestElement;
-            }
 
-            GUIStyle titleStyle = new GUIStyle(EditorStyles.centeredGreyMiniLabel) { fontSize = miniButtonSize };
-            string navigationTitle = EditingElement.Style.ToAndroidManifestFormat().ToUpperInvariant();
+            var titleStyle = new GUIStyle(EditorStyles.centeredGreyMiniLabel) {fontSize = miniButtonSize};
+            var navigationTitle = EditingElement.Style.ToAndroidManifestFormat().ToUpperInvariant();
             EditorGUILayout.LabelField(navigationTitle, titleStyle, GUILayout.MinHeight(40));
         }
 
         private void DrawAddChildElementGUI()
         {
-            string[] availableStyles = EditingElement.ChildStyles.Select(style => "<" + style.ToAndroidManifestFormat() + ">").ToArray();
+            var availableStyles = EditingElement.ChildStyles
+                .Select(style => "<" + style.ToAndroidManifestFormat() + ">").ToArray();
 
             EditorGUILayout.BeginHorizontal();
             selectedElementStyleIndex = EditorGUILayout.Popup(selectedElementStyleIndex, availableStyles);
@@ -183,7 +184,7 @@ namespace EasyMobile.Editor
             if (childElements == null || childElements.Count < 1)
                 return;
 
-            for (int i = 0; i < childElements.Count; i++)
+            for (var i = 0; i < childElements.Count; i++)
             {
                 EditorGUI.indentLevel++;
                 var childElement = childElements[i];

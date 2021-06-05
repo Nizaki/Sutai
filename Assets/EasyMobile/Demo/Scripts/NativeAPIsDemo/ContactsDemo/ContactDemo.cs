@@ -11,38 +11,31 @@ namespace EasyMobile.Demo
 {
     public class ContactDemo : MonoBehaviour
     {
-        [SerializeField]
-        private GameObject curtain = null;
+        [SerializeField] private GameObject curtain = null;
 
-        [SerializeField]
-        private uint avatarWidth = 256, avatarHeight = 256;
+        [SerializeField] private uint avatarWidth = 256, avatarHeight = 256;
 
-        [SerializeField]
-        private Color[] avatarColors = new Color[] { Color.black, Color.white };
+        [SerializeField] private Color[] avatarColors = new Color[] {Color.black, Color.white};
 
-        [SerializeField]
-        private ContactView contactViewPrefab = null;
+        [SerializeField] private ContactView contactViewPrefab = null;
 
-        [SerializeField]
-        private Transform contactViewRoot = null;
+        [SerializeField] private Transform contactViewRoot = null;
 
-        [SerializeField]
-        private InputField firstnNameInput = null,
-                           middleNameInput = null,
-                           lastNameInput = null,
-                           companyInput = null,
-                           birthdayInput = null,
-                           emailLabelInput = null, emailInput = null,
-                           phoneNumberLabelInput = null, phoneNumberInput = null;
+        [SerializeField] private InputField firstnNameInput = null,
+            middleNameInput = null,
+            lastNameInput = null,
+            companyInput = null,
+            birthdayInput = null,
+            emailLabelInput = null,
+            emailInput = null,
+            phoneNumberLabelInput = null,
+            phoneNumberInput = null;
 
-        [SerializeField]
-        private RawImage avatarImage = null;
+        [SerializeField] private RawImage avatarImage = null;
 
-        [SerializeField]
-        private StringStringCollectionView collectionView = null;
+        [SerializeField] private StringStringCollectionView collectionView = null;
 
-        [SerializeField]
-        private Button getAllContactsButton = null,
+        [SerializeField] private Button getAllContactsButton = null,
             addContactButton = null,
             generateAvatarButton = null,
             pickContactsButton = null,
@@ -98,7 +91,7 @@ namespace EasyMobile.Demo
             StartCoroutine(CRGetAllContacts());
         }
 
-        IEnumerator CRGetAllContacts()
+        private IEnumerator CRGetAllContacts()
         {
             yield return StartCoroutine(CRRequestPermission(AndroidPermission.AndroidPermissionReadContacts));
 
@@ -108,10 +101,8 @@ namespace EasyMobile.Demo
                     NativeUI.Alert("Get All Contacts Error", error);
 
                 if (contacts != null)
-                {
                     foreach (var contact in contacts)
                         AddContactView(contact);
-                }
             });
         }
 
@@ -120,20 +111,21 @@ namespace EasyMobile.Demo
             StartCoroutine(CRAddContact());
         }
 
-        IEnumerator CRAddContact()
+        private IEnumerator CRAddContact()
         {
             yield return StartCoroutine(CRRequestPermission(AndroidPermission.AndroidPermissionWriteContacts));
 
-            string firstName = firstnNameInput.text;
-            string middleName = middleNameInput.text;
-            string lastName = lastNameInput.text;
-            string company = companyInput.text;
+            var firstName = firstnNameInput.text;
+            var middleName = middleNameInput.text;
+            var lastName = lastNameInput.text;
+            var company = companyInput.text;
 
             DateTime? birthday = null;
             if (!string.IsNullOrEmpty(birthdayInput.text))
             {
                 DateTime parseBirthday;
-                if (DateTime.TryParseExact(birthdayInput.text, "yyyy-MM-dd", CultureInfo.InvariantCulture, DateTimeStyles.None, out parseBirthday))
+                if (DateTime.TryParseExact(birthdayInput.text, "yyyy-MM-dd", CultureInfo.InvariantCulture,
+                    DateTimeStyles.None, out parseBirthday))
                 {
                     birthday = parseBirthday;
                 }
@@ -144,7 +136,7 @@ namespace EasyMobile.Demo
                 }
             }
 
-            var avatar = avatarImage.texture != null ? (Texture2D)avatarImage.texture : null;
+            var avatar = avatarImage.texture != null ? (Texture2D) avatarImage.texture : null;
             var error = DeviceContacts.AddContact(new Contact()
             {
                 FirstName = firstName,
@@ -152,8 +144,10 @@ namespace EasyMobile.Demo
                 LastName = lastName,
                 Company = company,
                 Birthday = birthday,
-                Emails = addedEmails.Select(email => new KeyValuePair<string, string>(email.Key, email.Value)).ToArray(),
-                PhoneNumbers = addedPhoneNumbers.Select(phoneNumber => new KeyValuePair<string, string>(phoneNumber.Key, phoneNumber.Value)).ToArray(),
+                Emails =
+                    addedEmails.Select(email => new KeyValuePair<string, string>(email.Key, email.Value)).ToArray(),
+                PhoneNumbers = addedPhoneNumbers.Select(phoneNumber =>
+                    new KeyValuePair<string, string>(phoneNumber.Key, phoneNumber.Value)).ToArray(),
                 Photo = avatar
             });
 
@@ -196,7 +190,7 @@ namespace EasyMobile.Demo
             StartCoroutine(CRPickContacts());
         }
 
-        IEnumerator CRPickContacts()
+        private IEnumerator CRPickContacts()
         {
             yield return StartCoroutine(CRRequestPermission(AndroidPermission.AndroidPermissionReadContacts));
 
@@ -208,12 +202,12 @@ namespace EasyMobile.Demo
                     return;
                 }
 
-                string errorMessage = error ?? "Received an empty contact with unknown error.";
+                var errorMessage = error ?? "Received an empty contact with unknown error.";
                 NativeUI.Alert("Pick Contact Error", errorMessage);
             });
         }
 
-        IEnumerator CRRequestPermission(string perm)
+        private IEnumerator CRRequestPermission(string perm)
         {
 #if UNITY_2018_3_OR_NEWER
             Debug.Log("Requesting permission " + perm);
@@ -255,7 +249,8 @@ namespace EasyMobile.Demo
 
         private void GenerateAvatar()
         {
-            avatarImage.texture = TextureGenerator.GenerateRandomTexture2D((int)avatarWidth, (int)avatarHeight, avatarColors);
+            avatarImage.texture =
+                TextureGenerator.GenerateRandomTexture2D((int) avatarWidth, (int) avatarHeight, avatarColors);
         }
 
         private void ClearAvatar()
@@ -265,14 +260,14 @@ namespace EasyMobile.Demo
 
         private void AddEmail()
         {
-            string label = emailLabelInput.text;
+            var label = emailLabelInput.text;
             if (string.IsNullOrEmpty(label))
             {
                 NativeUI.Alert("Invalid email label", "Email's label can't be empty");
                 return;
             }
 
-            string email = emailInput.text;
+            var email = emailInput.text;
             if (string.IsNullOrEmpty(email))
             {
                 NativeUI.Alert("Invalid email", "Email can't be empty");
@@ -285,14 +280,14 @@ namespace EasyMobile.Demo
 
         private void AddPhoneNumber()
         {
-            string label = phoneNumberLabelInput.text;
+            var label = phoneNumberLabelInput.text;
             if (string.IsNullOrEmpty(label))
             {
                 NativeUI.Alert("Invalid phone number's label", "Phone number's label can't be empty");
                 return;
             }
 
-            string phoneNumber = phoneNumberInput.text;
+            var phoneNumber = phoneNumberInput.text;
             if (string.IsNullOrEmpty(phoneNumber))
             {
                 NativeUI.Alert("Invalid phone number", "Phone number can't be empty");
