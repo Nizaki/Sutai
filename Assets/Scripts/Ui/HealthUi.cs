@@ -35,8 +35,20 @@ public class HealthUi : MonoBehaviour
         
         if (healthObj.Count > value)
         {
-            Destroy(healthObj[healthObj.Count-1]);
-            healthObj.RemoveAt(healthObj.Count-1);
+            var dif = healthObj.Count - value;
+            for (int i = 0; i < dif; i++)
+            {
+                Destroy(healthObj[healthObj.Count-1]);
+                healthObj.RemoveAt(healthObj.Count - 1);
+            } 
+        }else if (healthObj.Count < value)
+        {
+            var dif = value - healthObj.Count;
+            for (int i = 0; i < dif; i++)
+            {
+                var obj = Instantiate(hearthPrefab, transform);
+                healthObj.Add(obj);
+            }
         }
     }
     

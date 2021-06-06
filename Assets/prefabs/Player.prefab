@@ -4909,9 +4909,10 @@ MonoBehaviour:
     m_Bits: 1024
   attackjoy: {fileID: 0}
   bullet: {fileID: 8393237965852419360, guid: e678a5a2673a2ab44ab2a63574e18b06, type: 3}
-  attackDelay: 0.15
-  damage: 3
   stats: {fileID: 4594437128186929536}
+  onHealthChange:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!114 &4594437128186929536
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4924,17 +4925,23 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d519ed73842442678c09c130b8b4a3fc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  moveSpeed: 5
+  moveSpeedBase: 5
   speedModified: 0
+  moveSpeed: 0
   hp: 5
-  maxHp: 5
+  maxHp: 0
+  maxHpBase: 5
   maxHpModified: 0
-  attackDelay: 1
+  attackDelay: 0
+  attackDelayBase: 0.75
   attackDelayModified: 0
-  attackLevel: 0
+  attackLevel: 1
   attackObj: {fileID: 0}
   attackDamage: 0
+  attackDamageBase: 1
   attackDamageModified: 0
+  barrier: 0
+  powerUps: []
 --- !u!50 &7346516131243122740
 Rigidbody2D:
   serializedVersion: 4

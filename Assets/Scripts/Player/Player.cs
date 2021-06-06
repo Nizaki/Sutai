@@ -31,7 +31,6 @@ namespace Player
         private void Update()
         {
             if (!attackjoy.touched || !(attackDelay <= Time.time)) return;
-            Debug.Log(DataBank.score);
             attackDelay = Time.time + stats.attackDelay;
             var go = Instantiate(bullet, transform);
             var angle = Mathf.Atan2(attackjoy.Vertical, attackjoy.Horizontal) * Mathf.Rad2Deg;
@@ -44,6 +43,8 @@ namespace Player
         public void TakeDamage(int damage)
         {
             Debug.Log("Take Damage");
+            if(stats.barrier)
+                return;
             stats.hp -= 1;
             onHealthChange.Invoke(stats.hp);
             if (stats.hp <= 0)

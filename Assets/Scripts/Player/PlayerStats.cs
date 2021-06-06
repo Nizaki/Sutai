@@ -14,7 +14,7 @@ public class PlayerStats : MonoBehaviour
     public int maxHpModified = 0;
 
     public float attackDelay;
-    public float attackDelayBase = 2;
+    public float attackDelayBase = 0.75f;
     public float attackDelayModified = 0f;
 
     public int attackLevel = 1;
