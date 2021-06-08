@@ -20,27 +20,30 @@ namespace EasyMobile
         /// <returns>The client.</returns>
         public static NoOpClientImpl CreateClient()
         {
-            if (sInstance == null) sInstance = new NoOpClientImpl();
+            if (sInstance == null)
+            {
+                sInstance = new NoOpClientImpl();
+            }
             return sInstance;
         }
 
         #region AdClient Overrides
 
-        public override AdNetwork Network => AdNetwork.None;
+        public override AdNetwork Network { get { return AdNetwork.None; } }
 
-        public override bool IsBannerAdSupported => false;
+        public override bool IsBannerAdSupported { get { return false; } }
 
-        public override bool IsInterstitialAdSupported => false;
+        public override bool IsInterstitialAdSupported { get { return false; } }
 
-        public override bool IsRewardedAdSupported => false;
+        public override bool IsRewardedAdSupported { get { return false; } }
 
-        public override bool IsSdkAvail => true;
+        public override bool IsSdkAvail{ get { return true; } }
 
-        protected override Dictionary<AdPlacement, AdId> CustomInterstitialAdsDict => null;
+        protected override Dictionary<AdPlacement, AdId> CustomInterstitialAdsDict { get { return null; } }
 
-        protected override Dictionary<AdPlacement, AdId> CustomRewardedAdsDict => null;
+        protected override Dictionary<AdPlacement, AdId> CustomRewardedAdsDict { get { return null; } }
 
-        protected override string NoSdkMessage => string.Empty;
+        protected override string NoSdkMessage { get { return string.Empty; } }
 
         public override bool IsValidPlacement(AdPlacement placement, AdType type)
         {
@@ -51,8 +54,7 @@ namespace EasyMobile
         {
         }
 
-        protected override void InternalShowBannerAd(AdPlacement placement, BannerAdPosition position,
-            BannerAdSize size)
+        protected override void InternalShowBannerAd(AdPlacement placement, BannerAdPosition position, BannerAdSize size)
         {
         }
 
@@ -94,7 +96,7 @@ namespace EasyMobile
 
         #region IConsentRequirable Overrides
 
-        protected override string DataPrivacyConsentSaveKey => string.Empty;
+        protected override string DataPrivacyConsentSaveKey { get { return string.Empty; } }
 
         protected override void ApplyDataPrivacyConsent(ConsentStatus consent)
         {

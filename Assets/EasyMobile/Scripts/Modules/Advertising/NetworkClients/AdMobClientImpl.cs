@@ -17,6 +17,7 @@ namespace EasyMobile
         private const string NO_SDK_MESSAGE = "SDK missing. Please import the AdMob (Google Mobile Ads) plugin.";
 
 #if EM_ADMOB
+
         /// <summary>
         /// Used to specify that only non-personalized ads should be requested when creating ad request in
         /// <see cref="CreateAdMobAdRequest"/>
@@ -64,6 +65,7 @@ namespace EasyMobile
         #region AdMob Events
 
 #if EM_ADMOB
+
         /// <summary>
         /// Called when a banner ad request has successfully loaded.
         /// </summary>
@@ -156,7 +158,7 @@ namespace EasyMobile
 
 #endif
 
-        #endregion // AdMob Events
+        #endregion  // AdMob Events
 
         #region Singleton
 
@@ -172,21 +174,24 @@ namespace EasyMobile
         /// <returns>The client.</returns>
         public static AdMobClientImpl CreateClient()
         {
-            if (sInstance == null) sInstance = new AdMobClientImpl();
+            if (sInstance == null)
+            {
+                sInstance = new AdMobClientImpl();
+            }
             return sInstance;
         }
 
-        #endregion // Singleton
+        #endregion  // Singleton
 
         #region AdClient Overrides
 
-        public override AdNetwork Network => AdNetwork.AdMob;
+        public override AdNetwork Network { get { return AdNetwork.AdMob; } }
 
-        public override bool IsBannerAdSupported => true;
+        public override bool IsBannerAdSupported { get { return true; } }
 
-        public override bool IsInterstitialAdSupported => true;
+        public override bool IsInterstitialAdSupported { get { return true; } }
 
-        public override bool IsRewardedAdSupported => true;
+        public override bool IsRewardedAdSupported { get { return true; } }
 
         public override bool IsSdkAvail
         {
@@ -268,7 +273,7 @@ namespace EasyMobile
             }
         }
 
-        protected override string NoSdkMessage => NO_SDK_MESSAGE;
+        protected override string NoSdkMessage { get { return NO_SDK_MESSAGE; } }
 
         protected override void InternalInit()
         {
@@ -309,8 +314,7 @@ namespace EasyMobile
         // Banner Ads.
         //------------------------------------------------------------
 
-        protected override void InternalShowBannerAd(AdPlacement placement, BannerAdPosition position,
-            BannerAdSize size)
+        protected override void InternalShowBannerAd(AdPlacement placement, BannerAdPosition position, BannerAdSize size)
         {
 #if EM_ADMOB
             string id = placement == AdPlacement.Default ?
@@ -342,8 +346,7 @@ namespace EasyMobile
             {
                 if (!mCustomBannerAds.ContainsKey(placement) || mCustomBannerAds[placement].Value == null || mCustomBannerAds[placement].Key != size)
                 {
-                    mCustomBannerAds[placement] =
- new KeyValuePair<BannerAdSize, BannerView>(size, CreateNewBanner(position, size, id));
+                    mCustomBannerAds[placement] = new KeyValuePair<BannerAdSize, BannerView>(size, CreateNewBanner(position, size, id));
                     Debug.Log("Creating new custom banner...");
                 }
 
@@ -553,13 +556,13 @@ namespace EasyMobile
 #endif
         }
 
-        #endregion // AdClient Overrides
+        #endregion  // AdClient Overrides
 
         #region IConsentRequirable Overrides
 
         private const string DATA_PRIVACY_CONSENT_KEY = "EM_Ads_AdMob_DataPrivacyConsent";
 
-        protected override string DataPrivacyConsentSaveKey => DATA_PRIVACY_CONSENT_KEY;
+        protected override string DataPrivacyConsentSaveKey { get { return DATA_PRIVACY_CONSENT_KEY; } }
 
         protected override void ApplyDataPrivacyConsent(ConsentStatus consent)
         {
@@ -574,6 +577,7 @@ namespace EasyMobile
         #region Private Methods
 
 #if EM_ADMOB
+
         private static string CreateMD5(string input)
         {
             if (string.IsNullOrEmpty(input)) return string.Empty;
@@ -704,8 +708,7 @@ namespace EasyMobile
             defaultInterstitialAd.OnAdLoaded += HandleAdMobInterstitialLoaded;
             defaultInterstitialAd.OnAdFailedToLoad += HandleAdMobInterstitialFailedToLoad;
             defaultInterstitialAd.OnAdOpening += HandleAdMobInterstitialOpening;
-            defaultInterstitialAd.OnAdClosed +=
- (sender, param) => HandleAdMobInterstitialClosed(sender, param, placement);
+            defaultInterstitialAd.OnAdClosed += (sender, param) => HandleAdMobInterstitialClosed(sender, param, placement);
             defaultInterstitialAd.OnAdLeavingApplication += HandleAdMobInterstitialLeftApplication;
 
             return defaultInterstitialAd;
@@ -811,11 +814,13 @@ namespace EasyMobile
 
 #endif
 
+
         #endregion // Private Methods
 
         #region Ad Event Handlers
 
 #if EM_ADMOB
+
         //------------------------------------------------------------
         // Banner Ads Callbacks.
         //------------------------------------------------------------
@@ -952,8 +957,7 @@ namespace EasyMobile
             // If the ad was completed, the "rewarded" event should be fired previously,
             // setting the completed bool to true. Otherwise the ad was skipped.
             // Events are raised on main thread.
-            Action callback =
- mIsRewardedAdCompleted ? GetRewardedAdCompletedAction(placement) : GetRewardedAdSkippedAction(placement);
+            Action callback = mIsRewardedAdCompleted ? GetRewardedAdCompletedAction(placement) : GetRewardedAdSkippedAction(placement);
             callback();
 
             // Reset the completed flag.

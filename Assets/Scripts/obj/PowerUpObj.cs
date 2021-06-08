@@ -1,5 +1,4 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -7,10 +6,12 @@ using UnityEngine;
 public class PowerUpObj : ScriptableObject
 {
     public Sprite image;
-    [Multiline]
-    public string description;
+
+    [Multiline] public string description;
+
     public List<PowerAttribute> power;
 }
+
 //test
 [Serializable]
 public class PowerAttribute

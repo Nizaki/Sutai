@@ -2,7 +2,6 @@
 using System.Collections;
 using System;
 using EasyMobile.Internal;
-using Object = UnityEngine.Object;
 
 namespace EasyMobile
 {
@@ -30,7 +29,10 @@ namespace EasyMobile
         /// </summary>
         public static void Init()
         {
-            if (mIsInitialized) return;
+            if (mIsInitialized)
+            {
+                return;
+            }
 
             if (Application.isPlaying)
             {
@@ -86,22 +88,22 @@ namespace EasyMobile
         /// <param name="isEnabled">If set to <c>true</c> is enabled.</param>
         public static void EnableUnityDebugLog(bool isEnabled)
         {
-#if UNITY_2017_1_OR_NEWER
+            #if UNITY_2017_1_OR_NEWER
             Debug.unityLogger.logEnabled = isEnabled;
-#else
+            #else
             Debug.logger.logEnabled = isEnabled;
-#endif
+            #endif
         }
 
         #endregion
 
         #region Internal Stuff
-
+        
         //Auto initialization
         [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.AfterSceneLoad)]
         private static void AutoInitialize()
         {
-            if (EM_Settings.IsRuntimeAutoInitializationEnabled)
+            if(EM_Settings.IsRuntimeAutoInitializationEnabled)
                 Init();
         }
 
@@ -110,7 +112,7 @@ namespace EasyMobile
         private static void Configure(GameObject go)
         {
             // This game object must prevail.
-            Object.DontDestroyOnLoad(go);
+            GameObject.DontDestroyOnLoad(go);
 
             // App lifecycle manager.
             go.AddComponent<AppLifecycleManager>();
@@ -135,3 +137,4 @@ namespace EasyMobile
         #endregion
     }
 }
+

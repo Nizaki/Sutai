@@ -31,8 +31,10 @@ namespace EasyMobile
             Value = value;
         }
 
-        [SerializeField] private string mElementName;
-        [SerializeField] private string mValue = "";
+        [SerializeField]
+        private string mElementName;
+        [SerializeField]
+        private string mValue = "";
 
         /// <summary>
         /// Name of the element used to store this value in AndroidManifest.
@@ -43,8 +45,8 @@ namespace EasyMobile
         /// </example>
         public string ElementName
         {
-            get => mElementName;
-            set => mElementName = value;
+            get { return mElementName; }
+            set { mElementName = value; }
         }
 
         /// <summary>
@@ -52,23 +54,23 @@ namespace EasyMobile
         /// </summary>
         public string Value
         {
-            get => mValue;
-            set => mValue = value;
+            get { return mValue; }
+            set { mValue = value; }
         }
 
         public override bool Equals(object obj)
         {
             var other = obj as AndroidPermission;
             return other != null &&
-                   mElementName == other.mElementName &&
-                   mValue == other.mValue;
+            mElementName == other.mElementName &&
+            mValue == other.mValue;
         }
 
         public override int GetHashCode()
         {
             unchecked
             {
-                var hash = 17;
+                int hash = 17;
                 hash = hash * 23 + (ElementName != null ? ElementName.GetHashCode() : 0);
                 hash = hash * 23 + (Value != null ? Value.GetHashCode() : 0);
                 return hash;

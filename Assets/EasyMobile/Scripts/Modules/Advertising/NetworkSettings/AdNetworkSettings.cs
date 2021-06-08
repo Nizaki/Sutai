@@ -8,15 +8,15 @@ namespace EasyMobile
 {
     public class AdNetworkSettings
     {
-        [SerializeField] private bool mEnable;
-
+        [SerializeField]
+        private bool mEnable;
         /// <summary>
         /// Check if ad module is enabled
         /// </summary>
         public bool Enable
         {
-            get => mEnable;
-            set => mEnable = value;
+            get { return mEnable; }
+            set { mEnable = value; }
         }
     }
 }

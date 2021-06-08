@@ -8,17 +8,22 @@ namespace EasyMobile.Internal
     /// <typeparam name="T">Key type.</typeparam>
     /// <typeparam name="U">Value type.</typeparam>
     /// <typeparam name="V">Value storage type.</typeparam>
-    public abstract class SerializableDictionaryBase<T, U, V> :
+    public abstract class SerializableDictionaryBase<T, U, V> : 
         Dictionary<T, U>, ISerializationCallbackReceiver
     {
-        [SerializeField] protected T[] keys;
+        [SerializeField]
+        protected T[] keys;
 
-        [SerializeField] protected V[] values;
+        [SerializeField]
+        protected V[] values;
 
         public SerializableDictionaryBase(IDictionary<T, U> dict)
             : base(dict.Count)
         {
-            foreach (var kvp in dict) this[kvp.Key] = kvp.Value;
+            foreach (var kvp in dict)
+            {
+                this[kvp.Key] = kvp.Value;
+            }
         }
 
         public SerializableDictionaryBase()
@@ -36,16 +41,22 @@ namespace EasyMobile.Internal
 
         public void CopyFrom(IDictionary<T, U> dict)
         {
-            Clear();
-            foreach (var pair in dict) this[pair.Key] = pair.Value;
+            this.Clear();
+            foreach (var pair in dict)
+            {
+                this[pair.Key] = pair.Value;
+            }
         }
 
         public void OnAfterDeserialize()
         {
             if (keys != null && values != null && keys.Length == values.Length)
             {
-                Clear();
-                for (var i = 0; i < keys.Length; ++i) this[keys[i]] = GetValue(values, i);
+                this.Clear();
+                for (int i = 0; i < keys.Length; ++i)
+                {
+                    this[keys[i]] = GetValue(values, i);
+                }
 
                 keys = null;
                 values = null;
@@ -54,10 +65,10 @@ namespace EasyMobile.Internal
 
         public void OnBeforeSerialize()
         {
-            keys = new T[Count];
-            values = new V[Count];
+            keys = new T[this.Count];
+            values = new V[this.Count];
 
-            var i = 0;
+            int i = 0;
             foreach (var pair in this)
             {
                 keys[i] = pair.Key;

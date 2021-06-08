@@ -10,12 +10,15 @@ namespace EasyMobile.ManifestGenerator.Elements
     {
         public ActivityAliasElement()
         {
-            Style = AndroidManifestElementStyles.ActivityAlias;
+            Style = AndroidManifestElementStyles.ActivityAlias; 
         }
 
         public override IEnumerable<AndroidManifestElementStyles> ParentStyles
         {
-            get { yield return AndroidManifestElementStyles.Application; }
+            get
+            {
+                yield return AndroidManifestElementStyles.Application;
+            }
         }
 
         public override IEnumerable<AndroidManifestElementStyles> ChildStyles

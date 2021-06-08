@@ -18,8 +18,7 @@ namespace EasyMobile.Editor
             base.OnGUI(position, property, label);
         }
 
-        protected override float DrawKeyValueLineSimple(SerializedProperty keyProperty,
-            SerializedProperty valueProperty, string keyLabel, string valueLabel, Rect linePosition)
+        protected override float DrawKeyValueLineSimple(SerializedProperty keyProperty, SerializedProperty valueProperty, string keyLabel, string valueLabel, UnityEngine.Rect linePosition)
         {
             var adPlacementNameProp = keyProperty.FindPropertyRelative(AdPlacementNameField);
             var iOSIdProp = valueProperty.FindPropertyRelative(iOSIdField);
@@ -28,21 +27,16 @@ namespace EasyMobile.Editor
             var lineHeight = EditorGUIUtility.singleLineHeight;
             var spacing = EditorGUIUtility.standardVerticalSpacing;
             var foldoutRect = new Rect(linePosition.x, linePosition.y, linePosition.width, lineHeight);
-            var foldoutContent = string.IsNullOrEmpty(adPlacementNameProp.stringValue)
-                ? "[Untitled Placement]"
-                : adPlacementNameProp.stringValue;
+            string foldoutContent = (string.IsNullOrEmpty(adPlacementNameProp.stringValue) ? "[Untitled Placement]" : adPlacementNameProp.stringValue);
 
             keyProperty.isExpanded = EditorGUI.Foldout(foldoutRect, keyProperty.isExpanded, foldoutContent, true);
             var totalHeight = lineHeight + spacing;
 
             if (keyProperty.isExpanded)
             {
-                var placementRect = new Rect(linePosition.x, linePosition.y + lineHeight + spacing, linePosition.width,
-                    lineHeight);
-                var iOSIdRect = new Rect(placementRect.x, placementRect.y + lineHeight + spacing, linePosition.width,
-                    lineHeight);
-                var androidIdRect = new Rect(iOSIdRect.x, iOSIdRect.y + lineHeight + spacing, linePosition.width,
-                    lineHeight);
+                var placementRect = new Rect(linePosition.x, linePosition.y + lineHeight + spacing, linePosition.width, lineHeight);
+                var iOSIdRect = new Rect(placementRect.x, placementRect.y + lineHeight + spacing, linePosition.width, lineHeight);
+                var androidIdRect = new Rect(iOSIdRect.x, iOSIdRect.y + lineHeight + spacing, linePosition.width, lineHeight);
 
                 EditorGUI.PropertyField(placementRect, keyProperty, new GUIContent("Placement"));
                 EditorGUI.PropertyField(iOSIdRect, iOSIdProp);
@@ -54,15 +48,14 @@ namespace EasyMobile.Editor
             return totalHeight;
         }
 
-        protected override float DrawKeyValueLineExpand(SerializedProperty keyProperty,
-            SerializedProperty valueProperty, Rect linePosition)
+        protected override float DrawKeyValueLineExpand(SerializedProperty keyProperty, SerializedProperty valueProperty, Rect linePosition)
         {
             return base.DrawKeyValueLineExpand(keyProperty, valueProperty, linePosition);
         }
 
         public override float GetPropertyHeight(SerializedProperty property, GUIContent label)
         {
-            var propertyHeight = EditorGUIUtility.singleLineHeight;
+            float propertyHeight = EditorGUIUtility.singleLineHeight;
 
             if (property.isExpanded)
             {
@@ -70,19 +63,19 @@ namespace EasyMobile.Editor
                 var valuesProperty = property.FindPropertyRelative(ValuesFieldName);
 
                 foreach (var entry in EnumerateEntries(keysProperty, valuesProperty))
+                {
                     if (entry.keyProperty.isExpanded)
-                        propertyHeight += 4 * (EditorGUIUtility.singleLineHeight +
-                                               EditorGUIUtility.standardVerticalSpacing);
+                        propertyHeight += 4 * (EditorGUIUtility.singleLineHeight + EditorGUIUtility.standardVerticalSpacing);
                     else
                         propertyHeight += EditorGUIUtility.singleLineHeight + EditorGUIUtility.standardVerticalSpacing;
+                }
 
-                var conflictState = GetConflictState(property);
+                ConflictState conflictState = GetConflictState(property);
 
                 if (conflictState.conflictIndex != -1)
                 {
                     if (conflictState.conflictKeyPropertyExpanded)
-                        propertyHeight += 4 * (EditorGUIUtility.singleLineHeight +
-                                               EditorGUIUtility.standardVerticalSpacing);
+                        propertyHeight += 4 * (EditorGUIUtility.singleLineHeight + EditorGUIUtility.standardVerticalSpacing);
                     else
                         propertyHeight += EditorGUIUtility.singleLineHeight + EditorGUIUtility.standardVerticalSpacing;
                 }

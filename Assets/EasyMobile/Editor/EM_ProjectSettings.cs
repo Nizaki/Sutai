@@ -13,7 +13,10 @@ namespace EasyMobile.Editor
         {
             get
             {
-                if (_instance == null) _instance = new EM_ProjectSettings();
+                if (_instance == null)
+                {
+                    _instance = new EM_ProjectSettings();
+                }
 
                 return _instance;
             }
@@ -27,12 +30,15 @@ namespace EasyMobile.Editor
         {
             if (FileIO.FileExists(_filePath))
             {
-                var lines = FileIO.ReadAllLines(_filePath);
+                string[] lines = FileIO.ReadAllLines(_filePath);
 
-                foreach (var l in lines)
+                foreach (string l in lines)
                 {
-                    var p = l.Split(new char[] {'='}, 2);
-                    if (p.Length >= 2) _settings[p[0].Trim()] = p[1].Trim();
+                    string[] p = l.Split(new char[] { '=' }, 2);
+                    if (p.Length >= 2)
+                    {
+                        _settings[p[0].Trim()] = p[1].Trim();
+                    }
                 }
             }
         }
@@ -71,7 +77,7 @@ namespace EasyMobile.Editor
         public int GetInt(string key, int defaultValue)
         {
             int ret;
-            return int.TryParse(Get(key), out ret) ? ret : defaultValue;
+            return Int32.TryParse(Get(key), out ret) ? ret : defaultValue;
         }
 
         public void Set(string key, int val, bool save = true)
@@ -87,7 +93,7 @@ namespace EasyMobile.Editor
         public void Set(string key, string val, bool save = true)
         {
 #if UNITY_2018_3_OR_NEWER
-            var escaped = UnityEngine.Networking.UnityWebRequest.EscapeURL(val);
+            string escaped = UnityEngine.Networking.UnityWebRequest.EscapeURL(val);
 #else
             string escaped = WWW.EscapeURL(val);
 #endif
@@ -101,11 +107,17 @@ namespace EasyMobile.Editor
         public void Save()
         {
             // Stop if there's nothing to save
-            if (!_isDirty) return;
+            if (!_isDirty)
+            {
+                return;
+            }
 
-            var newLines = new List<string>();
+            List<string> newLines = new List<string>();
 
-            foreach (var key in _settings.Keys) newLines.Add(key + "=" + _settings[key]);
+            foreach (string key in _settings.Keys)
+            {
+                newLines.Add(key + "=" + _settings[key]);
+            }
 
             FileIO.WriteAllLines(_filePath, newLines.ToArray());
             _isDirty = false;

@@ -73,7 +73,7 @@ namespace EasyMobile
         /// <param name="callback">Callback. Will be called with true for success,
         /// false for failure. This callback is always called on the main thread.</param>
         void TakeTurn(TurnBasedMatch match, byte[] data, string nextParticipantId,
-            Action<bool> callback);
+                      Action<bool> callback);
 
         /// <summary>
         /// Takes a turn.</summary>
@@ -188,5 +188,5 @@ namespace EasyMobile
     /// local player's turn and pass the match to the next appropriate participant according
     /// to your game logic. Note that this never occur on Google Play Games platform.</param>
     /// </summary>
-    public delegate void MatchDelegate(TurnBasedMatch match, bool shouldAutoLaunch, bool playerWantsToQuit);
+    public delegate void MatchDelegate(TurnBasedMatch match,bool shouldAutoLaunch,bool playerWantsToQuit);
 }

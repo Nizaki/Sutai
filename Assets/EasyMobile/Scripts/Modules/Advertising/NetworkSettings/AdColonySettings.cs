@@ -15,8 +15,8 @@ namespace EasyMobile
         /// <value>The app identifier.</value>
         public AdId AppId
         {
-            get => mAppId;
-            set => mAppId = value;
+            get { return mAppId; }
+            set { mAppId = value; }
         }
 
         /// <summary>
@@ -25,8 +25,8 @@ namespace EasyMobile
         /// <value>The orientation.</value>
         public AdOrientation Orientation
         {
-            get => mOrientation;
-            set => mOrientation = value;
+            get { return mOrientation; }
+            set { mOrientation = value; }
         }
 
         /// <summary>
@@ -35,8 +35,8 @@ namespace EasyMobile
         /// <value><c>true</c> if enable rewarded ad pre popup; otherwise, <c>false</c>.</value>
         public bool EnableRewardedAdPrePopup
         {
-            get => mEnableRewardedAdPrePopup;
-            set => mEnableRewardedAdPrePopup = value;
+            get { return mEnableRewardedAdPrePopup; }
+            set { mEnableRewardedAdPrePopup = value; }
         }
 
         /// <summary>
@@ -45,8 +45,8 @@ namespace EasyMobile
         /// <value><c>true</c> if enable rewarded ad post popup; otherwise, <c>false</c>.</value>
         public bool EnableRewardedAdPostPopup
         {
-            get => mEnableRewardedAdPostPopup;
-            set => mEnableRewardedAdPostPopup = value;
+            get { return mEnableRewardedAdPostPopup; }
+            set { mEnableRewardedAdPostPopup = value; }
         }
 
         /// <summary>
@@ -55,8 +55,8 @@ namespace EasyMobile
         /// <value>The default interstitial ad identifier.</value>
         public AdId DefaultInterstitialAdId
         {
-            get => mDefaultInterstitialAdId;
-            set => mDefaultInterstitialAdId = value;
+            get { return mDefaultInterstitialAdId; }
+            set { mDefaultInterstitialAdId = value; }
         }
 
         /// <summary>
@@ -65,8 +65,8 @@ namespace EasyMobile
         /// <value>The default rewarded ad identifier.</value>
         public AdId DefaultRewardedAdId
         {
-            get => mDefaultRewardedAdId;
-            set => mDefaultRewardedAdId = value;
+            get { return mDefaultRewardedAdId; }
+            set { mDefaultRewardedAdId = value; }
         }
 
         /// <summary>
@@ -75,8 +75,8 @@ namespace EasyMobile
         /// <value>The default rewarded ad identifier.</value>
         public AdId DefaultBannerAdId
         {
-            get => mDefaultBannerAdId;
-            set => mDefaultBannerAdId = value;
+            get { return mDefaultBannerAdId; }
+            set { mDefaultBannerAdId = value; }
         }
 
         /// <summary>
@@ -86,8 +86,8 @@ namespace EasyMobile
         /// <value>The custom interstitial ad identifiers.</value>
         public Dictionary<AdPlacement, AdId> CustomInterstitialAdIds
         {
-            get => mCustomInterstitialAdIds;
-            set => mCustomRewardedAdIds = (Dictionary_AdPlacement_AdId) value;
+            get { return mCustomInterstitialAdIds; }
+            set { mCustomRewardedAdIds = (Dictionary_AdPlacement_AdId)value; }
         }
 
         /// <summary>
@@ -97,8 +97,8 @@ namespace EasyMobile
         /// <value>The custom rewarded ad identifiers.</value>
         public Dictionary<AdPlacement, AdId> CustomRewardedAdIds
         {
-            get => mCustomRewardedAdIds;
-            set => mCustomRewardedAdIds = (Dictionary_AdPlacement_AdId) value;
+            get { return mCustomRewardedAdIds; }
+            set { mCustomRewardedAdIds = (Dictionary_AdPlacement_AdId)value; }
         }
 
         /// <summary>
@@ -108,20 +108,30 @@ namespace EasyMobile
         /// <value>The custom rewarded ad identifiers.</value>
         public Dictionary<AdPlacement, AdId> CustomBannerAdIds
         {
-            get => mCustomBannerAdIds;
-            set => mCustomBannerAdIds = (Dictionary_AdPlacement_AdId) value;
+            get { return mCustomBannerAdIds; }
+            set { mCustomBannerAdIds = (Dictionary_AdPlacement_AdId)value; }
         }
 
-        [SerializeField] private AdId mAppId = null;
-        [SerializeField] private AdOrientation mOrientation = AdOrientation.AdOrientationAll;
-        [SerializeField] private bool mEnableRewardedAdPrePopup = false;
-        [SerializeField] private bool mEnableRewardedAdPostPopup = false;
+        [SerializeField]
+        private AdId mAppId = null;
+        [SerializeField]
+        private AdOrientation mOrientation = AdOrientation.AdOrientationAll;
+        [SerializeField]
+        private bool mEnableRewardedAdPrePopup = false;
+        [SerializeField]
+        private bool mEnableRewardedAdPostPopup = false;
 
-        [SerializeField] private AdId mDefaultInterstitialAdId = null;
-        [SerializeField] private AdId mDefaultRewardedAdId = null;
-        [SerializeField] private AdId mDefaultBannerAdId = null;
-        [SerializeField] private Dictionary_AdPlacement_AdId mCustomInterstitialAdIds = null;
-        [SerializeField] private Dictionary_AdPlacement_AdId mCustomRewardedAdIds = null;
-        [SerializeField] private Dictionary_AdPlacement_AdId mCustomBannerAdIds = null;
+        [SerializeField]
+        private AdId mDefaultInterstitialAdId = null;
+        [SerializeField]
+        private AdId mDefaultRewardedAdId = null;
+        [SerializeField]
+        private AdId mDefaultBannerAdId = null;
+        [SerializeField]
+        private Dictionary_AdPlacement_AdId mCustomInterstitialAdIds = null;
+        [SerializeField]
+        private Dictionary_AdPlacement_AdId mCustomRewardedAdIds = null;
+        [SerializeField]
+        private Dictionary_AdPlacement_AdId mCustomBannerAdIds = null;
     }
 }

@@ -9,7 +9,7 @@ namespace EasyMobile.Internal
     {
         internal static void CallJavaStaticMethod(string className, string method, params object[] args)
         {
-            using (var jObj = new AndroidJavaObject(className))
+            using (AndroidJavaObject jObj = new AndroidJavaObject(className))
             {
                 jObj.CallStatic(method, args);
             }
@@ -17,7 +17,7 @@ namespace EasyMobile.Internal
 
         internal static T CallJavaStaticMethod<T>(string className, string method, params object[] args)
         {
-            using (var jObj = new AndroidJavaObject(className))
+            using (AndroidJavaObject jObj = new AndroidJavaObject(className))
             {
                 return jObj.CallStatic<T>(method, args);
             }

@@ -1663,7 +1663,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 20, y: 19.99195}
+  m_Size: {x: 17, y: 17}
   m_EdgeRadius: 0
 --- !u!114 &-5511971965004412114
 MonoBehaviour:
@@ -1677,6 +1677,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 204d7184bee58864a977961b12008bb9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  spawnable: 0
+  monsterCount: 3
+  rt: {fileID: 0}
 --- !u!1 &2696971245621614896
 GameObject:
   m_ObjectHideFlags: 0

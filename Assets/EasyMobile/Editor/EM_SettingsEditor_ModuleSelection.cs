@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
+
 using EM_GSM = EasyMobile.Editor.EM_GUIStyleManager;
 
 namespace EasyMobile.Editor
@@ -13,17 +14,17 @@ namespace EasyMobile.Editor
     {
         private const int MinModuleBarHeight = 90;
 
-        private GUIStyle ModuleTitleStyle => EM_GSM.GetCustomStyle("Module Selection Title");
+        private GUIStyle ModuleTitleStyle { get { return EM_GSM.GetCustomStyle("Module Selection Title"); } }
 
-        private GUIStyle ModuleDescriptionStyle => EM_GSM.GetCustomStyle("Module Selection Description");
+        private GUIStyle ModuleDescriptionStyle { get { return EM_GSM.GetCustomStyle("Module Selection Description"); } }
 
-        private GUIStyle ModuleIconStyle => EM_GSM.GetCustomStyle("Module Selection Icon");
+        private GUIStyle ModuleIconStyle { get { return EM_GSM.GetCustomStyle("Module Selection Icon"); } }
 
-        private GUIStyle ModuleHeaderIconStyle => EM_GSM.GetCustomStyle("Module Header Icon");
+        private GUIStyle ModuleHeaderIconStyle { get { return EM_GSM.GetCustomStyle("Module Header Icon"); } }
 
-        private GUIStyle BackButtonStyle => EM_GSM.GetCustomStyle("Module Back Button");
+        private GUIStyle BackButtonStyle { get { return EM_GSM.GetCustomStyle("Module Back Button"); } }
 
-        private GUIStyle ModulePanelStyle => EM_GSM.GetCustomStyle("Module Box");
+        private GUIStyle ModulePanelStyle{ get { return EM_GSM.GetCustomStyle("Module Box"); } }
 
         public void DrawSelectModulePage()
         {
@@ -32,9 +33,9 @@ namespace EasyMobile.Editor
             DrawModuleSelectBar(Module.InAppPurchasing);
             DrawModuleSelectBar(Module.Notifications);
             DrawModuleSelectBar(Module.Sharing);
-#if EASY_MOBILE_PRO
+            #if EASY_MOBILE_PRO
             DrawModuleSelectBar(Module.NativeApis);
-#endif
+            #endif
             DrawModuleSelectBar(Module.Privacy);
             DrawModuleSelectBar(Module.Utilities);
         }
@@ -50,21 +51,25 @@ namespace EasyMobile.Editor
         public void DrawModuleSelectBar(Module module, bool clickableBar = true, bool drawBackButton = false)
         {
             /// Get infos of the active module.
-            var name = GetModuleName(module);
-            var description = GetModuleDescription(module);
-            var icon = GetModuleIcon(module);
+            string name = GetModuleName(module);
+            string description = GetModuleDescription(module);
+            Texture2D icon = GetModuleIcon(module);
             var triggerProperty = GetTriggerProperty(module);
-            var disableModule = GetDisableModuleAction(module);
-            var enableModule = GetEnableModuleAction(module);
+            Action disableModule = GetDisableModuleAction(module);
+            Action enableModule = GetEnableModuleAction(module);
 
             EditorGUILayout.BeginVertical(ModulePanelStyle, GUILayout.MinHeight(MinModuleBarHeight));
             EditorGUILayout.BeginHorizontal();
 
             /// Draw back button.
             if (drawBackButton)
+            {
                 if (GUILayout.Button("", BackButtonStyle))
+                {
                     isSelectingModule.boolValue = true;
-
+                }
+            }     
+            
             /// Draw icon.
             GUILayout.Label(icon, ModuleHeaderIconStyle);
 
@@ -74,7 +79,7 @@ namespace EasyMobile.Editor
             EditorGUILayout.EndVertical();
 
             /// Draw toggle.
-            var toggleRect = Rect.zero;
+            Rect toggleRect = Rect.zero;
             if (triggerProperty != null)
             {
                 EditorGUI.BeginChangeCheck();
@@ -116,8 +121,10 @@ namespace EasyMobile.Editor
                     btnRect.width = toggleRect.x - btnRect.x;
 
                 if (GUI.Button(btnRect, "", GUIStyle.none))
+                {
                     if (IsModuleEnable(module))
                         SelectModule(module);
+                }
             }
         }
 
@@ -168,10 +175,10 @@ namespace EasyMobile.Editor
                     return SharingModuleLabel;
                 case Module.Utilities:
                     return UtilityModuleLabel;
-#if EASY_MOBILE_PRO
+                #if EASY_MOBILE_PRO
                 case Module.NativeApis:
                     return NativeApisModuleLabel;
-#endif
+                #endif
                 default:
                     return null;
             }
@@ -195,10 +202,10 @@ namespace EasyMobile.Editor
                     return SharingModuleIntro;
                 case Module.Utilities:
                     return UtilityModuleIntro;
-#if EASY_MOBILE_PRO
+                #if EASY_MOBILE_PRO
                 case Module.NativeApis:
                     return NativeApisModuleIntro;
-#endif
+                #endif
                 default:
                     return "";
             }
@@ -222,10 +229,10 @@ namespace EasyMobile.Editor
                     return EM_GSM.SharingIcon;
                 case Module.Utilities:
                     return EM_GSM.UtilityIcon;
-#if EASY_MOBILE_PRO
+                #if EASY_MOBILE_PRO
                 case Module.NativeApis:
                     return EM_GSM.NativeApisIcon;
-#endif
+                #endif
                 default:
                     return null;
             }
@@ -252,12 +259,14 @@ namespace EasyMobile.Editor
                     return SharingModuleGUI;
                 case Module.Utilities:
                     return UtilityModuleGUI;
-#if EASY_MOBILE_PRO
+                #if EASY_MOBILE_PRO
                 case Module.NativeApis:
                     return NativeApiModuleGUI;
-#endif
+                #endif
                 default:
-                    return () => { };
+                    return () =>
+                    {
+                    };
             }
         }
 
@@ -278,15 +287,23 @@ namespace EasyMobile.Editor
                 case Module.Notifications:
                     return ModuleManager_Notifications.Instance.EnableModule;
                 case Module.Privacy:
-                    return () => { };
+                    return () =>
+                    {
+                    };
                 case Module.Utilities:
-                    return () => { };
-#if EASY_MOBILE_PRO
+                    return () =>
+                    {
+                    };
+                #if EASY_MOBILE_PRO
                 case Module.NativeApis:
-                    return () => { };
-#endif
+                    return () =>
+                    {
+                    };
+                #endif
                 default:
-                    return () => { };
+                    return () =>
+                    {
+                    };
             }
         }
 
@@ -307,15 +324,23 @@ namespace EasyMobile.Editor
                 case Module.Notifications:
                     return ModuleManager_Notifications.Instance.DisableModule;
                 case Module.Privacy:
-                    return () => { };
+                    return () =>
+                    {
+                    };
                 case Module.Utilities:
-                    return () => { };
-#if EASY_MOBILE_PRO
+                    return () =>
+                    {
+                    };
+                #if EASY_MOBILE_PRO
                 case Module.NativeApis:
-                    return () => { };
-#endif
+                    return () =>
+                    {
+                    };
+                #endif
                 default:
-                    return () => { };
+                    return () =>
+                    {
+                    };
             }
         }
 
@@ -369,7 +394,7 @@ namespace EasyMobile.Editor
             isSelectingModule.boolValue = false;
             activeModule = module;
             // Store the toolbar index value to the serialized settings file.
-            activeModuleIndex.intValue = (int) activeModule;
+            activeModuleIndex.intValue = (int)activeModule;
         }
     }
 }

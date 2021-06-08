@@ -1,5 +1,3 @@
-using System;
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -15,12 +13,11 @@ public class HealthUi : MonoBehaviour
     {
         transform.RemoveAllChild();
         var hp = player.stats.hp;
-        for (int i = 0; i < hp; i++)
+        for (var i = 0; i < hp; i++)
         {
             var obj = Instantiate(hearthPrefab, transform);
             healthObj.Add(obj);
         }
-        
     }
 
     private void OnEnable()
@@ -30,26 +27,26 @@ public class HealthUi : MonoBehaviour
 
     private void UpdateHealth(int value)
     {
-        if(value<0)
+        if (value < 0)
             return;
-        
+
         if (healthObj.Count > value)
         {
             var dif = healthObj.Count - value;
-            for (int i = 0; i < dif; i++)
+            for (var i = 0; i < dif; i++)
             {
-                Destroy(healthObj[healthObj.Count-1]);
+                Destroy(healthObj[healthObj.Count - 1]);
                 healthObj.RemoveAt(healthObj.Count - 1);
-            } 
-        }else if (healthObj.Count < value)
+            }
+        }
+        else if (healthObj.Count < value)
         {
             var dif = value - healthObj.Count;
-            for (int i = 0; i < dif; i++)
+            for (var i = 0; i < dif; i++)
             {
                 var obj = Instantiate(hearthPrefab, transform);
                 healthObj.Add(obj);
             }
         }
     }
-    
 }

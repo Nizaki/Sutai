@@ -72,8 +72,8 @@ namespace EasyMobile.Editor
 
         public static bool SDS_IsDefined(string symbol, BuildTargetGroup platform)
         {
-            var symbolStr = PlayerSettings.GetScriptingDefineSymbolsForGroup(platform);
-            var symbols = new List<string>(symbolStr.Split(';'));
+            string symbolStr = PlayerSettings.GetScriptingDefineSymbolsForGroup(platform);
+            List<string> symbols = new List<string>(symbolStr.Split(';'));
 
             return symbols.Contains(symbol);
         }
@@ -84,7 +84,10 @@ namespace EasyMobile.Editor
         /// <param name="symbol">Symbol.</param>
         public static void SDS_AddDefineOnAllPlatforms(string symbol)
         {
-            foreach (var target in EM_EditorUtil.GetWorkingBuildTargetGroups()) SDS_AddDefine(symbol, target);
+            foreach (BuildTargetGroup target in EM_EditorUtil.GetWorkingBuildTargetGroups())
+            {
+                SDS_AddDefine(symbol, target);
+            }
         }
 
         /// <summary>
@@ -93,7 +96,10 @@ namespace EasyMobile.Editor
         /// <param name="symbols">Symbols.</param>
         public static void SDS_AddDefinesOnAllPlatforms(string[] symbols)
         {
-            foreach (var target in EM_EditorUtil.GetWorkingBuildTargetGroups()) SDS_AddDefines(symbols, target);
+            foreach (BuildTargetGroup target in EM_EditorUtil.GetWorkingBuildTargetGroups())
+            {
+                SDS_AddDefines(symbols, target);
+            }
         }
 
         /// <summary>
@@ -103,22 +109,24 @@ namespace EasyMobile.Editor
         /// <param name="platform">Platform.</param>
         public static void SDS_AddDefines(string[] symbols, BuildTargetGroup platform)
         {
-            var symbolStr = PlayerSettings.GetScriptingDefineSymbolsForGroup(platform);
-            var currentSymbols = new List<string>(symbolStr.Split(';'));
-            var added = 0;
+            string symbolStr = PlayerSettings.GetScriptingDefineSymbolsForGroup(platform);
+            List<string> currentSymbols = new List<string>(symbolStr.Split(';'));
+            int added = 0;
 
-            foreach (var symbol in symbols)
+            foreach (string symbol in symbols)
+            {
                 if (!currentSymbols.Contains(symbol))
                 {
                     currentSymbols.Add(symbol);
                     added++;
                 }
+            }
 
             if (added > 0)
             {
-                var sb = new StringBuilder();
+                StringBuilder sb = new StringBuilder();
 
-                for (var i = 0; i < currentSymbols.Count; i++)
+                for (int i = 0; i < currentSymbols.Count; i++)
                 {
                     sb.Append(currentSymbols[i]);
                     if (i < currentSymbols.Count - 1)
@@ -136,16 +144,16 @@ namespace EasyMobile.Editor
         /// <param name="Platform">Platform.</param>
         public static void SDS_AddDefine(string symbol, BuildTargetGroup platform)
         {
-            var symbolStr = PlayerSettings.GetScriptingDefineSymbolsForGroup(platform);
-            var symbols = new List<string>(symbolStr.Split(';'));
+            string symbolStr = PlayerSettings.GetScriptingDefineSymbolsForGroup(platform);
+            List<string> symbols = new List<string>(symbolStr.Split(';'));
 
             if (!symbols.Contains(symbol))
             {
                 symbols.Add(symbol);
 
-                var sb = new StringBuilder();
+                StringBuilder sb = new StringBuilder();
 
-                for (var i = 0; i < symbols.Count; i++)
+                for (int i = 0; i < symbols.Count; i++)
                 {
                     sb.Append(symbols[i]);
                     if (i < symbols.Count - 1)
@@ -162,7 +170,10 @@ namespace EasyMobile.Editor
         /// <param name="symbols">Symbols.</param>
         public static void SDS_RemoveDefinesOnAllPlatforms(string[] symbols)
         {
-            foreach (var target in EM_EditorUtil.GetWorkingBuildTargetGroups()) SDS_RemoveDefines(symbols, target);
+            foreach (BuildTargetGroup target in EM_EditorUtil.GetWorkingBuildTargetGroups())
+            {
+                SDS_RemoveDefines(symbols, target);
+            }
         }
 
         /// <summary>
@@ -171,7 +182,10 @@ namespace EasyMobile.Editor
         /// <param name="symbol">Symbol.</param>
         public static void SDS_RemoveDefineOnAllPlatforms(string symbol)
         {
-            foreach (var target in EM_EditorUtil.GetWorkingBuildTargetGroups()) SDS_RemoveDefine(symbol, target);
+            foreach (BuildTargetGroup target in EM_EditorUtil.GetWorkingBuildTargetGroups())
+            {
+                SDS_RemoveDefine(symbol, target);
+            }
         }
 
         /// <summary>
@@ -181,22 +195,24 @@ namespace EasyMobile.Editor
         /// <param name="platform">Platform.</param>
         public static void SDS_RemoveDefines(string[] symbols, BuildTargetGroup platform)
         {
-            var symbolStr = PlayerSettings.GetScriptingDefineSymbolsForGroup(platform);
-            var currentSymbols = new List<string>(symbolStr.Split(';'));
-            var removed = 0;
+            string symbolStr = PlayerSettings.GetScriptingDefineSymbolsForGroup(platform);
+            List<string> currentSymbols = new List<string>(symbolStr.Split(';'));
+            int removed = 0;
 
-            foreach (var symbol in symbols)
+            foreach (string symbol in symbols)
+            {
                 if (currentSymbols.Contains(symbol))
                 {
                     currentSymbols.Remove(symbol);
                     removed++;
                 }
+            }
 
             if (removed > 0)
             {
-                var sb = new StringBuilder();
+                StringBuilder sb = new StringBuilder();
 
-                for (var i = 0; i < currentSymbols.Count; i++)
+                for (int i = 0; i < currentSymbols.Count; i++)
                 {
                     sb.Append(currentSymbols[i]);
                     if (i < currentSymbols.Count - 1)
@@ -214,16 +230,16 @@ namespace EasyMobile.Editor
         /// <param name="Platform">Platform.</param>
         public static void SDS_RemoveDefine(string symbol, BuildTargetGroup platform)
         {
-            var symbolStr = PlayerSettings.GetScriptingDefineSymbolsForGroup(platform);
-            var symbols = new List<string>(symbolStr.Split(';'));
+            string symbolStr = PlayerSettings.GetScriptingDefineSymbolsForGroup(platform);
+            List<string> symbols = new List<string>(symbolStr.Split(';'));
 
             if (symbols.Contains(symbol))
             {
                 symbols.Remove(symbol);
 
-                var settings = new StringBuilder();
+                StringBuilder settings = new StringBuilder();
 
-                for (var i = 0; i < symbols.Count; i++)
+                for (int i = 0; i < symbols.Count; i++)
                 {
                     settings.Append(symbols[i]);
                     if (i < symbols.Count - 1)

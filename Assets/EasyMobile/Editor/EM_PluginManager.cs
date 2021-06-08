@@ -10,24 +10,24 @@ namespace EasyMobile.Editor
     public class EM_PluginManager : AssetPostprocessor
     {
         #region Init
-
         private const string PreviousUnsuccessfulDefines = "EM_PreviousUnsuccessfulDefines";
-
         // This static constructor will automatically run thanks to the InitializeOnLoad attribute.
         static EM_PluginManager()
         {
             EditorApplication.update += Initialize;
-            var compilerErrorFound = false;
+            bool compilerErrorFound = false;
             CompilationPipeline.assemblyCompilationFinished += (outputPath, compilerMessages) =>
             {
                 foreach (var msg in compilerMessages)
-                    if (msg.type == CompilerMessageType.Error &&
-                        (msg.message.Contains("CS0246") || msg.message.Contains("CS0006")))
+                {
+                    if (msg.type == CompilerMessageType.Error && (msg.message.Contains("CS0246") || msg.message.Contains("CS0006")))
+                    {
                         compilerErrorFound = true;
+                    }
+                }
 
-                var lastDefine = EditorPrefs.GetString(PreviousUnsuccessfulDefines, "");
-                var currentDefine =
-                    PlayerSettings.GetScriptingDefineSymbolsForGroup(EditorUserBuildSettings.selectedBuildTargetGroup);
+                string lastDefine = EditorPrefs.GetString(PreviousUnsuccessfulDefines, "");
+                string currentDefine = PlayerSettings.GetScriptingDefineSymbolsForGroup(EditorUserBuildSettings.selectedBuildTargetGroup);
                 if (compilerErrorFound && lastDefine != currentDefine)
                 {
                     //try to remove #defind since there was an error while compiling
@@ -65,7 +65,7 @@ namespace EasyMobile.Editor
         // If yes, import the native package and update the version keys stored in settings file.
         internal static void VersionCheck()
         {
-            var savedVersion = EM_ProjectSettings.Instance.GetInt(EM_Constants.PSK_EMVersionInt, -1);
+            int savedVersion = EM_ProjectSettings.Instance.GetInt(EM_Constants.PSK_EMVersionInt, -1);
 
             if (savedVersion != EM_Constants.versionInt)
             {
@@ -95,15 +95,17 @@ namespace EasyMobile.Editor
                 // Is this composite module?
                 var compManager = manager as CompositeModuleManager;
 
-                if (compManager != null) // Is really a composite module
+                if (compManager != null)    // Is really a composite module
                 {
-                    foreach (var submod in compManager.SelfSubmodules)
+                    foreach (Submodule submod in compManager.SelfSubmodules)
+                    {
                         if (EM_Settings.IsSubmoduleEnable(submod))
                             compManager.EnableSubmodule(submod);
                         else
                             compManager.DisableSubmodule(submod);
+                    }
                 }
-                else // Is a normal module
+                else    // Is a normal module
                 {
                     if (EM_Settings.IsModuleEnable(mod))
                         manager.EnableModule();
@@ -157,15 +159,15 @@ namespace EasyMobile.Editor
             // Is this composite module?
             var compManager = manager as CompositeModuleManager;
 
-            if (compManager != null) // Is a composite module
+            if (compManager != null)    // Is a composite module
             {
-                foreach (var submod in compManager.SelfSubmodules)
-                    if (EM_Settings.IsSubmoduleEnable(submod) &&
-                        compManager.AndroidPermissionHolderForSubmodule(submod) != null)
-                        modulePermissions.AddRange(compManager.AndroidPermissionHolderForSubmodule(submod)
-                            .GetAndroidPermissions());
+                foreach (Submodule submod in compManager.SelfSubmodules)
+                {
+                    if (EM_Settings.IsSubmoduleEnable(submod) && compManager.AndroidPermissionHolderForSubmodule(submod) != null)
+                        modulePermissions.AddRange(compManager.AndroidPermissionHolderForSubmodule(submod).GetAndroidPermissions());
+                }
             }
-            else // Is a normal module
+            else    // Is a normal module
             {
                 if (EM_Settings.IsModuleEnable(mod) && manager.AndroidPermissionsHolder != null)
                     modulePermissions.AddRange(manager.AndroidPermissionsHolder.GetAndroidPermissions());
@@ -209,15 +211,15 @@ namespace EasyMobile.Editor
             // Is this composite module?
             var compManager = manager as CompositeModuleManager;
 
-            if (compManager != null) // Is a composite module
+            if (compManager != null)    // Is a composite module
             {
-                foreach (var submod in compManager.SelfSubmodules)
-                    if (EM_Settings.IsSubmoduleEnable(submod) &&
-                        compManager.iOSInfoItemsHolderForSubmodule(submod) != null)
-                        moduleInfoItems.AddRange(compManager.iOSInfoItemsHolderForSubmodule(submod)
-                            .GetIOSInfoPlistKeys());
+                foreach (Submodule submod in compManager.SelfSubmodules)
+                {
+                    if (EM_Settings.IsSubmoduleEnable(submod) && compManager.iOSInfoItemsHolderForSubmodule(submod) != null)
+                        moduleInfoItems.AddRange(compManager.iOSInfoItemsHolderForSubmodule(submod).GetIOSInfoPlistKeys());
+                }
             }
-            else // Is a normal module
+            else    // Is a normal module
             {
                 if (EM_Settings.IsModuleEnable(mod) && manager.iOSInfoItemsHolder != null)
                     moduleInfoItems.AddRange(manager.iOSInfoItemsHolder.GetIOSInfoPlistKeys());

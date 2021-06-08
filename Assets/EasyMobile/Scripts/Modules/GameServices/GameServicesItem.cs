@@ -6,35 +6,38 @@ namespace EasyMobile
     [System.Serializable]
     public class GameServicesItem
     {
-        public string Name => _name;
+        public string Name { get { return _name; } }
 
-        public string IOSId => _iosId;
+        public string IOSId { get { return _iosId; } }
 
-        public string AndroidId => _androidId;
+        public string AndroidId { get { return _androidId; } }
 
         public string Id
         {
             get
             {
-#if UNITY_IOS
+                #if UNITY_IOS
                 return _iosId;
-#elif UNITY_ANDROID
+                #elif UNITY_ANDROID
                 return _androidId;
-#else
+                #else
                 return null;
-#endif
+                #endif
             }
         }
 
-        [SerializeField] private string _name;
-        [SerializeField] private string _iosId;
-        [SerializeField] private string _androidId;
+        [SerializeField]
+        string _name;
+        [SerializeField]
+        string _iosId;
+        [SerializeField]
+        string _androidId;
 
         public GameServicesItem(string name, string iosId, string androidId)
         {
-            _name = name;
-            _iosId = iosId;
-            _androidId = androidId;
+            this._name = name;
+            this._iosId = iosId;
+            this._androidId = androidId;
         }
     }
 

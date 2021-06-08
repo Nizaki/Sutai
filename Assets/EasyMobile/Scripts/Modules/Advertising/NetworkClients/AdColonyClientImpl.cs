@@ -5,15 +5,16 @@ using System.Collections.Generic;
 
 namespace EasyMobile
 {
-#if EM_ADCOLONY
+    #if EM_ADCOLONY
     using AdColony;
-#endif
+    #endif
 
     public class AdColonyClientImpl : AdClientImpl
     {
         #region AdColony Events
 
-#if EM_ADCOLONY
+        #if EM_ADCOLONY
+
         /// <summary>
         /// Event that is triggered after a call to Configure has completed.
         /// On Android, the Zone objects aren't fully populated by the time this is called, use GetZone() after a delay if required.
@@ -161,14 +162,15 @@ namespace EasyMobile
             remove { Ads.OnRequestInterstitialFailed -= value; }
         }
 
-#endif
+        #endif
 
-        #endregion // AdColony Events
+        #endregion  // AdColony Events
 
         private const string NO_SDK_MESSAGE = "SDK missing. Please import the AdColony plugin.";
         private const string BANNER_UNSUPPORTED_MESSAGE = "AdColony does not support banner ad format.";
 
-#if EM_ADCOLONY
+        #if EM_ADCOLONY
+
         private AdColonySettings mAdSettings = null;
         private bool mSubscribedEvents = false;
         private bool mIsRewardedAdCompleted = false;
@@ -181,7 +183,7 @@ namespace EasyMobile
         private bool showDefaultBannerAd = false;
         private Dictionary<AdPlacement, bool> showCustomBannerAds = null;
 
-#endif
+        #endif
 
         #region Singleton
 
@@ -197,32 +199,35 @@ namespace EasyMobile
         /// <returns>The client.</returns>
         public static AdColonyClientImpl CreateClient()
         {
-            if (sInstance == null) sInstance = new AdColonyClientImpl();
+            if (sInstance == null)
+            {
+                sInstance = new AdColonyClientImpl();
+            }
             return sInstance;
         }
 
-        #endregion // Object Creators
+        #endregion  // Object Creators
 
         #region IAdClient Overrides
 
-        public override AdNetwork Network => AdNetwork.AdColony;
+        public override AdNetwork Network { get { return AdNetwork.AdColony; } }
 
-        public override bool IsBannerAdSupported => true;
+        public override bool IsBannerAdSupported { get { return true; } }
 
-        public override bool IsInterstitialAdSupported => true;
+        public override bool IsInterstitialAdSupported { get { return true; } }
 
-        public override bool IsRewardedAdSupported => true;
+        public override bool IsRewardedAdSupported { get { return true; } }
 
         public override bool IsSdkAvail
-        {
+        { 
             get
             {
-#if EM_ADCOLONY
+                #if EM_ADCOLONY 
                 return true;
-#else
-                return false;
-#endif
-            }
+                #else
+				return false;
+                #endif 
+            } 
         }
 
         public override bool IsValidPlacement(AdPlacement placement, AdType type)
@@ -271,11 +276,11 @@ namespace EasyMobile
         {
             get
             {
-#if EM_ADCOLONY
+                #if EM_ADCOLONY
                 return mAdSettings == null ? null : mAdSettings.CustomInterstitialAdIds;
-#else
+                #else
                 return null;
-#endif
+                #endif
             }
         }
 
@@ -283,19 +288,23 @@ namespace EasyMobile
         {
             get
             {
-#if EM_ADCOLONY
+                #if EM_ADCOLONY
                 return mAdSettings == null ? null : mAdSettings.CustomRewardedAdIds;
-#else
+                #else
                 return null;
-#endif
+                #endif
             }
         }
 
-        protected override string NoSdkMessage => NO_SDK_MESSAGE;
+        protected override string NoSdkMessage
+        { 
+            get { return NO_SDK_MESSAGE; }
+        }
 
         protected override void InternalInit()
         {
-#if EM_ADCOLONY
+            #if EM_ADCOLONY
+
             // Store a reference to the global settings.
             mAdSettings = EM_Settings.Advertising.AdColony;
 
@@ -334,13 +343,12 @@ namespace EasyMobile
             // Start configuring.
             Configure();
 
-#endif
+            #endif
         }
 
-        protected override void InternalShowBannerAd(AdPlacement placement, BannerAdPosition position,
-            BannerAdSize size)
+        protected override void InternalShowBannerAd(AdPlacement placement, BannerAdPosition position, BannerAdSize size)
         {
-#if EM_ADCOLONY
+            #if EM_ADCOLONY
             AdColonyAdView adview = null;
 
             if (placement == AdPlacement.Default)
@@ -358,12 +366,12 @@ namespace EasyMobile
                 adview.ShowAdView();
             else
                 LoadBannerAd(placement, position, size);
-#endif
+            #endif
         }
 
         private void LoadBannerAd(AdPlacement placement, BannerAdPosition position, BannerAdSize size)
         {
-#if EM_ADCOLONY
+            #if EM_ADCOLONY
             string id = placement == AdPlacement.Default ?
                 mAdSettings.DefaultBannerAdId.Id : FindIdForPlacement(mAdSettings.CustomBannerAdIds, placement);
 
@@ -401,12 +409,12 @@ namespace EasyMobile
                 AdColony.Ads.RequestAdView(id, AdColony.AdSize.Banner, bannerPosition, adOptions);
             else
                 Debug.Log("Attempting to load AdColony banner ad with an undefined ID at placement " + AdPlacement.GetPrintableName(placement));
-#endif
+            #endif
         }
 
         protected override void InternalHideBannerAd(AdPlacement placement)
         {
-#if EM_ADCOLONY
+            #if EM_ADCOLONY
             AdColonyAdView adview = null;
 
             if (placement == AdPlacement.Default)
@@ -422,12 +430,12 @@ namespace EasyMobile
 
             if (adview != null)
                 adview.HideAdView();
-#endif
+            #endif
         }
 
         protected override void InternalDestroyBannerAd(AdPlacement placement)
         {
-#if EM_ADCOLONY
+            #if EM_ADCOLONY
             AdColonyAdView adview = null;
 
             if (placement == AdPlacement.Default)
@@ -450,12 +458,12 @@ namespace EasyMobile
                 showCustomBannerAds[placement] = false;
             }
 
-#endif
+            #endif
         }
 
         protected override void InternalLoadInterstitialAd(AdPlacement placement)
         {
-#if EM_ADCOLONY
+            #if EM_ADCOLONY
             string id = placement == AdPlacement.Default ? 
                 mAdSettings.DefaultInterstitialAdId.Id : FindIdForPlacement(mAdSettings.CustomInterstitialAdIds, placement);
 
@@ -463,12 +471,12 @@ namespace EasyMobile
                 Ads.RequestInterstitialAd(id, null);
             else
                 Debug.Log("Attempting to load AdColony interstitial ad with an undefined ID at placement " + AdPlacement.GetPrintableName(placement));
-#endif
+            #endif
         }
 
         protected override bool InternalIsInterstitialAdReady(AdPlacement placement)
         {
-#if EM_ADCOLONY
+            #if EM_ADCOLONY
             if (placement == AdPlacement.Default)
             {
                 return mDefaultInterstitialAd != null && !mDefaultInterstitialAd.Expired;
@@ -478,24 +486,24 @@ namespace EasyMobile
                 var ad = GetCustomInterstitialAd(placement);
                 return ad != null && !ad.Expired;
             }
-#else
+            #else
             return false;
-#endif
+            #endif
         }
 
         protected override void InternalShowInterstitialAd(AdPlacement placement)
         {
-#if EM_ADCOLONY
+            #if EM_ADCOLONY
             if (placement == AdPlacement.Default)
                 Ads.ShowAd(mDefaultInterstitialAd);
             else
                 Ads.ShowAd(GetCustomInterstitialAd(placement));
-#endif
+            #endif
         }
 
         protected override void InternalLoadRewardedAd(AdPlacement placement)
         {
-#if EM_ADCOLONY
+            #if EM_ADCOLONY
             var adOptions = new AdOptions()
             { 
                 ShowPrePopup = mAdSettings.EnableRewardedAdPrePopup,
@@ -509,12 +517,12 @@ namespace EasyMobile
                 Ads.RequestInterstitialAd(id, adOptions);
             else
                 Debug.Log("Attempting to load AdColony rewarded ad with an undefined ID at placement " + AdPlacement.GetPrintableName(placement));
-#endif
+            #endif
         }
 
         protected override bool InternalIsRewardedAdReady(AdPlacement placement)
         {
-#if EM_ADCOLONY
+            #if EM_ADCOLONY
             if (placement == AdPlacement.Default)
             {
                 return mDefaultRewardedAd != null && !mDefaultRewardedAd.Expired;
@@ -524,19 +532,19 @@ namespace EasyMobile
                 var ad = GetCustomRewardedAd(placement);
                 return ad != null && !ad.Expired;
             }
-#else
+            #else
             return false;
-#endif
+            #endif
         }
 
         protected override void InternalShowRewardedAd(AdPlacement placement)
         {
-#if EM_ADCOLONY
+            #if EM_ADCOLONY
             if (placement == AdPlacement.Default)
                 Ads.ShowAd(mDefaultRewardedAd);
             else
                 Ads.ShowAd(GetCustomRewardedAd(placement));
-#endif
+            #endif
         }
 
         #endregion
@@ -545,23 +553,24 @@ namespace EasyMobile
 
         private const string DATA_PRIVACY_CONSENT_KEY = "EM_Ads_AdColony_DataPrivacyConsent";
 
-        protected override string DataPrivacyConsentSaveKey => DATA_PRIVACY_CONSENT_KEY;
+        protected override string DataPrivacyConsentSaveKey { get { return DATA_PRIVACY_CONSENT_KEY; } }
 
         protected override void ApplyDataPrivacyConsent(ConsentStatus consent)
         {
-#if EM_ADCOLONY
+            #if EM_ADCOLONY
             // If the client has been initialized, reconfigure it with new consent.
             // Otherwise, the consent will take effect during the first initialization.
             if (mIsInitialized)
                 Configure();
-#endif
+            #endif
         }
 
         #endregion
 
         #region Internal Stuff
 
-#if EM_ADCOLONY
+        #if EM_ADCOLONY
+        
         private void Configure()
         {
             if (mAdSettings == null)
@@ -905,6 +914,7 @@ namespace EasyMobile
         #region Ad Event Handlers
 
 #if EM_ADCOLONY
+
         private void OnConfigurationCompletedHandle(List<Zone> obj)
         {
             // Done initializing.
@@ -978,6 +988,8 @@ namespace EasyMobile
 
 #endif
 
-        #endregion // Ad Event Handlers
+        #endregion  // Ad Event Handlers
+
     }
 }
+  

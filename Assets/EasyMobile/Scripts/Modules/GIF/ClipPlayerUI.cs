@@ -4,9 +4,7 @@ using UnityEngine.UI;
 
 namespace EasyMobile
 {
-    [AddComponentMenu("Easy Mobile/Clip Player (UI)")]
-    [RequireComponent(typeof(RawImage))]
-    [DisallowMultipleComponent]
+    [AddComponentMenu("Easy Mobile/Clip Player (UI)"), RequireComponent(typeof(RawImage)), DisallowMultipleComponent]
     public class ClipPlayerUI : MonoBehaviour, IClipPlayer
     {
         /// <summary>
@@ -15,19 +13,20 @@ namespace EasyMobile
         /// <value>The scale mode.</value>
         public ClipPlayerScaleMode ScaleMode
         {
-            get => _scaleMode;
-            set => _scaleMode = value;
+            get { return _scaleMode; }
+            set { _scaleMode = value; }
         }
 
-        [SerializeField] private ClipPlayerScaleMode _scaleMode = ClipPlayerScaleMode.AutoHeight;
+        [SerializeField]
+        ClipPlayerScaleMode _scaleMode = ClipPlayerScaleMode.AutoHeight;
 
         // Projecting object
-        private RawImage rawImage;
-        private RectTransform rt;
-        private IEnumerator playCoroutine;
-        private bool isPaused;
+        RawImage rawImage;
+        RectTransform rt;
+        IEnumerator playCoroutine;
+        bool isPaused;
 
-        private void Awake()
+        void Awake()
         {
             rawImage = GetComponent<RawImage>();
             rt = GetComponent<RectTransform>();
@@ -87,7 +86,7 @@ namespace EasyMobile
         /// Resizes this player according to the predefined scale mode and the clip's aspect ratio.
         /// </summary>
         /// <param name="clip">Clip.</param>
-        private void Resize(AnimatedClip clip)
+        void Resize(AnimatedClip clip)
         {
             if (clip == null)
             {
@@ -101,7 +100,7 @@ namespace EasyMobile
             }
             else
             {
-                var aspectRatio = (float) clip.Width / clip.Height;
+                float aspectRatio = (float)clip.Width / clip.Height;
 
                 if (_scaleMode == ClipPlayerScaleMode.AutoHeight)
                     rt.sizeDelta = new Vector2(rt.sizeDelta.x, rt.sizeDelta.x / aspectRatio);
@@ -110,14 +109,14 @@ namespace EasyMobile
             }
         }
 
-        private IEnumerator CRPlay(AnimatedClip clip, float startDelay, bool loop)
+        IEnumerator CRPlay(AnimatedClip clip, float startDelay, bool loop)
         {
-            var timePerFrame = 1f / clip.FramePerSecond;
-            var hasDelayed = false;
+            float timePerFrame = 1f / clip.FramePerSecond;
+            bool hasDelayed = false;
 
             do
             {
-                for (var i = 0; i < clip.Frames.Length; i++)
+                for (int i = 0; i < clip.Frames.Length; i++)
                 {
                     rawImage.texture = clip.Frames[i];
                     yield return new WaitForSeconds(timePerFrame);

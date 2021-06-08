@@ -15,6 +15,7 @@ namespace EasyMobile.Editor
         public const string ContactsSubmodule = "EM_CONTACTS";
         public const string CameraGallerySubmodule = "EM_CAMERA_GALLERY";
         public const string UniversalRenderPipeline = "EM_URP";
+        public const string AppTrackingSubmodule = "EM_ATT";
 
         // Ad networks
         public const string AdColony = "EM_ADCOLONY";
@@ -32,8 +33,9 @@ namespace EasyMobile.Editor
 
         public static string[] GetAllSymbols()
         {
-            return EM_EditorUtil.GetConstants(typeof(EM_ScriptingSymbols))
-                .Select(c => c.GetRawConstantValue() as string).ToArray();
+            return EM_EditorUtil.GetConstants(typeof(EM_ScriptingSymbols)).Select(c => c.GetRawConstantValue() as string).ToArray();
         }
+
     }
 }
+

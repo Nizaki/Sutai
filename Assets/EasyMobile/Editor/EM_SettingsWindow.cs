@@ -14,7 +14,6 @@ namespace EasyMobile.Editor
 
         private Vector2 scrollPos;
         private UnityEditor.Editor editor;
-
         private readonly int left = 10, right = 10, top = 3, bottom = 3;
         // padding
 
@@ -38,7 +37,7 @@ namespace EasyMobile.Editor
             editor.DrawHeader();
 
             scrollPos = EditorGUILayout.BeginScrollView(scrollPos);
-            EditorGUILayout.BeginVertical(new GUIStyle() {padding = new RectOffset(left, right, top, bottom)});
+            EditorGUILayout.BeginVertical(new GUIStyle() { padding = new RectOffset(left, right, top, bottom) });
 
             editor.OnInspectorGUI();
 
@@ -51,8 +50,8 @@ namespace EasyMobile.Editor
         private static EditorWindow GetWindow()
         {
             // Get the window and make sure it will be opened in the same panel with inspector window.
-            var inspectorType = EM_EditorUtil.GetInspectorWindowType();
-            var window = GetWindow<EM_SettingsWindow>(new Type[] {inspectorType});
+            Type inspectorType = EM_EditorUtil.GetInspectorWindowType();
+            var window = GetWindow<EM_SettingsWindow>(new Type[] { inspectorType });
             window.titleContent = new GUIContent(Title);
 
             return window;

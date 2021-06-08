@@ -14,8 +14,8 @@ namespace EasyMobile
         /// </summary>
         public AdId DefaultBannerId
         {
-            get => mDefaultBannerId;
-            set => mDefaultBannerId = value;
+            get { return mDefaultBannerId; }
+            set { mDefaultBannerId = value; }
         }
 
         /// <summary>
@@ -23,8 +23,8 @@ namespace EasyMobile
         /// </summary>
         public AdId DefaultInterstitialAdId
         {
-            get => mDefaultInterstitialAdId;
-            set => mDefaultInterstitialAdId = value;
+            get { return mDefaultInterstitialAdId; }
+            set { mDefaultInterstitialAdId = value; }
         }
 
         /// <summary>
@@ -32,8 +32,8 @@ namespace EasyMobile
         /// </summary>
         public AdId DefaultRewardedAdId
         {
-            get => mDefaultRewardedAdId;
-            set => mDefaultRewardedAdId = value;
+            get { return mDefaultRewardedAdId; }
+            set { mDefaultRewardedAdId = value; }
         }
 
         /// <summary>
@@ -42,8 +42,8 @@ namespace EasyMobile
         /// </summary>
         public Dictionary<AdPlacement, AdId> CustomBannerIds
         {
-            get => mCustomBannerIds;
-            set => mCustomBannerIds = value as Dictionary_AdPlacement_AdId;
+            get { return mCustomBannerIds; }
+            set { mCustomBannerIds = value as Dictionary_AdPlacement_AdId; }
         }
 
         /// <summary>
@@ -52,8 +52,8 @@ namespace EasyMobile
         /// </summary>
         public Dictionary<AdPlacement, AdId> CustomInterstitialAdIds
         {
-            get => mCustomInterstitialAdIds;
-            set => mCustomInterstitialAdIds = value as Dictionary_AdPlacement_AdId;
+            get { return mCustomInterstitialAdIds; }
+            set { mCustomInterstitialAdIds = value as Dictionary_AdPlacement_AdId; }
         }
 
         /// <summary>
@@ -62,8 +62,8 @@ namespace EasyMobile
         /// </summary>
         public Dictionary<AdPlacement, AdId> CustomRewardedAdIds
         {
-            get => mCustomRewardedAdIds;
-            set => mCustomRewardedAdIds = value as Dictionary_AdPlacement_AdId;
+            get { return mCustomRewardedAdIds; }
+            set { mCustomRewardedAdIds = value as Dictionary_AdPlacement_AdId; }
         }
 
         /// <summary>
@@ -71,8 +71,8 @@ namespace EasyMobile
         /// </summary>
         public bool ReportAppOpen
         {
-            get => mReportAppOpen;
-            set => mReportAppOpen = value;
+            get { return mReportAppOpen; }
+            set { mReportAppOpen = value; }
         }
 
         /// <summary>
@@ -80,8 +80,8 @@ namespace EasyMobile
         /// </summary>
         public string ITuneAppID
         {
-            get => mITuneAppID;
-            set => mITuneAppID = value;
+            get { return mITuneAppID; }
+            set { mITuneAppID = value; }
         }
 
         /// <summary>
@@ -89,8 +89,8 @@ namespace EasyMobile
         /// </summary>
         public bool EnableLocationPassing
         {
-            get => mEnableLocationPassing;
-            set => mEnableLocationPassing = value;
+            get { return mEnableLocationPassing; }
+            set { mEnableLocationPassing = value; }
         }
 
         /// <summary>
@@ -98,8 +98,8 @@ namespace EasyMobile
         /// </summary>
         public bool UseAdvancedSetting
         {
-            get => mUseAdvancedSetting;
-            set => mUseAdvancedSetting = value;
+            get { return mUseAdvancedSetting; }
+            set { mUseAdvancedSetting = value; }
         }
 
         /// <summary>
@@ -107,8 +107,8 @@ namespace EasyMobile
         /// </summary>
         public bool AllowLegitimateInterest
         {
-            get => mAllowLegitimateInterest;
-            set => mAllowLegitimateInterest = value;
+            get { return mAllowLegitimateInterest; }
+            set { mAllowLegitimateInterest = value; }
         }
 
         /// <summary>
@@ -116,8 +116,8 @@ namespace EasyMobile
         /// </summary>
         public LogLevel MoPubLogLevel
         {
-            get => mLogLevel;
-            set => mLogLevel = value;
+            get { return mLogLevel; }
+            set { mLogLevel = value; }
         }
 
         /// <summary>
@@ -126,8 +126,8 @@ namespace EasyMobile
         /// <value>The mediated networks.</value>
         public MediatedNetwork[] MediatedNetworks
         {
-            get => mMediatedNetworks;
-            set => mMediatedNetworks = value;
+            get { return mMediatedNetworks; }
+            set { mMediatedNetworks = value; }
         }
 
         /// <summary>
@@ -135,8 +135,8 @@ namespace EasyMobile
         /// </summary>
         public bool AutoRequestConsent
         {
-            get => mAutoRequestConsent;
-            set => mAutoRequestConsent = value;
+            get { return mAutoRequestConsent; }
+            set { mAutoRequestConsent = value; }
         }
 
         /// <summary>
@@ -144,29 +144,44 @@ namespace EasyMobile
         /// </summary>
         public bool ForceGdprApplicable
         {
-            get => mForceGdprApplicable;
-            set => mForceGdprApplicable = value;
+            get { return mForceGdprApplicable; }
+            set { mForceGdprApplicable = value; }
         }
 
-        [SerializeField] private bool mReportAppOpen;
-        [SerializeField] private string mITuneAppID;
-        [SerializeField] private bool mEnableLocationPassing;
+        [SerializeField]
+        private bool mReportAppOpen;
+        [SerializeField]
+        private string mITuneAppID;
+        [SerializeField]
+        private bool mEnableLocationPassing;
 
-        [SerializeField] private bool mUseAdvancedSetting;
-        [SerializeField] private bool mAllowLegitimateInterest;
-        [SerializeField] private LogLevel mLogLevel = LogLevel.None;
-        [SerializeField] private MediatedNetwork[] mMediatedNetworks;
+        [SerializeField]
+        private bool mUseAdvancedSetting;
+        [SerializeField]
+        private bool mAllowLegitimateInterest;
+        [SerializeField]
+        private LogLevel mLogLevel = LogLevel.None;
+        [SerializeField]
+        private MediatedNetwork[] mMediatedNetworks;
 
-        [SerializeField] private bool mAutoRequestConsent;
-        [SerializeField] private bool mForceGdprApplicable;
+        [SerializeField]
+        private bool mAutoRequestConsent;
+        [SerializeField]
+        private bool mForceGdprApplicable;
 
-        [SerializeField] private AdId mDefaultBannerId;
-        [SerializeField] private AdId mDefaultInterstitialAdId;
-        [SerializeField] private AdId mDefaultRewardedAdId;
+        [SerializeField]
+        private AdId mDefaultBannerId;
+        [SerializeField]
+        private AdId mDefaultInterstitialAdId;
+        [SerializeField]
+        private AdId mDefaultRewardedAdId;
 
-        [SerializeField] private Dictionary_AdPlacement_AdId mCustomBannerIds;
-        [SerializeField] private Dictionary_AdPlacement_AdId mCustomInterstitialAdIds;
-        [SerializeField] private Dictionary_AdPlacement_AdId mCustomRewardedAdIds;
+        [SerializeField]
+        private Dictionary_AdPlacement_AdId mCustomBannerIds;
+        [SerializeField]
+        private Dictionary_AdPlacement_AdId mCustomInterstitialAdIds;
+        [SerializeField]
+        private Dictionary_AdPlacement_AdId mCustomRewardedAdIds;
 
         public enum SupportedNetwork
         {
@@ -184,7 +199,7 @@ namespace EasyMobile
             Tapjoy,
             UnityAds,
             Verizon,
-            Vungle
+            Vungle,
         }
 
         public enum LogLevel
@@ -202,8 +217,8 @@ namespace EasyMobile
             /// </summary>
             public bool IsSupportedNetwork
             {
-                get => mIsSupportedNetwork;
-                set => mIsSupportedNetwork = value;
+                get { return mIsSupportedNetwork; }
+                set { mIsSupportedNetwork = value; }
             }
 
             /// <summary>
@@ -211,8 +226,8 @@ namespace EasyMobile
             /// </summary>
             public SupportedNetwork SupportedNetworkName
             {
-                get => mSupportedNetworkName;
-                set => mSupportedNetworkName = value;
+                get { return mSupportedNetworkName; }
+                set { mSupportedNetworkName = value; }
             }
 
             /// <summary>
@@ -220,8 +235,8 @@ namespace EasyMobile
             /// </summary>
             public string AdapterConfigurationClassName
             {
-                get => mAdapterConfigurationClassName;
-                set => mAdapterConfigurationClassName = value;
+                get { return mAdapterConfigurationClassName; }
+                set { mAdapterConfigurationClassName = value; }
             }
 
             /// <summary>
@@ -230,8 +245,8 @@ namespace EasyMobile
             /// </summary>
             public string MediationSettingsClassName
             {
-                get => mMediationSettingsClassName;
-                set => mMediationSettingsClassName = value;
+                get { return mMediationSettingsClassName; }
+                set { mMediationSettingsClassName = value; }
             }
 
             /// <summary>
@@ -239,8 +254,8 @@ namespace EasyMobile
             /// </summary>
             public Dictionary<string, string> NetworkConfiguration
             {
-                get => mNetworkConfiguration;
-                set => mNetworkConfiguration = value as StringStringSerializableDictionary;
+                get { return mNetworkConfiguration; }
+                set { mNetworkConfiguration = value as StringStringSerializableDictionary; }
             }
 
             /// <summary>
@@ -248,8 +263,8 @@ namespace EasyMobile
             /// </summary>
             public Dictionary<string, string> MediationSettings
             {
-                get => mMediationSettings;
-                set => mMediationSettings = value as StringStringSerializableDictionary;
+                get { return mMediationSettings; }
+                set { mMediationSettings = value as StringStringSerializableDictionary; }
             }
 
             /// <summary>
@@ -257,25 +272,31 @@ namespace EasyMobile
             /// </summary>
             public Dictionary<string, string> MoPubRequestOptions
             {
-                get => mMoPubRequestOption;
-                set => mMoPubRequestOption = value as StringStringSerializableDictionary;
+                get { return mMoPubRequestOption; }
+                set { mMoPubRequestOption = value as StringStringSerializableDictionary; }
             }
 
-            [SerializeField] [Rename("Is Supported Network")]
+            [SerializeField, Rename("Is Supported Network")]
             private bool mIsSupportedNetwork;
 
-            [SerializeField] [Rename("Network Name")]
+            [SerializeField, Rename("Network Name")]
             private SupportedNetwork mSupportedNetworkName;
 
-            [SerializeField] private string mAdapterConfigurationClassName;
+            [SerializeField]
+            private string mAdapterConfigurationClassName;
 
-            [SerializeField] private string mMediationSettingsClassName;
+            [SerializeField]
+            private string mMediationSettingsClassName;
 
-            [SerializeField] private StringStringSerializableDictionary mNetworkConfiguration;
+            [SerializeField]
+            private StringStringSerializableDictionary mNetworkConfiguration;
 
-            [SerializeField] private StringStringSerializableDictionary mMediationSettings;
+            [SerializeField]
+            private StringStringSerializableDictionary mMediationSettings;
 
-            [SerializeField] private StringStringSerializableDictionary mMoPubRequestOption;
+            [SerializeField]
+            private StringStringSerializableDictionary mMoPubRequestOption;
+
         }
     }
 
@@ -396,15 +417,14 @@ namespace EasyMobile
         }
 #endif
 
-        private static Dictionary<string, object> StringStringDictToStringObjectDict(
-            this Dictionary<string, string> dict)
+        private static Dictionary<string, object> StringStringDictToStringObjectDict(this Dictionary<string, string> dict)
         {
             if (dict == null)
                 return null;
 
             return dict.ToDictionary(
                 item => item.Key,
-                item => string.IsNullOrEmpty(item.Value) ? (object) item.Value : null);
+                item => string.IsNullOrEmpty(item.Value) ? (object)item.Value : null);
         }
     }
 }

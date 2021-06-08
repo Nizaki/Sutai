@@ -10,42 +10,44 @@ namespace EasyMobile.Editor
     // Partial editor class for Native APIs module.
     internal partial class EM_SettingsEditor
     {
-        private const string NativeApisModuleLabel = "NATIVE APIS";
-
-        private const string NativeApisModuleIntro =
-            "The Native APIs module provides access to various native device APIs such as UI, Camera & Gallery, Contacts, etc.";
-
-        private const string MediaSubmoduleLabel = "CAMERA & GALLERY";
-        private const string ContactsSubmoduleLabel = "CONTACTS";
-        private const string MediaSectionKey = "NATIVE_API_CAMERA_GALLERY";
-        private const string ContactsSectionKey = "NATIVE_API_CONTACT";
-
-        private const string MediaSubmoduleIntroMsg =
-            "Enable the Camera & Gallery submodule to gain access to the device camera for taking photos or recording video clips.";
-
-        private const string ContactsSubmoduleIntroMsg =
-            "Enable the Contacts submodule to gain access to the device contacts for operations including fetching, adding and removing contacts.";
+        const string NativeApisModuleLabel = "NATIVE APIS";
+        const string NativeApisModuleIntro = "The Native APIs module provides access to various native device APIs such as UI, Camera & Gallery, Contacts, etc.";
+        const string MediaSubmoduleLabel = "CAMERA & GALLERY";
+        const string ContactsSubmoduleLabel = "CONTACTS";
+        const string MediaSectionKey = "NATIVE_API_CAMERA_GALLERY";
+        const string ContactsSectionKey = "NATIVE_API_CONTACT";
+        const string MediaSubmoduleIntroMsg = "Enable the Camera & Gallery submodule to gain access to the device camera for taking photos or recording video clips.";
+        const string ContactsSubmoduleIntroMsg = "Enable the Contacts submodule to gain access to the device contacts for operations including fetching, adding and removing contacts.";
 
         private CompositeModuleManager mNativeApisModuleManager;
 
-        private SerializedProperty IsMediaSubmoduleEnableProperty => NativeApisProperties.isMediaEnabled.property;
+        private SerializedProperty IsMediaSubmoduleEnableProperty
+        {
+            get { return NativeApisProperties.isMediaEnabled.property; }
+        }
 
-        private SerializedProperty IsContactsSubmoduleEnableProperty => NativeApisProperties.isContactsEnabled.property;
+        private SerializedProperty IsContactsSubmoduleEnableProperty
+        {
+            get { return NativeApisProperties.isContactsEnabled.property; }
+        }
 
         private CompositeModuleManager NativeApisModuleManager
         {
             get
-            {
+            { 
                 if (mNativeApisModuleManager == null)
-                    mNativeApisModuleManager =
-                        EM_PluginManager.GetModuleManager(Module.NativeApis) as CompositeModuleManager;
-                return mNativeApisModuleManager;
+                    mNativeApisModuleManager = EM_PluginManager.GetModuleManager(Module.NativeApis) as CompositeModuleManager;
+                return mNativeApisModuleManager; 
             }
+            
         }
 
         private bool IsMediaSubmoduleEnabled
         {
-            get => IsMediaSubmoduleEnableProperty != null ? IsMediaSubmoduleEnableProperty.boolValue : false;
+            get
+            { 
+                return IsMediaSubmoduleEnableProperty != null ? IsMediaSubmoduleEnableProperty.boolValue : false; 
+            }
             set
             {
                 if (IsMediaSubmoduleEnableProperty == null || IsMediaSubmoduleEnableProperty.boolValue == value)
@@ -65,7 +67,10 @@ namespace EasyMobile.Editor
 
         private bool IsContactSubmoduleEnabled
         {
-            get => IsContactsSubmoduleEnableProperty != null ? IsContactsSubmoduleEnableProperty.boolValue : false;
+            get
+            { 
+                return IsContactsSubmoduleEnableProperty != null ? IsContactsSubmoduleEnableProperty.boolValue : false;
+            }
             set
             {
                 if (IsContactsSubmoduleEnableProperty == null || IsContactsSubmoduleEnableProperty.boolValue == value)
@@ -94,8 +99,7 @@ namespace EasyMobile.Editor
         {
             EditorGUILayout.Space();
 
-            IsMediaSubmoduleEnabled = DrawUppercaseSectionWithToggle(MediaSectionKey, MediaSubmoduleLabel,
-                IsMediaSubmoduleEnabled, () =>
+            IsMediaSubmoduleEnabled = DrawUppercaseSectionWithToggle(MediaSectionKey, MediaSubmoduleLabel, IsMediaSubmoduleEnabled, () =>
                 {
                     if (IsMediaSubmoduleEnabled)
                     {
@@ -114,8 +118,7 @@ namespace EasyMobile.Editor
         {
             EditorGUILayout.Space();
 
-            IsContactSubmoduleEnabled = DrawUppercaseSectionWithToggle(ContactsSectionKey, ContactsSubmoduleLabel,
-                IsContactSubmoduleEnabled, () =>
+            IsContactSubmoduleEnabled = DrawUppercaseSectionWithToggle(ContactsSectionKey, ContactsSubmoduleLabel, IsContactSubmoduleEnabled, () =>
                 {
                     if (IsContactSubmoduleEnabled)
                     {
@@ -137,8 +140,7 @@ namespace EasyMobile.Editor
                 var permHolder = NativeApisModuleManager.AndroidPermissionHolderForSubmodule(submob);
 
                 if (permHolder != null)
-                    DrawAndroidPermissionsRequiredSubsection(permHolder.GetAndroidPermissions(),
-                        new GUIContent("Required Android Permissions"));
+                    DrawAndroidPermissionsRequiredSubsection(permHolder.GetAndroidPermissions(), new GUIContent("Required Android Permissions"));
             }
         }
 
@@ -149,8 +151,7 @@ namespace EasyMobile.Editor
                 var itemHolder = NativeApisModuleManager.iOSInfoItemsHolderForSubmodule(submod);
 
                 if (itemHolder != null)
-                    DrawIOSInfoPlistItemsRequiredSubsection(itemHolder.GetIOSInfoPlistKeys(),
-                        new GUIContent("Required iOS Info.plist Keys"));
+                    DrawIOSInfoPlistItemsRequiredSubsection(itemHolder.GetIOSInfoPlistKeys(), new GUIContent("Required iOS Info.plist Keys"));
             }
         }
     }

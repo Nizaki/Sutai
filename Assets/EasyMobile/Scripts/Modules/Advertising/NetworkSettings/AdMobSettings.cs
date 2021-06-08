@@ -9,15 +9,14 @@ namespace EasyMobile
     [Serializable]
     public class AdMobSettings : AdNetworkSettings
     {
-        [Obsolete(
-            "AppId has been deprecated since Easy Mobile Pro version 2.6.0 because the GoogleMobileAds SDK no longer allows access to this value in runtime.")]
+        [Obsolete("AppId has been deprecated since Easy Mobile Pro version 2.6.0 because the GoogleMobileAds SDK no longer allows access to this value in runtime.")]
         /// <summary>
         /// Gets or sets the AdMob app identifier.
         /// </summary>
         public AdId AppId
         {
-            get => mAppId;
-            set => mAppId = value;
+            get { return mAppId; }
+            set { mAppId = value; }
         }
 
         /// <summary>
@@ -25,8 +24,8 @@ namespace EasyMobile
         /// </summary>
         public AdId DefaultBannerAdId
         {
-            get => mDefaultBannerAdId;
-            set => mDefaultBannerAdId = value;
+            get { return mDefaultBannerAdId; }
+            set { mDefaultBannerAdId = value; }
         }
 
         /// <summary>
@@ -34,8 +33,8 @@ namespace EasyMobile
         /// </summary>
         public AdId DefaultInterstitialAdId
         {
-            get => mDefaultInterstitialAdId;
-            set => mDefaultInterstitialAdId = value;
+            get { return mDefaultInterstitialAdId; }
+            set { mDefaultInterstitialAdId = value; }
         }
 
         /// <summary>
@@ -43,8 +42,8 @@ namespace EasyMobile
         /// </summary>
         public AdId DefaultRewardedAdId
         {
-            get => mDefaultRewardedAdId;
-            set => mDefaultRewardedAdId = value;
+            get { return mDefaultRewardedAdId; }
+            set { mDefaultRewardedAdId = value; }
         }
 
         /// <summary>
@@ -52,8 +51,8 @@ namespace EasyMobile
         /// </summary>
         public bool EnableTestMode
         {
-            get => mEnableTestMode;
-            set => mEnableTestMode = value;
+            get { return mEnableTestMode; }
+            set { mEnableTestMode = value; }
         }
 
         /// <summary>
@@ -61,8 +60,8 @@ namespace EasyMobile
         /// </summary>
         public bool UseAdaptiveBanner
         {
-            get => mUseAdaptiveBanner;
-            set => mUseAdaptiveBanner = value;
+            get { return mUseAdaptiveBanner; }
+            set { mUseAdaptiveBanner = value; }
         }
 
 
@@ -71,8 +70,8 @@ namespace EasyMobile
         /// </summary>
         public AdMobTargetingSettings TargetingSettings
         {
-            get => mTargetingSettings;
-            set => mTargetingSettings = value;
+            get { return mTargetingSettings; }
+            set { mTargetingSettings = value; }
         }
 
         /// <summary>
@@ -81,8 +80,8 @@ namespace EasyMobile
         /// </summary>
         public Dictionary<AdPlacement, AdId> CustomBannerAdIds
         {
-            get => mCustomBannerAdIds;
-            set => mCustomBannerAdIds = value as Dictionary_AdPlacement_AdId;
+            get { return mCustomBannerAdIds; }
+            set { mCustomBannerAdIds = value as Dictionary_AdPlacement_AdId; }
         }
 
         /// <summary>
@@ -91,8 +90,8 @@ namespace EasyMobile
         /// </summary>
         public Dictionary<AdPlacement, AdId> CustomInterstitialAdIds
         {
-            get => mCustomInterstitialAdIds;
-            set => mCustomInterstitialAdIds = value as Dictionary_AdPlacement_AdId;
+            get { return mCustomInterstitialAdIds; }
+            set { mCustomInterstitialAdIds = value as Dictionary_AdPlacement_AdId; }
         }
 
         /// <summary>
@@ -101,41 +100,51 @@ namespace EasyMobile
         /// </summary>
         public Dictionary<AdPlacement, AdId> CustomRewardedAdIds
         {
-            get => mCustomRewardedAdIds;
-            set => mCustomRewardedAdIds = value as Dictionary_AdPlacement_AdId;
+            get { return mCustomRewardedAdIds; }
+            set { mCustomRewardedAdIds = value as Dictionary_AdPlacement_AdId; }
         }
 
-        [SerializeField] private AdMobTargetingSettings mTargetingSettings;
-        [SerializeField] private bool mEnableTestMode;
-        [SerializeField] private bool mUseAdaptiveBanner;
+        [SerializeField]
+        private AdMobTargetingSettings mTargetingSettings;
+        [SerializeField]
+        private bool mEnableTestMode;
+        [SerializeField]
+        private bool mUseAdaptiveBanner;
 
-        [SerializeField] private AdId mAppId;
-        [SerializeField] private AdId mDefaultBannerAdId;
-        [SerializeField] private AdId mDefaultInterstitialAdId;
-        [SerializeField] private AdId mDefaultRewardedAdId;
-        [SerializeField] private Dictionary_AdPlacement_AdId mCustomBannerAdIds;
-        [SerializeField] private Dictionary_AdPlacement_AdId mCustomInterstitialAdIds;
-        [SerializeField] private Dictionary_AdPlacement_AdId mCustomRewardedAdIds;
+        [SerializeField]
+        private AdId mAppId;
+        [SerializeField]
+        private AdId mDefaultBannerAdId;
+        [SerializeField]
+        private AdId mDefaultInterstitialAdId;
+        [SerializeField]
+        private AdId mDefaultRewardedAdId;
+        [SerializeField]
+        private Dictionary_AdPlacement_AdId mCustomBannerAdIds;
+        [SerializeField]
+        private Dictionary_AdPlacement_AdId mCustomInterstitialAdIds;
+        [SerializeField]
+        private Dictionary_AdPlacement_AdId mCustomRewardedAdIds;
 
         [Serializable]
         public class AdMobTargetingSettings
         {
             public AdChildDirectedTreatment TagForChildDirectedTreatment
             {
-                get => mTagForChildDirectedTreatment;
-                set => mTagForChildDirectedTreatment = value;
+                get { return mTagForChildDirectedTreatment; }
+                set { mTagForChildDirectedTreatment = value; }
             }
 
             public Dictionary<string, string> ExtraOptions
             {
-                get => mExtraOptions;
-                set => mExtraOptions = value as StringStringSerializableDictionary;
+                get { return mExtraOptions; }
+                set { mExtraOptions = value as StringStringSerializableDictionary; }
             }
 
             [SerializeField]
             private AdChildDirectedTreatment mTagForChildDirectedTreatment = AdChildDirectedTreatment.Unspecified;
-
-            [SerializeField] private StringStringSerializableDictionary mExtraOptions;
+            [SerializeField]
+            private StringStringSerializableDictionary mExtraOptions;
         }
     }
 }

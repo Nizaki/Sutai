@@ -38,6 +38,7 @@ namespace EasyMobile
         #region FairBid Events
 
 #if EM_FAIRBID
+
         /// <summary>
         /// Occurs when a banner ad is loaded or failed to be loaded.
         /// </summary>
@@ -84,7 +85,7 @@ namespace EasyMobile
         public event Action<string> AdClickedEvent;
 #endif
 
-        #endregion // FairBid Events
+        #endregion  // FairBid Events
 
         #region Singleton
 
@@ -100,21 +101,24 @@ namespace EasyMobile
         /// <returns>The client.</returns>
         public static FairBidClientImpl CreateClient()
         {
-            if (sInstance == null) sInstance = new FairBidClientImpl();
+            if (sInstance == null)
+            {
+                sInstance = new FairBidClientImpl();
+            }
             return sInstance;
         }
 
-        #endregion // Object Creators
+        #endregion  // Object Creators
 
         #region AdClient Overrides
 
-        public override AdNetwork Network => AdNetwork.FairBid;
+        public override AdNetwork Network { get { return AdNetwork.FairBid; } }
 
-        public override bool IsBannerAdSupported => true;
+        public override bool IsBannerAdSupported { get { return true; } }
 
-        public override bool IsInterstitialAdSupported => true;
+        public override bool IsInterstitialAdSupported { get { return true; } }
 
-        public override bool IsRewardedAdSupported => true;
+        public override bool IsRewardedAdSupported { get { return true; } }
 
         public override bool IsSdkAvail
         {
@@ -130,7 +134,7 @@ namespace EasyMobile
 
         public override bool IsValidPlacement(AdPlacement placement, AdType type)
         {
-#if EM_FAIRBID
+#if EM_FAIRBID         
             return true;
 #else
             return false;
@@ -161,7 +165,7 @@ namespace EasyMobile
             }
         }
 
-        protected override string NoSdkMessage => NO_SDK_MESSAGE;
+        protected override string NoSdkMessage { get { return NO_SDK_MESSAGE; } }
 
         protected override void InternalInit()
         {
@@ -336,13 +340,13 @@ namespace EasyMobile
 #endif
         }
 
-        #endregion // AdClient Overrides
+        #endregion  // AdClient Overrides
 
         #region IConsentRequirable Overrides
 
         private const string DATA_PRIVACY_CONSENT_KEY = "EM_Ads_FairBid_DataPrivacyConsent";
 
-        protected override string DataPrivacyConsentSaveKey => DATA_PRIVACY_CONSENT_KEY;
+        protected override string DataPrivacyConsentSaveKey { get { return DATA_PRIVACY_CONSENT_KEY; } }
 
         protected override void ApplyDataPrivacyConsent(ConsentStatus consent)
         {
@@ -368,6 +372,7 @@ namespace EasyMobile
         #region Helpers
 
 #if EM_FAIRBID
+
         private string ToFairBidAdPosition(BannerAdPosition pos)
         {
             switch (pos)
@@ -404,6 +409,7 @@ namespace EasyMobile
         #region Ad Event Handlers
 
 #if EM_FAIRBID
+
         public class MyBannerListener : BannerListener
         {
             private FairBidClientImpl adClient;
@@ -673,6 +679,6 @@ namespace EasyMobile
 
 #endif
 
-        #endregion // Ad Event Handlers
+        #endregion  // Ad Event Handlers
     }
 }

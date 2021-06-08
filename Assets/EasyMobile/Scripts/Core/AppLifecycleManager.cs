@@ -12,7 +12,7 @@ namespace EasyMobile
 
         #region MonoBehavior Events
 
-        private void Awake()
+        void Awake()
         {
             if (Instance != null)
                 Destroy(this);
@@ -20,23 +20,23 @@ namespace EasyMobile
                 Instance = this;
         }
 
-        private void OnDestroy()
+        void OnDestroy()
         {
             if (Instance == this)
                 Instance = null;
         }
 
-        private void OnApplicationFocus(bool isFocus)
+        void OnApplicationFocus(bool isFocus)
         {
             sAppLifecycleHandler.OnApplicationFocus(isFocus);
         }
 
-        private void OnApplicationPause(bool isPaused)
+        void OnApplicationPause(bool isPaused)
         {
             sAppLifecycleHandler.OnApplicationPause(isPaused);
         }
 
-        private void OnApplicationQuit()
+        void OnApplicationQuit()
         {
             sAppLifecycleHandler.OnApplicationQuit();
         }
@@ -45,15 +45,15 @@ namespace EasyMobile
 
         private static IAppLifecycleHandler GetPlatformAppLifecycleHandler()
         {
-#if UNITY_EDITOR
+            #if UNITY_EDITOR
             return new DummyAppLifecycleHandler();
-#elif UNITY_IOS
+            #elif UNITY_IOS
             return new DummyAppLifecycleHandler();
-#elif UNITY_ANDROID
+            #elif UNITY_ANDROID
             return new AndroidAppLifecycleHandler();
-#else
+            #else
             return new DummyAppLifecycleHandler();
-#endif
+            #endif
         }
     }
 }

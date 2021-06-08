@@ -16,18 +16,16 @@ namespace EasyMobile.Editor
         {
             EditorGUI.BeginProperty(position, label, property);
 
-            var key = property.FindPropertyRelative(keyFieldName);
-            var value = property.FindPropertyRelative(valueFieldName);
+            SerializedProperty key = property.FindPropertyRelative(keyFieldName);
+            SerializedProperty value = property.FindPropertyRelative(valueFieldName);
 
             // Calculate rects.
-            var valueWidth = (int) ((position.width - keyLabelWidth - valueLabelWidth) / 2);
+            int valueWidth = (int)((position.width - keyLabelWidth - valueLabelWidth) / 2);
 
             var idLabelRect = new Rect(position.x, position.y, keyLabelWidth, position.height);
             var idValueRect = new Rect(position.x + keyLabelWidth, position.y, valueWidth, position.height);
-            var nameLabelRect = new Rect(position.x + keyLabelWidth + valueWidth, position.y, valueLabelWidth,
-                position.height);
-            var nameValueRect = new Rect(position.x + keyLabelWidth + valueWidth + valueLabelWidth, position.y,
-                valueWidth, position.height);
+            var nameLabelRect = new Rect(position.x + keyLabelWidth + valueWidth, position.y, valueLabelWidth, position.height);
+            var nameValueRect = new Rect(position.x + keyLabelWidth + valueWidth + valueLabelWidth, position.y, valueWidth, position.height);
 
             EditorGUI.LabelField(idLabelRect, key.displayName);
             EditorGUI.PropertyField(idValueRect, key, GUIContent.none);

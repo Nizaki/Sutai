@@ -15,32 +15,38 @@ namespace EasyMobile.ManifestGenerator.Elements
     {
         #region Fields and Properties
 
-        [SerializeField] private List<string> addedAttributesKey = new List<string>();
+        [SerializeField]
+        private List<string> addedAttributesKey = new List<string>();
 
-        [SerializeField] private List<string> addedAttributesValue = new List<string>();
+        [SerializeField]
+        private List<string> addedAttributesValue = new List<string>();
 
-        [SerializeField] private List<string> addedAttributesPrefix = new List<string>();
+        [SerializeField]
+        private List<string> addedAttributesPrefix = new List<string>();
 
         /// <summary>
         /// Used to store child elements' id,
         /// workaround for Unity serialization limit.
         /// </summary>
-        [SerializeField] private List<int> childElementsId = new List<int>();
+        [SerializeField]
+        private List<int> childElementsId = new List<int>();
 
-        [SerializeField] private int id;
+        [SerializeField]
+        private int id;
 
-        [SerializeField] private AndroidManifestElementStyles style = AndroidManifestElementStyles.None;
+        [SerializeField]
+        private AndroidManifestElementStyles style = AndroidManifestElementStyles.None;
 
         public virtual AndroidManifestElementStyles Style
         {
-            get => style;
-            protected set => style = value;
+            get { return style; }
+            protected set { style = value; }
         }
 
         public int Id
         {
-            get => id;
-            set => id = value;
+            get { return id; }
+            set { id = value; }
         }
 
         public virtual IEnumerable<AndroidManifestElementStyles> ParentStyles
@@ -62,17 +68,30 @@ namespace EasyMobile.ManifestGenerator.Elements
         {
             get
             {
-                foreach (var attribute in AllAvailableAttributes)
+                foreach(var attribute in AllAvailableAttributes)
+                {
                     if (!AddedAttributesKey.Contains(attribute))
+                    {
                         yield return attribute;
+                    }
+                }
             }
         }
 
-        public List<string> AddedAttributesKey => addedAttributesKey;
+        public List<string> AddedAttributesKey
+        {
+            get { return addedAttributesKey; }
+        }
 
-        public List<string> AddedAttributesValue => addedAttributesValue;
+        public List<string> AddedAttributesValue
+        {
+            get { return addedAttributesValue; }
+        }
 
-        public List<string> AddedAttributesPrefix => addedAttributesPrefix;
+        public List<string> AddedAttributesPrefix
+        {
+            get { return addedAttributesPrefix; }
+        }
 
         public int AttributesCount
         {
@@ -85,9 +104,15 @@ namespace EasyMobile.ManifestGenerator.Elements
             }
         }
 
-        public List<int> ChildElementsId => childElementsId;
+        public List<int> ChildElementsId
+        {
+            get { return childElementsId; }
+        }
 
-        public bool CanAddChildElement => ChildStyles.Any();
+        public bool CanAddChildElement
+        {
+            get { return ChildStyles.Any(); }
+        }
 
         #endregion
 
@@ -126,19 +151,21 @@ namespace EasyMobile.ManifestGenerator.Elements
 
         public XmlElement ToXmlElement(XmlDocument xmlDocument, List<AndroidManifestElement> elementsFactory)
         {
-            var xmlElement = xmlDocument.CreateElement(ToString());
+            XmlElement xmlElement = xmlDocument.CreateElement(ToString());
 
             /// Setup all the attributes.
-            for (var i = 0; i < AttributesCount; i++)
+            for (int i = 0; i < AttributesCount; i++)
+            {
                 if (string.IsNullOrEmpty(AddedAttributesPrefix[i]))
                     xmlElement.SetAttribute(AddedAttributesKey[i], AddedAttributesValue[i]);
                 else
                     xmlElement.SetAttribute(AddedAttributesKey[i], AddedAttributesPrefix[i], AddedAttributesValue[i]);
+            }
 
             /// Setup all inner elements.
             var childElements = GetChildElements(elementsFactory);
             if (childElements != null && childElements.Count > 0)
-                foreach (var element in childElements)
+                foreach(var element in childElements)
                     xmlElement.AppendChild(element.ToXmlElement(xmlDocument, elementsFactory));
 
             return xmlElement;
@@ -150,14 +177,13 @@ namespace EasyMobile.ManifestGenerator.Elements
                 return null;
 
             var result = new List<AndroidManifestElement>();
-            foreach (var childElementId in childElementsId)
+            foreach (int childElementId in childElementsId)
             {
                 var element = elementsFactory.Find(e => e.Id == childElementId);
 
                 if (element != null)
                     result.Add(element);
             }
-
             return result;
         }
 
@@ -185,9 +211,11 @@ namespace EasyMobile.ManifestGenerator.Elements
             if (AllAvailableAttributes == null)
                 return false;
 
-            foreach (var attribute in AllAvailableAttributes)
+            foreach(var attribute in AllAvailableAttributes)
+            {
                 if (attribute.Equals(key))
                     return true;
+            }
 
             return false;
         }
@@ -198,8 +226,10 @@ namespace EasyMobile.ManifestGenerator.Elements
                 return false;
 
             foreach (var validStyle in ChildStyles)
+            {
                 if (validStyle.Equals(style))
                     return true;
+            }
 
             return false;
         }

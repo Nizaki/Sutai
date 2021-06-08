@@ -9,8 +9,10 @@ namespace ThreeDISevenZeroR.UnityGifDecoder.Utils
         public static bool CheckString(byte[] array, string s)
         {
             for (var i = 0; i < array.Length; i++)
+            {
                 if (array[i] != s[i])
                     return false;
+            }
 
             return true;
         }
@@ -44,25 +46,27 @@ namespace ThreeDISevenZeroR.UnityGifDecoder.Utils
         public static void AssertByte(this Stream reader, int expectedValue)
         {
             var readByte = reader.ReadByte8();
-            if (readByte != expectedValue)
-                throw new ArgumentException(string.Format("Invalid byte, expected {0}, got {1}", expectedValue,
-                    readByte));
+            if(readByte != expectedValue)
+                throw new ArgumentException(String.Format("Invalid byte, expected {0}, got {1}",expectedValue,readByte));
         }
-
+    
         public static int GetColorTableSize(int data)
         {
             return 1 << (data + 1);
         }
-
+    
         public static int GetBitsFromByte(this byte b, int offset, int count)
         {
             var result = 0;
-
-            for (var i = 0; i < count; i++) result += (GetBitFromByte(b, offset + i) ? 1 : 0) << i;
+        
+            for (var i = 0; i < count; i++)
+            {
+                result += (GetBitFromByte(b, offset + i) ? 1 : 0) << i;
+            }
 
             return result;
         }
-
+    
         public static bool GetBitFromByte(this byte b, int offset)
         {
             return (b & (1 << offset)) != 0;
@@ -75,10 +79,10 @@ namespace ThreeDISevenZeroR.UnityGifDecoder.Utils
             while (true)
             {
                 var blockSize = reader.ReadByte8();
-
-                if (blockSize == 0)
+                
+                if(blockSize == 0)
                     break;
-
+                
                 var bytes = new byte[blockSize];
                 reader.Read(bytes, 0, bytes.Length);
                 blocks.AddRange(bytes);
@@ -86,7 +90,7 @@ namespace ThreeDISevenZeroR.UnityGifDecoder.Utils
 
             return blocks.ToArray();
         }
-
+        
         public static void SkipGifBlocks(Stream reader)
         {
             while (true)

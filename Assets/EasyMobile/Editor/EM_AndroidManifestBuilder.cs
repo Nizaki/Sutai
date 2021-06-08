@@ -18,8 +18,13 @@ namespace EasyMobile.Editor
 
         #region Sub-Manifest Paths
 
-        public static string sCustomManifestPath =>
-            FileIO.ToAbsolutePath("EasyMobile/Editor/Templates/Manifests/Manifest_Custom.xml");
+        public static string sCustomManifestPath
+        {
+            get
+            {
+                return FileIO.ToAbsolutePath("EasyMobile/Editor/Templates/Manifests/Manifest_Custom.xml");
+            }
+        }
 
         #endregion
 
@@ -36,19 +41,24 @@ namespace EasyMobile.Editor
             // Is this composite module?
             var compManager = manager as CompositeModuleManager;
 
-            if (compManager != null) // Is a composite module
+            if (compManager != null)    // Is a composite module
             {
-                foreach (var submod in compManager.SelfSubmodules)
+                foreach (Submodule submod in compManager.SelfSubmodules)
+                {
                     if (EM_Settings.IsSubmoduleEnable(submod))
                     {
                         var submodPaths = compManager.AndroidManifestTemplatePathsForSubmodule(submod);
                         if (submodPaths != null && submodPaths.Count > 0)
                             paths.AddRange(submodPaths);
                     }
+                }
             }
-            else // Is a normal module
+            else    // Is a normal module
             {
-                if (EM_Settings.IsModuleEnable(mod)) paths = manager.AndroidManifestTemplatePaths;
+                if (EM_Settings.IsModuleEnable(mod))
+                {
+                    paths = manager.AndroidManifestTemplatePaths;
+                }
             }
 
             return paths;
@@ -64,7 +74,7 @@ namespace EasyMobile.Editor
             }
 
             // Gather module manifests and merge them into one main manifest for EM.
-            var libPaths = new List<string>();
+            List<string> libPaths = new List<string>();
 
             //--------------------------------------Check for enable modules/ features---------------------------------------------------------//
             //Add more coditions to be checked and included when EasyMobile generates the main AndroidManifest.xml
@@ -85,12 +95,12 @@ namespace EasyMobile.Editor
 
             //---------------------------------------------------------------------------------------------------------------------------------//
 
-            var libsPathsStr = "";
+            string libsPathsStr = "";
             foreach (var lib in libPaths)
             {
                 // Fix issue if the path contains spaces
 #if UNITY_EDITOR_WIN
-                var actualPath = '"' + lib + '"';
+                string actualPath = '"' + lib + '"';  
 #else
                 string actualPath = "'" + lib + "'";
 #endif
@@ -111,10 +121,9 @@ namespace EasyMobile.Editor
             EM_AndroidLibBuilder.BuildAndroidLibFromFolder("", config, null, null, null,
                 (manifestPath) =>
                 {
-                    var templatePath = FileIO.ToAbsolutePath("EasyMobile/Editor/Templates/Manifests/Manifest_Main.xml");
-                    var outputPath =
-                        FileIO.ToAbsolutePath(manifestPath.Remove(0, 7)); // Remove "Assets/" from manifestPath
-                    var mexcPath = FileIO.ToAbsolutePath("EasyMobile/Editor");
+                    string templatePath = FileIO.ToAbsolutePath("EasyMobile/Editor/Templates/Manifests/Manifest_Main.xml");
+                    string outputPath = FileIO.ToAbsolutePath(manifestPath.Remove(0, 7));   // Remove "Assets/" from manifestPath
+                    string mexcPath = FileIO.ToAbsolutePath("EasyMobile/Editor");
 
                     sLastTimeManifestLibsString = libsPathsStr;
                     sMainManifestGeneratedSucessfully = true;
@@ -122,14 +131,14 @@ namespace EasyMobile.Editor
                     if (verbose)
                         UnityEngine.Debug.Log("Generating an Android manifest at\n" + outputPath + " \n");
 
-                    var startInfo = new ProcessStartInfo
+                    ProcessStartInfo startInfo = new ProcessStartInfo
                     {
                         WindowStyle = ProcessWindowStyle.Hidden,
                         RedirectStandardError = true,
                         RedirectStandardOutput = true,
                         UseShellExecute = false,
                         CreateNoWindow = true,
-                        WorkingDirectory = mexcPath
+                        WorkingDirectory = mexcPath,
                     };
 
                     startInfo.WindowStyle = ProcessWindowStyle.Hidden;
@@ -139,16 +148,15 @@ namespace EasyMobile.Editor
                     startInfo.CreateNoWindow = true;
                     startInfo.WorkingDirectory = mexcPath;
 
-                    var javaPath = FileIO.SlashesToPlatformSeparator(Path.Combine(jdkPath, "bin/java"));
+                    string javaPath = FileIO.SlashesToPlatformSeparator(Path.Combine(jdkPath, "bin/java"));
 #if UNITY_EDITOR_WIN
                     // Fix issue if paths contain spaces.
-                    var actualTemplatePath = '"' + templatePath + '"';
-                    var actualOutputPath = '"' + outputPath + '"';
-                    var actualJavaPath = '"' + javaPath + '"';
+                    string actualTemplatePath = '"' + templatePath + '"';
+                    string actualOutputPath = '"' + outputPath + '"';
+                    string actualJavaPath = '"' + javaPath + '"';
 
                     startInfo.FileName = javaPath;
-                    var command = string.Format(
-                        " -cp .\\ManifMerger\\* com.android.manifmerger.Merger --main {1}{2} --out {3}",
+                    string command = String.Format(" -cp .\\ManifMerger\\* com.android.manifmerger.Merger --main {1}{2} --out {3}", 
                         actualJavaPath, actualTemplatePath, libsPathsStr, actualOutputPath);
                     startInfo.Arguments = command;
 #else
@@ -189,7 +197,7 @@ namespace EasyMobile.Editor
                     startInfo.Arguments = "-c \"" + command + "\"";
 #endif
 
-                    var process = new Process();
+                    Process process = new Process();
                     process.StartInfo = startInfo;
                     process.OutputDataReceived += OnConsoleDataReceived;
                     process.ErrorDataReceived += OnConsoleErrorReceived;
@@ -226,3 +234,4 @@ namespace EasyMobile.Editor
         #endregion
     }
 }
+

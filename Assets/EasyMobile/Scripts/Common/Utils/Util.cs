@@ -15,11 +15,11 @@ namespace EasyMobile.Internal
         /// <returns><c>true</c> if is development build; otherwise, <c>false</c>.</returns>
         public static bool IsUnityDevelopmentBuild()
         {
-#if DEBUG || DEVELOPMENT_BUILD
+            #if DEBUG || DEVELOPMENT_BUILD
             return true;
-#else
+            #else
             return false;
-#endif
+            #endif
         }
 
         /// <summary>
@@ -30,7 +30,10 @@ namespace EasyMobile.Internal
         /// <typeparam name="T">The 1st type parameter.</typeparam>
         public static T NullArgumentTest<T>(T value)
         {
-            if (value == null) throw new ArgumentNullException(typeof(T).ToString());
+            if (value == null)
+            {
+                throw new ArgumentNullException(typeof(T).ToString());
+            }
 
             return value;
         }
@@ -44,7 +47,10 @@ namespace EasyMobile.Internal
         /// <typeparam name="T">The 1st type parameter.</typeparam>
         public static T NullArgumentTest<T>(T value, string paramName)
         {
-            if (value == null) throw new ArgumentNullException(paramName);
+            if (value == null)
+            {
+                throw new ArgumentNullException(paramName);
+            }
 
             return value;
         }
@@ -66,11 +72,17 @@ namespace EasyMobile.Internal
         /// <param name="span">Time span.</param>
         public static long ToMilliseconds(TimeSpan span)
         {
-            var millis = span.TotalMilliseconds;
+            double millis = span.TotalMilliseconds;
 
-            if (millis > long.MaxValue) return long.MaxValue;
+            if (millis > long.MaxValue)
+            {
+                return long.MaxValue;
+            }
 
-            if (millis < long.MinValue) return long.MinValue;
+            if (millis < long.MinValue)
+            {
+                return long.MinValue;
+            }
 
             return Convert.ToInt64(millis);
         }

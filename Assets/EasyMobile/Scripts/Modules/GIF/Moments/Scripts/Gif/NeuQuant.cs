@@ -31,40 +31,40 @@ namespace EM_Moments.Encoder
         protected static readonly int prime3 = 487;
         protected static readonly int prime4 = 503;
 
-        protected static readonly int minpicturebytes = 3 * prime4; // Minimum size for input image
+        protected static readonly int minpicturebytes = (3 * prime4); // Minimum size for input image
 
         // Network Definitions
-        protected static readonly int maxnetpos = netsize - 1;
+        protected static readonly int maxnetpos = (netsize - 1);
         protected static readonly int netbiasshift = 4; // Bias for colour values
         protected static readonly int ncycles = 100; // No. of learning cycles
 
         // Defs for freq and bias
         protected static readonly int intbiasshift = 16; // Bias for fractions
-        protected static readonly int intbias = (int) 1 << intbiasshift;
+        protected static readonly int intbias = (((int)1) << intbiasshift);
         protected static readonly int gammashift = 10; // Gamma = 1024
-        protected static readonly int gamma = (int) 1 << gammashift;
+        protected static readonly int gamma = (((int)1) << gammashift);
         protected static readonly int betashift = 10;
-        protected static readonly int beta = intbias >> betashift; // Beta = 1/1024
-        protected static readonly int betagamma = intbias << (gammashift - betashift);
+        protected static readonly int beta = (intbias >> betashift); // Beta = 1/1024
+        protected static readonly int betagamma = (intbias << (gammashift - betashift));
 
         // Defs for decreasing radius factor
-        protected static readonly int initrad = netsize >> 3; // For 256 cols, radius starts
+        protected static readonly int initrad = (netsize >> 3); // For 256 cols, radius starts
         protected static readonly int radiusbiasshift = 6; // At 32.0 biased by 6 bits
-        protected static readonly int radiusbias = (int) 1 << radiusbiasshift;
-        protected static readonly int initradius = initrad * radiusbias; // And decreases by a
+        protected static readonly int radiusbias = (((int)1) << radiusbiasshift);
+        protected static readonly int initradius = (initrad * radiusbias); // And decreases by a
         protected static readonly int radiusdec = 30; // Factor of 1/30 each cycle
 
         // Defs for decreasing alpha factor
         protected static readonly int alphabiasshift = 10; /* alpha starts at 1.0 */
-        protected static readonly int initalpha = (int) 1 << alphabiasshift;
+        protected static readonly int initalpha = (((int)1) << alphabiasshift);
 
         protected int alphadec; // Biased by 10 bits
 
         // Radbias and alpharadbias used for radpower calculation
         protected static readonly int radbiasshift = 8;
-        protected static readonly int radbias = (int) 1 << radbiasshift;
-        protected static readonly int alpharadbshift = alphabiasshift + radbiasshift;
-        protected static readonly int alpharadbias = (int) 1 << alpharadbshift;
+        protected static readonly int radbias = (((int)1) << radbiasshift);
+        protected static readonly int alpharadbshift = (alphabiasshift + radbiasshift);
+        protected static readonly int alpharadbias = (((int)1) << alpharadbshift);
 
         // Types and Global Variables
         protected byte[] thepicture; // The input image itself
@@ -99,19 +99,19 @@ namespace EM_Moments.Encoder
 
         public byte[] ColorMap()
         {
-            var map = new byte[3 * netsize];
-            var index = new int[netsize];
+            byte[] map = new byte[3 * netsize];
+            int[] index = new int[netsize];
 
-            for (var i = 0; i < netsize; i++)
+            for (int i = 0; i < netsize; i++)
                 index[network[i][3]] = i;
 
-            var k = 0;
-            for (var i = 0; i < netsize; i++)
+            int k = 0;
+            for (int i = 0; i < netsize; i++)
             {
-                var j = index[i];
-                map[k++] = (byte) network[j][0];
-                map[k++] = (byte) network[j][1];
-                map[k++] = (byte) network[j][2];
+                int j = index[i];
+                map[k++] = (byte)(network[j][0]);
+                map[k++] = (byte)(network[j][1]);
+                map[k++] = (byte)(network[j][2]);
             }
 
             return map;
@@ -194,7 +194,7 @@ namespace EM_Moments.Encoder
             if (lengthcount < minpicturebytes)
                 samplefac = 1;
 
-            alphadec = 30 + (samplefac - 1) / 3;
+            alphadec = 30 + ((samplefac - 1) / 3);
             p = thepicture;
             pix = 0;
             lim = lengthcount;
@@ -209,25 +209,25 @@ namespace EM_Moments.Encoder
                 rad = 0;
 
             for (i = 0; i < rad; i++)
-                radpower[i] = alpha * ((rad * rad - i * i) * radbias / (rad * rad));
+                radpower[i] = alpha * (((rad * rad - i * i) * radbias) / (rad * rad));
 
             if (lengthcount < minpicturebytes)
             {
                 step = 3;
             }
-            else if (lengthcount % prime1 != 0)
+            else if ((lengthcount % prime1) != 0)
             {
                 step = 3 * prime1;
             }
             else
             {
-                if (lengthcount % prime2 != 0)
+                if ((lengthcount % prime2) != 0)
                 {
                     step = 3 * prime2;
                 }
                 else
                 {
-                    if (lengthcount % prime3 != 0)
+                    if ((lengthcount % prime3) != 0)
                         step = 3 * prime3;
                     else
                         step = 3 * prime4;
@@ -267,7 +267,7 @@ namespace EM_Moments.Encoder
                         rad = 0;
 
                     for (j = 0; j < rad; j++)
-                        radpower[j] = alpha * ((rad * rad - j * j) * radbias / (rad * rad));
+                        radpower[j] = alpha * (((rad * rad - j * j) * radbias) / (rad * rad));
                 }
             }
         }
@@ -284,7 +284,7 @@ namespace EM_Moments.Encoder
             i = netindex[g]; // Index on g
             j = i - 1; // Start at netindex[g] and work outwards
 
-            while (i < netsize || j >= 0)
+            while ((i < netsize) || (j >= 0))
             {
                 if (i < netsize)
                 {
@@ -414,24 +414,24 @@ namespace EM_Moments.Encoder
             k = i - 1;
             m = 1;
 
-            while (j < hi || k > lo)
+            while ((j < hi) || (k > lo))
             {
                 a = radpower[m++];
 
                 if (j < hi)
                 {
                     p = network[j++];
-                    p[0] -= a * (p[0] - b) / alpharadbias;
-                    p[1] -= a * (p[1] - g) / alpharadbias;
-                    p[2] -= a * (p[2] - r) / alpharadbias;
+                    p[0] -= (a * (p[0] - b)) / alpharadbias;
+                    p[1] -= (a * (p[1] - g)) / alpharadbias;
+                    p[2] -= (a * (p[2] - r)) / alpharadbias;
                 }
 
                 if (k > lo)
                 {
                     p = network[k--];
-                    p[0] -= a * (p[0] - b) / alpharadbias;
-                    p[1] -= a * (p[1] - g) / alpharadbias;
-                    p[2] -= a * (p[2] - r) / alpharadbias;
+                    p[0] -= (a * (p[0] - b)) / alpharadbias;
+                    p[1] -= (a * (p[1] - g)) / alpharadbias;
+                    p[2] -= (a * (p[2] - r)) / alpharadbias;
                 }
             }
         }
@@ -440,10 +440,10 @@ namespace EM_Moments.Encoder
         protected void Altersingle(int alpha, int i, int b, int g, int r)
         {
             /* Alter hit neuron */
-            var n = network[i];
-            n[0] -= alpha * (n[0] - b) / initalpha;
-            n[1] -= alpha * (n[1] - g) / initalpha;
-            n[2] -= alpha * (n[2] - r) / initalpha;
+            int[] n = network[i];
+            n[0] -= (alpha * (n[0] - b)) / initalpha;
+            n[1] -= (alpha * (n[1] - g)) / initalpha;
+            n[2] -= (alpha * (n[2] - r)) / initalpha;
         }
 
         // Search for biased BGR values
@@ -458,7 +458,7 @@ namespace EM_Moments.Encoder
             int bestpos, bestbiaspos, bestd, bestbiasd;
             int[] n;
 
-            bestd = ~((int) 1 << 31);
+            bestd = ~(((int)1) << 31);
             bestbiasd = bestd;
             bestpos = -1;
             bestbiaspos = bestpos;
@@ -490,7 +490,7 @@ namespace EM_Moments.Encoder
                     bestpos = i;
                 }
 
-                biasdist = dist - (bias[i] >> (intbiasshift - netbiasshift));
+                biasdist = dist - ((bias[i]) >> (intbiasshift - netbiasshift));
 
                 if (biasdist < bestbiasd)
                 {
@@ -498,9 +498,9 @@ namespace EM_Moments.Encoder
                     bestbiaspos = i;
                 }
 
-                betafreq = freq[i] >> betashift;
+                betafreq = (freq[i] >> betashift);
                 freq[i] -= betafreq;
-                bias[i] += betafreq << gammashift;
+                bias[i] += (betafreq << gammashift);
             }
 
             freq[bestpos] += beta;

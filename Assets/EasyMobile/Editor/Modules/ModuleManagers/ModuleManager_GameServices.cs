@@ -32,7 +32,7 @@ namespace EasyMobile.Editor
         protected override void InternalEnableModule()
         {
             // Check if Google Play Games plugin is available.
-            var isGPGSAvail = EM_ExternalPluginManager.IsGPGSAvail();
+            bool isGPGSAvail = EM_ExternalPluginManager.IsGPGSAvail();
             if (isGPGSAvail)
             {
                 // We won't use Google Play Game Services on iOS, so we'll define NO_GPGS symbol to disable it
@@ -53,14 +53,37 @@ namespace EasyMobile.Editor
             GlobalDefineManager.SDS_RemoveDefineOnAllPlatforms(EM_ScriptingSymbols.GooglePlayGames);
         }
 
-        public override List<string> AndroidManifestTemplatePaths => null;
+        public override List<string> AndroidManifestTemplatePaths
+        {
+            get
+            {
+                return null;
+            }
+        }
 
-        public override IAndroidPermissionRequired AndroidPermissionsHolder =>
-            EM_Settings.GameServices as IAndroidPermissionRequired;
+        public override IAndroidPermissionRequired AndroidPermissionsHolder
+        {
+            get
+            {
+                return EM_Settings.GameServices as IAndroidPermissionRequired;
+            }
+        }
 
-        public override IIOSInfoItemRequired iOSInfoItemsHolder => EM_Settings.GameServices as IIOSInfoItemRequired;
+        public override IIOSInfoItemRequired iOSInfoItemsHolder
+        {
+            get
+            {
+                return EM_Settings.GameServices as IIOSInfoItemRequired;
+            }
+        }
 
-        public override Module SelfModule => Module.GameServices;
+        public override Module SelfModule
+        {
+            get
+            {
+                return Module.GameServices;
+            }
+        }
 
         #endregion
     }

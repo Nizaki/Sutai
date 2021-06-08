@@ -15,13 +15,13 @@ namespace EasyMobile
         /// Gets the ad ID for iOS platform.
         /// </summary>
         /// <value>The ios identifier.</value>
-        public override string IosId => Util.AutoTrimId(mIosId);
+        public override string IosId { get { return Util.AutoTrimId(mIosId); } }
 
         /// <summary>
         /// Gets the ad ID for Android platform.
         /// </summary>
         /// <value>The android identifier.</value>
-        public override string AndroidId => Util.AutoTrimId(mAndroidId);
+        public override string AndroidId { get { return Util.AutoTrimId(mAndroidId); } }
 
         public AdId(string iOSId, string androidId)
             : base(iOSId, androidId)

@@ -37,7 +37,10 @@ namespace EasyMobile.Internal.Gif.Android
                 GifExportCompleted(taskId, filepath);
 
             // Free the GC handles and IntPtr
-            foreach (var gch in gcHandles[taskId]) gch.Free();
+            foreach (var gch in gcHandles[taskId])
+            {
+                gch.Free();
+            }
 
             gcHandles.Remove(taskId);
         }
@@ -68,7 +71,7 @@ namespace EasyMobile.Internal.Gif.Android
             var gcHandleArray = new GCHandle[imageData.Length];
             var ptrArray = new IntPtr[imageData.Length];
 
-            for (var i = 0; i < imageData.Length; i++)
+            for (int i = 0; i < imageData.Length; i++)
             {
                 gcHandleArray[i] = GCHandle.Alloc(imageData[i], GCHandleType.Pinned);
                 ptrArray[i] = gcHandleArray[i].AddrOfPinnedObject();
@@ -136,12 +139,10 @@ namespace EasyMobile.Internal.Gif.Android
             var gcHandleArray = new GCHandle[frameCount];
             var ptrArray = new IntPtr[frameCount];
 
-            for (var i = 0; i < frameCount; i++)
+            for (int i = 0; i < frameCount; i++)
             {
                 gcHandleArray[i] = GCHandle.Alloc(new GifFrameMetadata(), GCHandleType.Pinned);
-                ptrArray[i] =
-                    gcHandleArray[i]
-                        .AddrOfPinnedObject(); // fill the pointers sent by native code with the object pointer we've just pinned.
+                ptrArray[i] = gcHandleArray[i].AddrOfPinnedObject();   // fill the pointers sent by native code with the object pointer we've just pinned.
             }
 
             // Copy pointers to unmanaged holder.
@@ -152,8 +153,7 @@ namespace EasyMobile.Internal.Gif.Android
         }
 
         [MonoPInvokeCallback(typeof(C.NativeGetImageDataHolderDelegate))]
-        private static void GetImageDataHolderFunc(int taskId, int frameCount, int frameWidth, int frameHeight,
-            IntPtr pointerHolder)
+        private static void GetImageDataHolderFunc(int taskId, int frameCount, int frameWidth, int frameHeight, IntPtr pointerHolder)
         {
             if (frameCount <= 0 || PInvokeUtil.IsNull(pointerHolder))
             {
@@ -162,21 +162,19 @@ namespace EasyMobile.Internal.Gif.Android
             }
 
             // Create managed buffer for unmanaged code to fill data in.
-            var frameSize = frameWidth * frameHeight;
+            int frameSize = frameWidth * frameHeight;
             var buff = new Color32[frameCount][];
 
-            for (var i = 0; i < frameCount; i++)
+            for (int i = 0; i < frameCount; i++)
                 buff[i] = new Color32[frameSize];
 
             var gcHandleArray = new GCHandle[frameCount];
             var ptrArray = new IntPtr[frameCount];
 
-            for (var i = 0; i < buff.Length; i++)
+            for (int i = 0; i < buff.Length; i++)
             {
                 gcHandleArray[i] = GCHandle.Alloc(buff[i], GCHandleType.Pinned);
-                ptrArray[i] =
-                    gcHandleArray[i]
-                        .AddrOfPinnedObject(); // fill the pointers sent by native code with the object pointer we've just pinned.
+                ptrArray[i] = gcHandleArray[i].AddrOfPinnedObject();   // fill the pointers sent by native code with the object pointer we've just pinned.
             }
 
             // Copy pointers to unmanaged holder.
@@ -202,32 +200,30 @@ namespace EasyMobile.Internal.Gif.Android
 
             try
             {
-                gifMetadata = (GifMetadata) taskResources.gifMetadataHandle.Target;
+                gifMetadata = (GifMetadata)taskResources.gifMetadataHandle.Target;
 
                 if (taskResources.frameMetadataHandles != null || taskResources.imageDataHandles != null)
                 {
                     imageData = new Color32[taskResources.imageDataHandles.Length][];
                     gifFrameMetadata = new GifFrameMetadata[taskResources.frameMetadataHandles.Length];
 
-                    for (var i = 0; i < taskResources.frameMetadataHandles.Length; i++)
-                        gifFrameMetadata[i] = (GifFrameMetadata) taskResources.frameMetadataHandles[i].Target;
+                    for (int i = 0; i < taskResources.frameMetadataHandles.Length; i++)
+                        gifFrameMetadata[i] = (GifFrameMetadata)taskResources.frameMetadataHandles[i].Target;
 
-                    for (var j = 0; j < taskResources.imageDataHandles.Length; j++)
-                        imageData[j] = (Color32[]) taskResources.imageDataHandles[j].Target;
+                    for (int j = 0; j < taskResources.imageDataHandles.Length; j++)
+                        imageData[j] = (Color32[])taskResources.imageDataHandles[j].Target;
                 }
 
                 if (taskResources.completeCallback != null)
                 {
-                    var callback =
-                        taskResources
-                            .completeCallback; // cache the callback reference as we'll reset taskResources soon.
+                    var callback = taskResources.completeCallback;  // cache the callback reference as we'll reset taskResources soon.
                     RuntimeHelper.RunOnMainThread(() =>
                     {
                         callback(taskId, gifMetadata, gifFrameMetadata, imageData);
                     });
                 }
             }
-            catch (InvalidCastException e)
+            catch (System.InvalidCastException e)
             {
                 Debug.LogError("Error casting GCHandle back to decoding buffer:" + e);
                 throw e;
@@ -249,14 +245,12 @@ namespace EasyMobile.Internal.Gif.Android
             }
         }
 
-        internal static void DecodeGif(int taskId, string filepath, System.Threading.ThreadPriority workerPriority,
-            DecodeCompleteCallback completeCallback)
+        internal static void DecodeGif(int taskId, string filepath, System.Threading.ThreadPriority workerPriority, DecodeCompleteCallback completeCallback)
         {
             DecodeGif(taskId, filepath, -1, workerPriority, completeCallback); // framesToRead == -1: read whole GIF
         }
 
-        internal static void DecodeGif(int taskId, string filepath, int framesToRead,
-            System.Threading.ThreadPriority workerPriority, DecodeCompleteCallback completeCallback)
+        internal static void DecodeGif(int taskId, string filepath, int framesToRead, System.Threading.ThreadPriority workerPriority, DecodeCompleteCallback completeCallback)
         {
             var decodeTask = new GifDecodeTask()
             {
@@ -290,12 +284,12 @@ namespace EasyMobile.Internal.Gif.Android
             };
 
             C._DecodeGif(taskId,
-                filepath,
-                framesToRead,
-                gifMetaHolderHandle.AddrOfPinnedObject(),
-                GetFrameMetadataHolderFunc,
-                GetImageDataHolderFunc,
-                GifDecodingCompleteCallback);
+            filepath,
+            framesToRead,
+            gifMetaHolderHandle.AddrOfPinnedObject(),
+            GetFrameMetadataHolderFunc,
+            GetImageDataHolderFunc,
+            GifDecodingCompleteCallback);
         }
 
         #endregion
@@ -305,41 +299,36 @@ namespace EasyMobile.Internal.Gif.Android
         private static class C
         {
             internal delegate void GifExportProgressDelegate(int taskId, float progress);
-
             internal delegate void GifExportCompletedDelegate(int taskId, string filepath);
-
-            internal delegate void NativeGetFrameMetadataHolderDelegate(int taskId, int frameCount,
-                IntPtr pointerHolder);
-
-            internal delegate void NativeGetImageDataHolderDelegate(int taskId, int frameCount, int frameWidth,
-                int frameHeight, IntPtr pointerHolder);
-
+            internal delegate void NativeGetFrameMetadataHolderDelegate(int taskId, int frameCount, IntPtr pointerHolder);
+            internal delegate void NativeGetImageDataHolderDelegate(int taskId, int frameCount, int frameWidth, int frameHeight, IntPtr pointerHolder);
             internal delegate void NativeGifDecodingCompletedDelegate(int taskId);
 
             [DllImport("easymobile")]
             internal static extern void _ExportGif(int taskId,
-                string filepath,
-                int width,
-                int height,
-                int loop,
-                int fps,
-                int sampleFac,
-                int frameCount,
-                IntPtr[] imageData,
-                GifExportProgressDelegate exportingCallback,
-                GifExportCompletedDelegate exportCompletedCallback);
+                                                  string filepath,
+                                                  int width,
+                                                  int height,
+                                                  int loop,
+                                                  int fps,
+                                                  int sampleFac,
+                                                  int frameCount,
+                                                  IntPtr[] imageData,
+                                                  GifExportProgressDelegate exportingCallback,
+                                                  GifExportCompletedDelegate exportCompletedCallback);
 
             [DllImport("easymobile")]
             internal static extern void _DecodeGif(int taskId,
-                string filepath,
-                int framesToRead, // <= 0: read whole GIF
-                [In] [Out] /* GifMetadata* */IntPtr gifMetadataBuff,
-                NativeGetFrameMetadataHolderDelegate getMetadataHolder,
-                NativeGetImageDataHolderDelegate getImageDataHolder,
-                NativeGifDecodingCompletedDelegate completeCallback);
+               string filepath,
+               int framesToRead,    // <= 0: read whole GIF
+               [In, Out]/* GifMetadata* */IntPtr gifMetadataBuff,
+               NativeGetFrameMetadataHolderDelegate getMetadataHolder,
+               NativeGetImageDataHolderDelegate getImageDataHolder,
+               NativeGifDecodingCompletedDelegate completeCallback);
 
             [DllImport("easymobile")]
             internal static extern void _CopyPointerArray(IntPtr destPtrArray, IntPtr[] srcPtrArray, int length);
+
         }
 
         #endregion

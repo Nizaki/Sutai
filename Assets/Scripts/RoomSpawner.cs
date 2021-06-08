@@ -1,18 +1,14 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using Random = UnityEngine.Random;
 
 [RequireComponent(typeof(Rigidbody2D))]
 [RequireComponent(typeof(BoxCollider2D))]
 public class RoomSpawner : MonoBehaviour
 {
     public RoomDirection openingDirection;
-    private RoomTemplates template;
+    public bool spawned;
     private int rand;
-    public bool spawned = false;
     private Transform root;
+    private RoomTemplates template;
 
     private void Start()
     {
@@ -20,6 +16,16 @@ public class RoomSpawner : MonoBehaviour
         root = GameObject.FindGameObjectWithTag("RootRoom").transform;
         Invoke(nameof(SpawnRoom), 0.2f);
         DataBank.score += 1;
+    }
+
+    private void OnTriggerEnter2D(Collider2D other)
+    {
+        if (other.CompareTag("RoomSpawnPoint"))
+        {
+            if (other.GetComponent<RoomSpawner>().spawned == false && spawned == false) Destroy(gameObject);
+
+            spawned = true;
+        }
     }
 
     // Update is called once per frame
@@ -60,20 +66,11 @@ public class RoomSpawner : MonoBehaviour
             go.transform.parent = root;
             var room = go.AddComponent<Room>();
             room.spawnable = true;
-            template.rooms.Add(go);
+            room.rt = template;
+            template.rooms.Add(room);
         }
 
         spawned = true;
-    }
-
-    private void OnTriggerEnter2D(Collider2D other)
-    {
-        if (other.CompareTag("RoomSpawnPoint"))
-        {
-            if (other.GetComponent<RoomSpawner>().spawned == false && spawned == false) Destroy(gameObject);
-
-            spawned = true;
-        }
     }
 }
 

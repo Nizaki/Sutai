@@ -22,13 +22,15 @@ namespace EasyMobile.Editor
         internal static GameObject CreateEasyMobilePrefab(bool showAlert = false)
         {
             // Stop if the prefab is already created.
-            var prefabPath = EM_Constants.MainPrefabPath;
-            var existingPrefab = EM_EditorUtil.GetMainPrefab();
+            string prefabPath = EM_Constants.MainPrefabPath;
+            GameObject existingPrefab = EM_EditorUtil.GetMainPrefab();
 
             if (existingPrefab != null)
             {
                 if (showAlert)
+                {
                     EM_EditorUtil.Alert("Prefab Exists", "EasyMobile.prefab already exists at " + prefabPath);
+                }
 
                 return existingPrefab;
             }
@@ -37,19 +39,23 @@ namespace EasyMobile.Editor
             FileIO.EnsureFolderExists(EM_Constants.MainPrefabFolder);
 
             // Create a temporary gameObject and then create the prefab from it.
-            var tmpObj = new GameObject(EM_Constants.MainPrefabName);
+            GameObject tmpObj = new GameObject(EM_Constants.MainPrefabName);
 
             // Generate the prefab from the temporary game object.
-            var prefabObj = PrefabUtility.CreatePrefab(prefabPath, tmpObj);
-            Object.DestroyImmediate(tmpObj);
+            GameObject prefabObj = PrefabUtility.CreatePrefab(prefabPath, tmpObj);
+            GameObject.DestroyImmediate(tmpObj);
 
             AssetDatabase.SaveAssets();
             AssetDatabase.Refresh();
 
             if (showAlert)
+            {
                 EM_EditorUtil.Alert("Prefab Created", "EasyMobile.prefab was created at " + prefabPath);
+            }
             else
+            {
                 Debug.Log("EasyMobile.prefab was created at " + prefabPath);
+            }
 
             return prefabObj;
         }
@@ -57,15 +63,18 @@ namespace EasyMobile.Editor
         internal static EM_Settings CreateEMSettingsAsset()
         {
             // Stop if the asset is already created.
-            var instance = EM_Settings.LoadSettingsAsset();
-            if (instance != null) return instance;
+            EM_Settings instance = EM_Settings.LoadSettingsAsset();
+            if (instance != null)
+            {
+                return instance;
+            }
 
             // Create Resources folder if it doesn't exist.
             FileIO.EnsureFolderExists(EM_Constants.ResourcesFolder);
 
             // Now create the asset inside the Resources folder.
             instance = EM_Settings.Instance; // this will create a new instance of the EMSettings scriptable.
-            AssetDatabase.CreateAsset(instance, EM_Constants.SettingsAssetPath);
+            AssetDatabase.CreateAsset(instance, EM_Constants.SettingsAssetPath);    
             AssetDatabase.SaveAssets();
             AssetDatabase.Refresh();
 
@@ -77,20 +86,20 @@ namespace EasyMobile.Editor
         //------------------------------------------------------------------
         // Saved Games (EM Pro)
         //------------------------------------------------------------------
-#if EASY_MOBILE_PRO
+        #if EASY_MOBILE_PRO
         internal static GameObject CreateClipPlayer(GameObject parent = null)
         {
             // Calculate object index in the current context
-            var nameIndex = CalculateGameObjectIndex(parent, ClipPlayerName);
+            int nameIndex = CalculateGameObjectIndex(parent, ClipPlayerName);
 
             // Create a quad
-            var player = GameObject.CreatePrimitive(PrimitiveType.Quad);
+            GameObject player = GameObject.CreatePrimitive(PrimitiveType.Quad);
 
             // Give it a name
             player.name = nameIndex > 0 ? ClipPlayerName + " (" + nameIndex + ")" : ClipPlayerName;
 
             // Set its material
-            var mat = AssetDatabase.LoadAssetAtPath<Material>(EM_Constants.ClipPlayerMaterialPath);
+            Material mat = AssetDatabase.LoadAssetAtPath<Material>(EM_Constants.ClipPlayerMaterialPath);
             player.GetComponent<MeshRenderer>().material = mat;
 
             // Add the ClipPlayer component
@@ -105,29 +114,29 @@ namespace EasyMobile.Editor
         internal static GameObject CreateClipPlayerUI(GameObject parent = null)
         {
             // Since this is a UI element, we need to make sure it lives inside a canvas
-            if (parent == null || parent != null && parent.transform.root.GetComponent<Canvas>() == null)
+            if (parent == null || (parent != null && parent.transform.root.GetComponent<Canvas>() == null))
             {
-                var existingCanvas = Object.FindObjectOfType<Canvas>();
+                var existingCanvas = GameObject.FindObjectOfType<Canvas>();
                 if (existingCanvas != null)
                     parent = existingCanvas.gameObject;
                 else
-                    parent = CreateCanvas(null); // create a new canvas at scene root
+                    parent = CreateCanvas(null);    // create a new canvas at scene root
             }
-
-            var nameIndex = CalculateGameObjectIndex(parent, ClipPlayerUIName);
-            var player = new GameObject(nameIndex > 0 ? ClipPlayerUIName + " (" + nameIndex + ")" : ClipPlayerUIName);
+        
+            int nameIndex = CalculateGameObjectIndex(parent, ClipPlayerUIName);
+            GameObject player = new GameObject(nameIndex > 0 ? ClipPlayerUIName + " (" + nameIndex + ")" : ClipPlayerUIName);
             player.AddComponent<RawImage>();
             player.AddComponent<ClipPlayerUI>();
             GameObjectUtility.SetParentAndAlign(player, parent);
-
+        
             return player;
         }
-#endif
+        #endif
 
         internal static GameObject CreateCanvas(GameObject parent = null)
         {
-            var canvas = new GameObject(CanvasName);
-
+            GameObject canvas = new GameObject(CanvasName);
+        
             // Add required components of a canvas
             var canvasComp = canvas.AddComponent<Canvas>();
             canvasComp.renderMode = RenderMode.ScreenSpaceOverlay;
@@ -144,11 +153,11 @@ namespace EasyMobile.Editor
         internal static GameObject CreateEventSystem(GameObject parent = null)
         {
             // Only one EventSystem should exist.
-            var existingES = Object.FindObjectOfType<EventSystem>();
+            var existingES = GameObject.FindObjectOfType<EventSystem>();
             if (existingES != null)
                 return existingES.gameObject;
 
-            var eventSystem = new GameObject(EventSystemName);
+            GameObject eventSystem = new GameObject(EventSystemName);
             eventSystem.AddComponent<EventSystem>();
             eventSystem.AddComponent<StandaloneInputModule>();
             GameObjectUtility.SetParentAndAlign(eventSystem, parent);
@@ -164,13 +173,13 @@ namespace EasyMobile.Editor
         /// <param name="baseName">Base name.</param>
         internal static int CalculateGameObjectIndex(GameObject parent, string baseName)
         {
-            var pattern = "^" + baseName + " \\([0-9]+\\)$"; // baseName with index in brackets, e.g. baseName (1)
+            string pattern = "^" + baseName + " \\([0-9]+\\)$"; // baseName with index in brackets, e.g. baseName (1)
             List<GameObject> objects;
 
             if (parent == null)
             {
                 // Get all root objects.
-                var scene = SceneManager.GetActiveScene();
+                Scene scene = EditorSceneManager.GetActiveScene();
                 objects = new List<GameObject>(scene.rootCount);
                 scene.GetRootGameObjects(objects);
             }
@@ -182,19 +191,22 @@ namespace EasyMobile.Editor
                     objects.Add(childTf.gameObject);
             }
 
-            var foundIndexZeroObj = false;
-            var indexedObjectsCount = 0;
+            bool foundIndexZeroObj = false;
+            int indexedObjectsCount = 0;
 
             foreach (var obj in objects)
+            {
                 if (obj.name.Equals(baseName))
                     foundIndexZeroObj = true;
                 else if (Regex.IsMatch(obj.name, pattern))
                     indexedObjectsCount++;
+            }
 
             if (!foundIndexZeroObj)
                 return 0;
             else
                 return indexedObjectsCount + 1;
         }
+
     }
 }

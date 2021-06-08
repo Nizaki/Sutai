@@ -42,8 +42,7 @@ namespace EasyMobile
         /// <param name="placement">Placement.</param>
         /// <param name="position">Position.</param>
         /// <param name="size">Size.</param>
-        protected abstract void InternalShowBannerAd(AdPlacement placement, BannerAdPosition position,
-            BannerAdSize size);
+        protected abstract void InternalShowBannerAd(AdPlacement placement, BannerAdPosition position, BannerAdSize size);
 
         /// <summary>
         /// Instructs the underlaying SDK to hide a banner ad. Only invoked if the client is initialized.
@@ -138,15 +137,25 @@ namespace EasyMobile
         /// All the custom interstitial <see cref="AdPlacement"/>(s) defined in <see cref="EM_Settings"/>.
         /// If there's no such custom placement defined, this will return <c>null</c>.
         /// </summary>
-        public List<AdPlacement> DefinedCustomInterstitialAdPlacements =>
-            GetCustomPlacementsFromDefinedDict(CustomInterstitialAdsDict);
+        public List<AdPlacement> DefinedCustomInterstitialAdPlacements
+        {
+            get
+            {
+                return GetCustomPlacementsFromDefinedDict(CustomInterstitialAdsDict);
+            }
+        }
 
         /// <summary>
         /// All the custom rewarded <see cref="AdPlacement"/>(s) defined in <see cref="EM_Settings"/>.
         /// If there's no such custom placement defined, this will return <c>null</c>.
         /// </summary>
-        public List<AdPlacement> DefinedCustomRewardedAdPlacements =>
-            GetCustomPlacementsFromDefinedDict(CustomRewardedAdsDict);
+        public List<AdPlacement> DefinedCustomRewardedAdPlacements
+        {
+            get
+            {
+                return GetCustomPlacementsFromDefinedDict(CustomRewardedAdsDict);
+            }
+        }
 
         /// <summary>
         /// Defined interstitial <see cref="AdPlacement"/>(s) in <see cref="EM_Settings"/>.
@@ -163,7 +172,10 @@ namespace EasyMobile
         /// </summary>
         /// <value>true</value>
         /// <c>false</c>
-        public virtual bool IsInitialized => mIsInitialized;
+        public virtual bool IsInitialized
+        {
+            get { return mIsInitialized; }
+        }
 
         /// <summary>
         /// Initializes the client.
@@ -505,12 +517,19 @@ namespace EasyMobile
         protected virtual string FindIdForPlacement(Dictionary<AdPlacement, AdId> dict, AdPlacement placement)
         {
             AdId idObj = null;
-            if (placement != null && dict != null) dict.TryGetValue(placement, out idObj);
+            if (placement != null && dict != null)
+            {
+                dict.TryGetValue(placement, out idObj);
+            }
 
             if (idObj != null && !string.IsNullOrEmpty(idObj.Id))
+            {
                 return idObj.Id;
+            }
             else
+            {
                 return string.Empty;
+            }
         }
 
         /// <summary>
@@ -522,7 +541,7 @@ namespace EasyMobile
             if (Network == AdNetwork.None)
                 return false;
 
-            var isInit = IsInitialized;
+            bool isInit = IsInitialized;
 
             if (!isInit && logMessage)
                 Debug.Log("Please initialize the " + Network.ToString() + " client first.");
@@ -538,14 +557,13 @@ namespace EasyMobile
             if (dict == null || dict.Count < 1)
                 return null;
 
-            var definedPlacements = new List<AdPlacement>();
+            List<AdPlacement> definedPlacements = new List<AdPlacement>();
             foreach (var pair in dict)
             {
                 var placement = pair.Key;
                 if (placement != null && placement != AdPlacement.Default && !definedPlacements.Contains(placement))
                     definedPlacements.Add(placement);
             }
-
             return definedPlacements;
         }
 
@@ -564,7 +582,10 @@ namespace EasyMobile
         /// </summary>
         public virtual ConsentStatus DataPrivacyConsent
         {
-            get => ReadDataPrivacyConsent();
+            get
+            {
+                return ReadDataPrivacyConsent();
+            }
             private set
             {
                 if (DataPrivacyConsent != value)
@@ -650,5 +671,6 @@ namespace EasyMobile
         protected abstract void ApplyDataPrivacyConsent(ConsentStatus consent);
 
         #endregion
+
     }
 }

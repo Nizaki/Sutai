@@ -1,12 +1,9 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class UiManger : MonoBehaviour
 {
-    public static UiManger Instance { get; private set; }
     public GameObject upgradePanel;
+    public static UiManger Instance { get; private set; }
 
     private void Awake()
     {
@@ -17,10 +14,5 @@ public class UiManger : MonoBehaviour
         }
 
         if (Instance == null) Instance = this;
-    }
-
-    // Update is called once per frame
-    private void Update()
-    {
     }
 }

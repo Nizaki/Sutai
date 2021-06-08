@@ -26,7 +26,6 @@
  * TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
  * SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
-
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -85,21 +84,24 @@ namespace EasyMobile.MiniJSON
         public static object Deserialize(string json)
         {
             // save the string for debug information
-            if (json == null) return null;
+            if (json == null)
+            {
+                return null;
+            }
 
             return Parser.Parse(json);
         }
 
-        private sealed class Parser : IDisposable
+        sealed class Parser : IDisposable
         {
-            private const string WORD_BREAK = "{}[],:\"";
+            const string WORD_BREAK = "{}[],:\"";
 
             public static bool IsWordBreak(char c)
             {
-                return char.IsWhiteSpace(c) || WORD_BREAK.IndexOf(c) != -1;
+                return Char.IsWhiteSpace(c) || WORD_BREAK.IndexOf(c) != -1;
             }
 
-            private enum TOKEN
+            enum TOKEN
             {
                 NONE,
                 CURLY_OPEN,
@@ -112,12 +114,13 @@ namespace EasyMobile.MiniJSON
                 NUMBER,
                 TRUE,
                 FALSE,
-                NULL
-            };
+                NULL}
 
-            private StringReader json;
+            ;
 
-            private Parser(string jsonString)
+            StringReader json;
+
+            Parser(string jsonString)
             {
                 json = new StringReader(jsonString);
             }
@@ -136,15 +139,16 @@ namespace EasyMobile.MiniJSON
                 json = null;
             }
 
-            private Dictionary<string, object> ParseObject()
+            Dictionary<string, object> ParseObject()
             {
-                var table = new Dictionary<string, object>();
+                Dictionary<string, object> table = new Dictionary<string, object>();
 
                 // ditch opening brace
                 json.Read();
 
                 // {
                 while (true)
+                {
                     switch (NextToken)
                     {
                         case TOKEN.NONE:
@@ -154,24 +158,31 @@ namespace EasyMobile.MiniJSON
                         case TOKEN.CURLY_CLOSE:
                             return table;
                         default:
-                            // name
-                            var name = ParseString();
-                            if (name == null) return null;
+                        // name
+                            string name = ParseString();
+                            if (name == null)
+                            {
+                                return null;
+                            }
 
-                            // :
-                            if (NextToken != TOKEN.COLON) return null;
-                            // ditch the colon
+                        // :
+                            if (NextToken != TOKEN.COLON)
+                            {
+                                return null;
+                            }
+                        // ditch the colon
                             json.Read();
 
-                            // value
+                        // value
                             table[name] = ParseValue();
                             break;
                     }
+                }
             }
 
-            private List<object> ParseArray()
+            List<object> ParseArray()
             {
-                var array = new List<object>();
+                List<object> array = new List<object>();
 
                 // ditch opening bracket
                 json.Read();
@@ -180,7 +191,7 @@ namespace EasyMobile.MiniJSON
                 var parsing = true;
                 while (parsing)
                 {
-                    var nextToken = NextToken;
+                    TOKEN nextToken = NextToken;
 
                     switch (nextToken)
                     {
@@ -192,7 +203,7 @@ namespace EasyMobile.MiniJSON
                             parsing = false;
                             break;
                         default:
-                            var value = ParseByToken(nextToken);
+                            object value = ParseByToken(nextToken);
 
                             array.Add(value);
                             break;
@@ -202,13 +213,13 @@ namespace EasyMobile.MiniJSON
                 return array;
             }
 
-            private object ParseValue()
+            object ParseValue()
             {
-                var nextToken = NextToken;
+                TOKEN nextToken = NextToken;
                 return ParseByToken(nextToken);
             }
 
-            private object ParseByToken(TOKEN token)
+            object ParseByToken(TOKEN token)
             {
                 switch (token)
                 {
@@ -231,17 +242,18 @@ namespace EasyMobile.MiniJSON
                 }
             }
 
-            private string ParseString()
+            string ParseString()
             {
-                var s = new StringBuilder();
+                StringBuilder s = new StringBuilder();
                 char c;
 
                 // ditch opening quote
                 json.Read();
 
-                var parsing = true;
+                bool parsing = true;
                 while (parsing)
                 {
+
                     if (json.Peek() == -1)
                     {
                         parsing = false;
@@ -287,12 +299,14 @@ namespace EasyMobile.MiniJSON
                                 case 'u':
                                     var hex = new char[4];
 
-                                    for (var i = 0; i < 4; i++) hex[i] = NextChar;
+                                    for (int i = 0; i < 4; i++)
+                                    {
+                                        hex[i] = NextChar;
+                                    }
 
-                                    s.Append((char) Convert.ToInt32(new string(hex), 16));
+                                    s.Append((char)Convert.ToInt32(new string(hex), 16));
                                     break;
                             }
-
                             break;
                         default:
                             s.Append(c);
@@ -303,60 +317,81 @@ namespace EasyMobile.MiniJSON
                 return s.ToString();
             }
 
-            private object ParseNumber()
+            object ParseNumber()
             {
-                var number = NextWord;
+                string number = NextWord;
 
                 if (number.IndexOf('.') == -1)
                 {
                     long parsedInt;
-                    long.TryParse(number, out parsedInt);
+                    Int64.TryParse(number, out parsedInt);
                     return parsedInt;
                 }
 
                 double parsedDouble;
-                double.TryParse(number, out parsedDouble);
+                Double.TryParse(number, out parsedDouble);
                 return parsedDouble;
             }
 
-            private void EatWhitespace()
+            void EatWhitespace()
             {
-                while (char.IsWhiteSpace(PeekChar))
+                while (Char.IsWhiteSpace(PeekChar))
                 {
                     json.Read();
 
-                    if (json.Peek() == -1) break;
+                    if (json.Peek() == -1)
+                    {
+                        break;
+                    }
                 }
             }
 
-            private char PeekChar => Convert.ToChar(json.Peek());
-
-            private char NextChar => Convert.ToChar(json.Read());
-
-            private string NextWord
+            char PeekChar
             {
                 get
                 {
-                    var word = new StringBuilder();
+                    return Convert.ToChar(json.Peek());
+                }
+            }
+
+            char NextChar
+            {
+                get
+                {
+                    return Convert.ToChar(json.Read());
+                }
+            }
+
+            string NextWord
+            {
+                get
+                {
+                    StringBuilder word = new StringBuilder();
 
                     while (!IsWordBreak(PeekChar))
                     {
                         word.Append(NextChar);
 
-                        if (json.Peek() == -1) break;
+                        if (json.Peek() == -1)
+                        {
+                            break;
+                        }
                     }
 
                     return word.ToString();
                 }
             }
 
-            private TOKEN NextToken
+            TOKEN NextToken
             {
                 get
                 {
                     EatWhitespace();
 
-                    if (json.Peek() == -1) return TOKEN.NONE;
+                    if (json.Peek() == -1)
+                    {
+                        return TOKEN.NONE;
+                    }
 
                     switch (PeekChar)
                     {
@@ -416,11 +451,11 @@ namespace EasyMobile.MiniJSON
             return Serializer.Serialize(obj);
         }
 
-        private sealed class Serializer
+        sealed class Serializer
         {
-            private StringBuilder builder;
+            StringBuilder builder;
 
-            private Serializer()
+            Serializer()
             {
                 builder = new StringBuilder();
             }
@@ -434,37 +469,54 @@ namespace EasyMobile.MiniJSON
                 return instance.builder.ToString();
             }
 
-            private void SerializeValue(object value)
+            void SerializeValue(object value)
             {
                 IList asList;
                 IDictionary asDict;
                 string asStr;
 
                 if (value == null)
+                {
                     builder.Append("null");
+                }
                 else if ((asStr = value as string) != null)
+                {
                     SerializeString(asStr);
+                }
                 else if (value is bool)
-                    builder.Append((bool) value ? "true" : "false");
+                {
+                    builder.Append((bool)value ? "true" : "false");
+                }
                 else if ((asList = value as IList) != null)
+                {
                     SerializeArray(asList);
+                }
                 else if ((asDict = value as IDictionary) != null)
+                {
                     SerializeObject(asDict);
+                }
                 else if (value is char)
-                    SerializeString(new string((char) value, 1));
+                {
+                    SerializeString(new string((char)value, 1));
+                }
                 else
+                {
                     SerializeOther(value);
+                }
             }
 
-            private void SerializeObject(IDictionary obj)
+            void SerializeObject(IDictionary obj)
             {
-                var first = true;
+                bool first = true;
 
                 builder.Append('{');
 
-                foreach (var e in obj.Keys)
+                foreach (object e in obj.Keys)
                 {
-                    if (!first) builder.Append(',');
+                    if (!first)
+                    {
+                        builder.Append(',');
+                    }
 
                     SerializeString(e.ToString());
                     builder.Append(':');
@@ -477,15 +529,18 @@ namespace EasyMobile.MiniJSON
                 builder.Append('}');
             }
 
-            private void SerializeArray(IList anArray)
+            void SerializeArray(IList anArray)
             {
                 builder.Append('[');
 
-                var first = true;
+                bool first = true;
 
-                foreach (var obj in anArray)
+                foreach (object obj in anArray)
                 {
-                    if (!first) builder.Append(',');
+                    if (!first)
+                    {
+                        builder.Append(',');
+                    }
 
                     SerializeValue(obj);
 
@@ -495,12 +550,13 @@ namespace EasyMobile.MiniJSON
                 builder.Append(']');
             }
 
-            private void SerializeString(string str)
+            void SerializeString(string str)
             {
                 builder.Append('\"');
 
-                var charArray = str.ToCharArray();
+                char[] charArray = str.ToCharArray();
                 foreach (var c in charArray)
+                {
                     switch (c)
                     {
                         case '"':
@@ -525,8 +581,8 @@ namespace EasyMobile.MiniJSON
                             builder.Append("\\t");
                             break;
                         default:
-                            var codepoint = Convert.ToInt32(c);
-                            if (codepoint >= 32 && codepoint <= 126)
+                            int codepoint = Convert.ToInt32(c);
+                            if ((codepoint >= 32) && (codepoint <= 126))
                             {
                                 builder.Append(c);
                             }
@@ -535,20 +591,22 @@ namespace EasyMobile.MiniJSON
                                 builder.Append("\\u");
                                 builder.Append(codepoint.ToString("x4"));
                             }
-
                             break;
                     }
+                }
 
                 builder.Append('\"');
             }
 
-            private void SerializeOther(object value)
+            void SerializeOther(object value)
             {
                 // NOTE: decimals lose precision during serialization.
                 // They always have, I'm just letting you know.
                 // Previously floats and doubles lost precision too.
                 if (value is float)
-                    builder.Append(((float) value).ToString("R"));
+                {
+                    builder.Append(((float)value).ToString("R"));
+                }
                 else if (value is int
                          || value is uint
                          || value is long
@@ -557,12 +615,18 @@ namespace EasyMobile.MiniJSON
                          || value is short
                          || value is ushort
                          || value is ulong)
+                {
                     builder.Append(value);
+                }
                 else if (value is double
                          || value is decimal)
+                {
                     builder.Append(Convert.ToDouble(value).ToString("R"));
+                }
                 else
+                {
                     SerializeString(value.ToString());
+                }
             }
         }
     }

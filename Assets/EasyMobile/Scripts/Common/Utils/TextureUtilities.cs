@@ -18,7 +18,7 @@ namespace EasyMobile.Internal
             if (encodedImage == null)
                 return null;
 
-            var bytes = Convert.FromBase64String(encodedImage);
+            byte[] bytes = Convert.FromBase64String(encodedImage);
             return Decode(bytes);
         }
 
@@ -30,7 +30,7 @@ namespace EasyMobile.Internal
             if (bytes == null)
                 return null;
 
-            var texture = new Texture2D(1, 1, TextureFormat.RGB24, false);
+            Texture2D texture = new Texture2D(1, 1, TextureFormat.RGB24, false);
             texture.LoadImage(bytes);
             texture.Apply();
             return texture;
@@ -41,7 +41,7 @@ namespace EasyMobile.Internal
         /// </summary>
         public static string Encode(Texture2D texture, ImageFormat format = ImageFormat.PNG)
         {
-            var bytes = EncodeAsByteArray(texture, format);
+            byte[] bytes = EncodeAsByteArray(texture, format);
             return bytes != null ? Convert.ToBase64String(bytes) : null;
         }
 
@@ -64,7 +64,6 @@ namespace EasyMobile.Internal
         {
             public int start;
             public int end;
-
             public ThreadData(int s, int e)
             {
                 start = s;
@@ -97,50 +96,60 @@ namespace EasyMobile.Internal
             newColors = new Color[newWidth * newHeight];
             if (useBilinear)
             {
-                ratioX = 1.0f / ((float) newWidth / (tex.width - 1));
-                ratioY = 1.0f / ((float) newHeight / (tex.height - 1));
+                ratioX = 1.0f / ((float)newWidth / (tex.width - 1));
+                ratioY = 1.0f / ((float)newHeight / (tex.height - 1));
             }
             else
             {
-                ratioX = (float) tex.width / newWidth;
-                ratioY = (float) tex.height / newHeight;
+                ratioX = ((float)tex.width) / newWidth;
+                ratioY = ((float)tex.height) / newHeight;
             }
-
             oldWidth = tex.width;
             TextureUtilities.newWidth = newWidth;
             var cores = Mathf.Min(SystemInfo.processorCount, newHeight);
             var slice = newHeight / cores;
 
             finishCount = 0;
-            if (mutex == null) mutex = new Mutex(false);
+            if (mutex == null)
+            {
+                mutex = new Mutex(false);
+            }
             if (cores > 1)
             {
-                var i = 0;
+                int i = 0;
                 ThreadData threadData;
                 for (i = 0; i < cores - 1; i++)
                 {
                     threadData = new ThreadData(slice * i, slice * (i + 1));
-                    var ts = useBilinear
-                        ? new ParameterizedThreadStart(BilinearScale)
-                        : new ParameterizedThreadStart(PointScale);
-                    var thread = new Thread(ts);
+                    ParameterizedThreadStart ts = useBilinear ? new ParameterizedThreadStart(BilinearScale) : new ParameterizedThreadStart(PointScale);
+                    Thread thread = new Thread(ts);
                     thread.Start(threadData);
                 }
-
                 threadData = new ThreadData(slice * i, newHeight);
                 if (useBilinear)
+                {
                     BilinearScale(threadData);
+                }
                 else
+                {
                     PointScale(threadData);
-                while (finishCount < cores) Thread.Sleep(1);
+                }
+                while (finishCount < cores)
+                {
+                    Thread.Sleep(1);
+                }
             }
             else
             {
-                var threadData = new ThreadData(0, newHeight);
+                ThreadData threadData = new ThreadData(0, newHeight);
                 if (useBilinear)
+                {
                     BilinearScale(threadData);
+                }
                 else
+                {
                     PointScale(threadData);
+                }
             }
 
             tex.Resize(newWidth, newHeight);
@@ -153,22 +162,21 @@ namespace EasyMobile.Internal
 
         private static void BilinearScale(object obj)
         {
-            var threadData = (ThreadData) obj;
+            ThreadData threadData = (ThreadData)obj;
             for (var y = threadData.start; y < threadData.end; y++)
             {
-                var yFloor = (int) Mathf.Floor(y * ratioY);
+                int yFloor = (int)Mathf.Floor(y * ratioY);
                 var y1 = yFloor * oldWidth;
                 var y2 = (yFloor + 1) * oldWidth;
                 var yw = y * newWidth;
 
                 for (var x = 0; x < newWidth; x++)
                 {
-                    var xFloor = (int) Mathf.Floor(x * ratioX);
+                    int xFloor = (int)Mathf.Floor(x * ratioX);
                     var xLerp = x * ratioX - xFloor;
-                    newColors[yw + x] = ColorLerpUnclamped(
-                        ColorLerpUnclamped(texColors[y1 + xFloor], texColors[y1 + xFloor + 1], xLerp),
-                        ColorLerpUnclamped(texColors[y2 + xFloor], texColors[y2 + xFloor + 1], xLerp),
-                        y * ratioY - yFloor);
+                    newColors[yw + x] = ColorLerpUnclamped(ColorLerpUnclamped(texColors[y1 + xFloor], texColors[y1 + xFloor + 1], xLerp),
+                                                           ColorLerpUnclamped(texColors[y2 + xFloor], texColors[y2 + xFloor + 1], xLerp),
+                                                           y * ratioY - yFloor);
                 }
             }
 
@@ -179,12 +187,15 @@ namespace EasyMobile.Internal
 
         private static void PointScale(object obj)
         {
-            var threadData = (ThreadData) obj;
+            ThreadData threadData = (ThreadData)obj;
             for (var y = threadData.start; y < threadData.end; y++)
             {
-                var thisY = (int) (ratioY * y) * oldWidth;
+                var thisY = (int)(ratioY * y) * oldWidth;
                 var yw = y * newWidth;
-                for (var x = 0; x < newWidth; x++) newColors[yw + x] = texColors[(int) (thisY + ratioX * x)];
+                for (var x = 0; x < newWidth; x++)
+                {
+                    newColors[yw + x] = texColors[(int)(thisY + ratioX * x)];
+                }
             }
 
             mutex.WaitOne();
@@ -195,9 +206,9 @@ namespace EasyMobile.Internal
         private static Color ColorLerpUnclamped(Color c1, Color c2, float value)
         {
             return new Color(c1.r + (c2.r - c1.r) * value,
-                c1.g + (c2.g - c1.g) * value,
-                c1.b + (c2.b - c1.b) * value,
-                c1.a + (c2.a - c1.a) * value);
+                              c1.g + (c2.g - c1.g) * value,
+                              c1.b + (c2.b - c1.b) * value,
+                              c1.a + (c2.a - c1.a) * value);
         }
 
         #endregion

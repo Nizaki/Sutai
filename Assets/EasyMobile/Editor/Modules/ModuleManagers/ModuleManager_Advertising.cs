@@ -33,43 +33,79 @@ namespace EasyMobile.Editor
         {
             // Check ad network plugins' availability and define appropriate scripting symbols.
             // Note that UnityAds symbol is added automatically by Unity engine.
-            var symbols = new List<string>();
+            List<string> symbols = new List<string>();
 
             // AdColony
-            if (EM_ExternalPluginManager.IsAdColonyAvail()) symbols.Add(EM_ScriptingSymbols.AdColony);
+            if (EM_ExternalPluginManager.IsAdColonyAvail())
+            {
+                symbols.Add(EM_ScriptingSymbols.AdColony);
+            }
 
             // AdMob
-            if (EM_ExternalPluginManager.IsAdMobAvail()) symbols.Add(EM_ScriptingSymbols.AdMob);
+            if (EM_ExternalPluginManager.IsAdMobAvail())
+            {
+                symbols.Add(EM_ScriptingSymbols.AdMob);
+            }
 
             // AdMob
-            if (EM_ExternalPluginManager.IsAppLovinAvail()) symbols.Add(EM_ScriptingSymbols.AppLovin);
+            if (EM_ExternalPluginManager.IsAppLovinAvail())
+            {
+                symbols.Add(EM_ScriptingSymbols.AppLovin);
+            }
 
             // FB Audience
-            if (EM_ExternalPluginManager.IsFBAudienceAvail()) symbols.Add(EM_ScriptingSymbols.FBAudience);
+            if (EM_ExternalPluginManager.IsFBAudienceAvail())
+            {
+                symbols.Add(EM_ScriptingSymbols.FBAudience);
+            }
 
             // Chartboost
-            if (EM_ExternalPluginManager.IsChartboostAvail()) symbols.Add(EM_ScriptingSymbols.Chartboost);
+            if (EM_ExternalPluginManager.IsChartboostAvail())
+            {
+                symbols.Add(EM_ScriptingSymbols.Chartboost);
+            }
 
             // FairBid
-            if (EM_ExternalPluginManager.IsFairBidAvail()) symbols.Add(EM_ScriptingSymbols.FairBid);
+            if (EM_ExternalPluginManager.IsFairBidAvail())
+            {
+                symbols.Add(EM_ScriptingSymbols.FairBid);
+            }
 
             // IronSource
-            if (EM_ExternalPluginManager.IsIronSourceAvail()) symbols.Add(EM_ScriptingSymbols.IronSource);
+            if (EM_ExternalPluginManager.IsIronSourceAvail())
+            {
+                symbols.Add(EM_ScriptingSymbols.IronSource);
+            }
 
             // MoPub
-            if (EM_ExternalPluginManager.IsMoPubAvail()) symbols.Add(EM_ScriptingSymbols.MoPub);
+            if (EM_ExternalPluginManager.IsMoPubAvail())
+            {
+                symbols.Add(EM_ScriptingSymbols.MoPub);
+            }
 
             // TapJoy
-            if (EM_ExternalPluginManager.IsTapJoyAvail()) symbols.Add(EM_ScriptingSymbols.TapJoy);
+            if (EM_ExternalPluginManager.IsTapJoyAvail())
+            {
+                symbols.Add(EM_ScriptingSymbols.TapJoy);
+            }
 
             // Unity Monetization
-            if (EM_ExternalPluginManager.IsUnityMonetizationAvail()) symbols.Add(EM_ScriptingSymbols.UnityMonetization);
+            if (EM_ExternalPluginManager.IsUnityMonetizationAvail())
+            {
+                symbols.Add(EM_ScriptingSymbols.UnityMonetization);
+            }
 
             // Unity Ads
-            if (EM_ExternalPluginManager.IsUnityAdAvail()) symbols.Add(EM_ScriptingSymbols.UnityAds);
+            if (EM_ExternalPluginManager.IsUnityAdAvail())
+            {
+                symbols.Add(EM_ScriptingSymbols.UnityAds);
+            }
 
             // Vungle
-            if (EM_ExternalPluginManager.IsVungleAvail()) symbols.Add(EM_ScriptingSymbols.Vungle);
+            if (EM_ExternalPluginManager.IsVungleAvail())
+            {
+                symbols.Add(EM_ScriptingSymbols.Vungle);
+            }
 
             // Defines all ad symbols on all platforms.
             GlobalDefineManager.SDS_AddDefinesOnAllPlatforms(symbols.ToArray());
@@ -96,14 +132,37 @@ namespace EasyMobile.Editor
                 });
         }
 
-        public override List<string> AndroidManifestTemplatePaths => null;
+        public override List<string> AndroidManifestTemplatePaths
+        {
+            get
+            {
+                return null;
+            }
+        }
 
-        public override IAndroidPermissionRequired AndroidPermissionsHolder =>
-            EM_Settings.Advertising as IAndroidPermissionRequired;
+        public override IAndroidPermissionRequired AndroidPermissionsHolder
+        {
+            get
+            {
+                return EM_Settings.Advertising as IAndroidPermissionRequired;
+            }
+        }
 
-        public override IIOSInfoItemRequired iOSInfoItemsHolder => EM_Settings.Advertising as IIOSInfoItemRequired;
+        public override IIOSInfoItemRequired iOSInfoItemsHolder
+        {
+            get
+            {
+                return EM_Settings.Advertising as IIOSInfoItemRequired;
+            }
+        }
 
-        public override Module SelfModule => Module.Advertising;
+        public override Module SelfModule
+        {
+            get
+            {
+                return Module.Advertising;
+            }
+        }
 
         #endregion
     }

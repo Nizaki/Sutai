@@ -14,35 +14,20 @@ namespace EasyMobile.Editor
     // Partial editor class for GameService module.
     internal partial class EM_SettingsEditor
     {
-        private const string GameServiceModuleLabel = "GAME SERVICES";
-
-        private const string GameServiceModuleIntro =
-            "The Game Services module streamlines the integration of Game Center (iOS) and Google Play Games Services (Android) into your game.";
-
-        private const string GameServiceManualInitInstruction =
-            "You can initialize manually from script by calling the GameServices.ManagedInit() or GameServices.Init() method.";
-
-        private const string AndroidGPGSImportInstruction =
-            "Google Play Games plugin is required. Please download and import it to use this module on Android.";
-
-        private const string AndroidGPGSAvailMsg = "Google Play Games plugin is imported and ready to use.";
-
-        private const string AndroidGPGPSSetupInstruction =
-            "Paste in the Android XML Resources from the Play Console and hit the Setup button.";
-
-        private const string AndroidGPGSMultiplayerDeprecatedMsg =
-            "The Play Games Services multiplayer APIs have been deprecated since Mar 31, 2020 :(";
-
-        private const string GameServiceConstantGenerationIntro =
-            "Generate the static class " + EM_Constants.RootNameSpace + "." +
-            EM_Constants.GameServicesConstantsClassName +
-            " that contains the constants of leaderboard and achievement names." +
-            " Remember to regenerate if you make changes to these names.";
+        const string GameServiceModuleLabel = "GAME SERVICES";
+        const string GameServiceModuleIntro = "The Game Services module streamlines the integration of Game Center (iOS) and Google Play Games Services (Android) into your game.";
+        const string GameServiceManualInitInstruction = "You can initialize manually from script by calling the GameServices.ManagedInit() or GameServices.Init() method.";
+        const string AndroidGPGSImportInstruction = "Google Play Games plugin is required. Please download and import it to use this module on Android.";
+        const string AndroidGPGSAvailMsg = "Google Play Games plugin is imported and ready to use.";
+        const string AndroidGPGPSSetupInstruction = "Paste in the Android XML Resources from the Play Console and hit the Setup button.";
+        const string AndroidGPGSMultiplayerDeprecatedMsg = "The Play Games Services multiplayer APIs have been deprecated since Mar 31, 2020 :(";
+        const string GameServiceConstantGenerationIntro = "Generate the static class " + EM_Constants.RootNameSpace + "." + EM_Constants.GameServicesConstantsClassName + " that contains the constants of leaderboard and achievement names." +
+                                                          " Remember to regenerate if you make changes to these names.";
 
         // GameServiceItem property names.
-        private const string GameServiceItem_NameProperty = "_name";
-        private const string GameServiceItem_IOSIdProperty = "_iosId";
-        private const string GameServiceItem_AndroidIdProperty = "_androidId";
+        const string GameServiceItem_NameProperty = "_name";
+        const string GameServiceItem_IOSIdProperty = "_iosId";
+        const string GameServiceItem_AndroidIdProperty = "_androidId";
 
 #if !UNITY_ANDROID || (UNITY_ANDROID && EM_GPGS)
         // GPGS Web client ID.
@@ -54,14 +39,14 @@ namespace EasyMobile.Editor
 #endif
 
         // GPGS generated IDs.
-        private static string[] gpgsIds;
+        static string[] gpgsIds;
 
         // Android resources text area scroll position.
-        private Vector2 androidResourcesTextAreaScroll;
+        Vector2 androidResourcesTextAreaScroll;
 
-        private static Dictionary<string, bool> gameServiceFoldoutStates = new Dictionary<string, bool>();
+        static Dictionary<string, bool> gameServiceFoldoutStates = new Dictionary<string, bool>();
 
-        private void GameServiceModuleGUI()
+        void GameServiceModuleGUI()
         {
             DrawModuleHeader();
 
@@ -73,9 +58,10 @@ namespace EasyMobile.Editor
             EditorGUILayout.Space();
             EditorGUILayout.BeginVertical(EM_GUIStyleManager.UppercaseSectionBox);
             EditorGUILayout.HelpBox(AndroidGPGSImportInstruction, MessageType.Error);
-            if (GUILayout.Button("Download Google Play Games Plugin",
-                GUILayout.Height(EM_GUIStyleManager.buttonHeight)))
+            if (GUILayout.Button("Download Google Play Games Plugin", GUILayout.Height(EM_GUIStyleManager.buttonHeight)))
+            {
                 EM_ExternalPluginManager.DownloadGooglePlayGamesPlugin();
+            }
             EditorGUILayout.EndVertical();
 #elif UNITY_ANDROID && EM_GPGS
             EditorGUILayout.Space();
@@ -122,8 +108,7 @@ namespace EasyMobile.Editor
                     EditorGUILayout.HelpBox(AndroidGPGPSSetupInstruction, MessageType.None);
 
                     // Draw text area inside a scroll view.
-                    androidResourcesTextAreaScroll =
- GUILayout.BeginScrollView(androidResourcesTextAreaScroll, false, false, GUILayout.Height(EditorGUIUtility.singleLineHeight * 10));
+                    androidResourcesTextAreaScroll = GUILayout.BeginScrollView(androidResourcesTextAreaScroll, false, false, GUILayout.Height(EditorGUIUtility.singleLineHeight * 10));
                     GameServiceProperties.gpgsXmlResources.property.stringValue = EditorGUILayout.TextArea(
                         GameServiceProperties.gpgsXmlResources.property.stringValue,
                         GUILayout.ExpandHeight(true));
@@ -164,8 +149,7 @@ namespace EasyMobile.Editor
             EditorGUILayout.Space();
             DrawUppercaseSection("SAVED_GAMES_CONFIG_FOLDOUT_KEY", "SAVED GAMES", () =>
                 {
-                    GameServiceProperties.enableSavedGames.property.boolValue =
- EditorGUILayout.Toggle(GameServiceProperties.enableSavedGames.content, GameServiceProperties.enableSavedGames.property.boolValue);
+                    GameServiceProperties.enableSavedGames.property.boolValue = EditorGUILayout.Toggle(GameServiceProperties.enableSavedGames.content, GameServiceProperties.enableSavedGames.property.boolValue);
 
                     if (GameServiceProperties.enableSavedGames.property.boolValue)
                     {
@@ -226,8 +210,7 @@ namespace EasyMobile.Editor
             string webClientId = sGPGSWebClientId;          // Web ClientId, not required for Games Services.
             string folder = EM_Constants.GeneratedFolder;    // Folder to contain the generated id constant class.
             string className = EM_Constants.AndroidGPGSConstantClassName;    // Name of the generated id constant class.
-            string resourceXmlData =
- GameServiceProperties.gpgsXmlResources.property.stringValue;    // The xml resources inputted.
+            string resourceXmlData = GameServiceProperties.gpgsXmlResources.property.stringValue;    // The xml resources inputted.
             string nearbySvcId = null;  // Nearby Connection Id, not supported by us.
             bool requiresGooglePlus = false;    // Not required Google+ API.
 
@@ -269,8 +252,7 @@ namespace EasyMobile.Editor
 
             if (newPerformSetup != null)
             {
-                isSetupSucceeded =
- (bool)newPerformSetup.Invoke(null, new object[] { webClientId, folder, className, resourceXmlData, nearbySvcId });
+                isSetupSucceeded = (bool)newPerformSetup.Invoke(null, new object[] { webClientId, folder, className, resourceXmlData, nearbySvcId });
             }
             else
             {
@@ -283,8 +265,7 @@ namespace EasyMobile.Editor
 
                 if (oldPerformSetup != null)
                 {
-                    isSetupSucceeded =
- (bool)oldPerformSetup.Invoke(null, new object[] { webClientId, folder, className, resourceXmlData, nearbySvcId, requiresGooglePlus });
+                    isSetupSucceeded = (bool)oldPerformSetup.Invoke(null, new object[] { webClientId, folder, className, resourceXmlData, nearbySvcId, requiresGooglePlus });
                 }
             }
 
@@ -310,63 +291,60 @@ namespace EasyMobile.Editor
 #endif
 
         // Generate a static class containing constants of leaderboard and achievement names.
-        private void GenerateGameServiceConstants()
+        void GenerateGameServiceConstants()
         {
             // First create a hashtable containing all the names to be stored as constants.
-            var ldbProp = GameServiceProperties.leaderboards.property;
-            var acmProp = GameServiceProperties.achievements.property;
+            SerializedProperty ldbProp = GameServiceProperties.leaderboards.property;
+            SerializedProperty acmProp = GameServiceProperties.achievements.property;
 
             // First check if there're duplicate names.
-            var duplicateLdbName =
-                EM_EditorUtil.FindDuplicateFieldInArrayProperty(ldbProp, GameServiceItem_NameProperty);
+            string duplicateLdbName = EM_EditorUtil.FindDuplicateFieldInArrayProperty(ldbProp, GameServiceItem_NameProperty);
             if (!string.IsNullOrEmpty(duplicateLdbName))
             {
-                EM_EditorUtil.Alert("Error: Duplicate Names",
-                    "Found duplicate leaderboard name of \"" + duplicateLdbName + "\".");
+                EM_EditorUtil.Alert("Error: Duplicate Names", "Found duplicate leaderboard name of \"" + duplicateLdbName + "\".");
                 return;
             }
 
-            var duplicateAcmName =
-                EM_EditorUtil.FindDuplicateFieldInArrayProperty(acmProp, GameServiceItem_NameProperty);
+            string duplicateAcmName = EM_EditorUtil.FindDuplicateFieldInArrayProperty(acmProp, GameServiceItem_NameProperty);
             if (!string.IsNullOrEmpty(duplicateAcmName))
             {
-                EM_EditorUtil.Alert("Error: Duplicate Names",
-                    "Found duplicate achievement name of \"" + duplicateAcmName + "\".");
+                EM_EditorUtil.Alert("Error: Duplicate Names", "Found duplicate achievement name of \"" + duplicateAcmName + "\".");
                 return;
             }
 
             // Proceed with adding resource keys.
-            var resourceKeys = new Hashtable();
+            Hashtable resourceKeys = new Hashtable();
 
             // Add the leaderboard names.
-            for (var i = 0; i < ldbProp.arraySize; i++)
+            for (int i = 0; i < ldbProp.arraySize; i++)
             {
-                var element = ldbProp.GetArrayElementAtIndex(i);
-                var name = element.FindPropertyRelative(GameServiceItem_NameProperty).stringValue;
+                SerializedProperty element = ldbProp.GetArrayElementAtIndex(i);
+                string name = element.FindPropertyRelative(GameServiceItem_NameProperty).stringValue;
 
                 // Ignore all items with an empty name.
                 if (!string.IsNullOrEmpty(name))
                 {
-                    var key = "Leaderboard_" + name;
+                    string key = "Leaderboard_" + name;
                     resourceKeys.Add(key, name);
                 }
             }
 
             // Add the achievement names.
-            for (var j = 0; j < acmProp.arraySize; j++)
+            for (int j = 0; j < acmProp.arraySize; j++)
             {
-                var element = acmProp.GetArrayElementAtIndex(j);
-                var name = element.FindPropertyRelative(GameServiceItem_NameProperty).stringValue;
+                SerializedProperty element = acmProp.GetArrayElementAtIndex(j);
+                string name = element.FindPropertyRelative(GameServiceItem_NameProperty).stringValue;
 
                 // Ignore all items with an empty name.
                 if (!string.IsNullOrEmpty(name))
                 {
-                    var key = "Achievement_" + name;
+                    string key = "Achievement_" + name;
                     resourceKeys.Add(key, name);
                 }
             }
 
             if (resourceKeys.Count > 0)
+            {
                 // Now build the class.
                 EM_EditorUtil.GenerateConstantsClass(
                     EM_Constants.GeneratedFolder,
@@ -374,19 +352,20 @@ namespace EasyMobile.Editor
                     resourceKeys,
                     true
                 );
+            }
             else
-                EM_EditorUtil.Alert("Constants Class Generation",
-                    "Please fill in required information for all leaderboards and achievements.");
+            {
+                EM_EditorUtil.Alert("Constants Class Generation", "Please fill in required information for all leaderboards and achievements.");
+            }
         }
 
         // Draw the array of leaderboards or achievements inside a foldout and the relevant buttons.
-        private void DrawGameServiceItemArray(string itemType, EMProperty myProp, ref bool isFoldout)
+        void DrawGameServiceItemArray(string itemType, EMProperty myProp, ref bool isFoldout)
         {
             if (myProp.property.arraySize > 0)
             {
                 EditorGUI.indentLevel++;
-                isFoldout = EditorGUILayout.Foldout(isFoldout, myProp.property.arraySize + " " + myProp.content.text,
-                    true);
+                isFoldout = EditorGUILayout.Foldout(isFoldout, myProp.property.arraySize + " " + myProp.content.text, true);
                 EditorGUI.indentLevel--;
 
                 if (isFoldout)
@@ -403,19 +382,17 @@ namespace EasyMobile.Editor
                     else if (itemType.Equals("Achievement"))
                         drawer = DrawGameServiceAchievement;
                     else
-                        throw new Exception("Invalid itemType");
+                        throw new System.Exception("Invalid itemType");
 
                     // Draw the array of achievements or leaderboards.
                     DrawArrayProperty(myProp.property, drawer);
 
                     // Detect duplicate names.
-                    var duplicateName =
-                        EM_EditorUtil.FindDuplicateFieldInArrayProperty(myProp.property, GameServiceItem_NameProperty);
+                    string duplicateName = EM_EditorUtil.FindDuplicateFieldInArrayProperty(myProp.property, GameServiceItem_NameProperty);
                     if (!string.IsNullOrEmpty(duplicateName))
                     {
                         EditorGUILayout.Space();
-                        EditorGUILayout.HelpBox("Found duplicate name of \"" + duplicateName + "\".",
-                            MessageType.Warning);
+                        EditorGUILayout.HelpBox("Found duplicate name of \"" + duplicateName + "\".", MessageType.Warning);
                     }
                 }
             }
@@ -434,30 +411,30 @@ namespace EasyMobile.Editor
             }
         }
 
-        private bool DrawGameServiceLeaderboard(SerializedProperty property)
+        bool DrawGameServiceLeaderboard(SerializedProperty property)
         {
             return DrawGameServiceItem(property, "Leaderboard");
         }
 
-        private bool DrawGameServiceAchievement(SerializedProperty property)
+        bool DrawGameServiceAchievement(SerializedProperty property)
         {
             return DrawGameServiceItem(property, "Achievement");
         }
 
         // Draw leaderboard or achievement item.
-        private bool DrawGameServiceItem(SerializedProperty property, string label)
+        bool DrawGameServiceItem(SerializedProperty property, string label)
         {
-            var name = property.FindPropertyRelative(GameServiceItem_NameProperty);
-            var iosId = property.FindPropertyRelative(GameServiceItem_IOSIdProperty);
-            var androidId = property.FindPropertyRelative(GameServiceItem_AndroidIdProperty);
+            SerializedProperty name = property.FindPropertyRelative(GameServiceItem_NameProperty);
+            SerializedProperty iosId = property.FindPropertyRelative(GameServiceItem_IOSIdProperty);
+            SerializedProperty androidId = property.FindPropertyRelative(GameServiceItem_AndroidIdProperty);
 
             EditorGUILayout.BeginVertical(EM_GUIStyleManager.GetCustomStyle("Item Box"));
 
-            var key = property.propertyPath;
+            string key = property.propertyPath;
             if (!gameServiceFoldoutStates.ContainsKey(key))
                 gameServiceFoldoutStates.Add(key, false);
 
-            var foldoutLabel = string.IsNullOrEmpty(name.stringValue) ? "[Untitled " + label + "]" : name.stringValue;
+            string foldoutLabel = string.IsNullOrEmpty(name.stringValue) ? "[Untitled " + label + "]" : name.stringValue;
             EditorGUI.indentLevel++;
             gameServiceFoldoutStates[key] = EditorGUILayout.Foldout(gameServiceFoldoutStates[key], foldoutLabel, true);
 
@@ -468,10 +445,8 @@ namespace EasyMobile.Editor
                 // For Android Id, display a popup of Android leaderboards & achievements for the user to select
                 // then assign its associated id to the property.
                 EditorGUI.BeginChangeCheck();
-                var currentIndex =
-                    Mathf.Max(Array.IndexOf(gpgsIds, EM_EditorUtil.GetKeyForValue(gpgsIdDict, androidId.stringValue)),
-                        0);
-                var newIndex = EditorGUILayout.Popup("Android Id", currentIndex, gpgsIds);
+                int currentIndex = Mathf.Max(System.Array.IndexOf(gpgsIds, EM_EditorUtil.GetKeyForValue(gpgsIdDict, androidId.stringValue)), 0);
+                int newIndex = EditorGUILayout.Popup("Android Id", currentIndex, gpgsIds);
                 if (EditorGUI.EndChangeCheck())
                 {
                     // Position 0 is [None].
@@ -482,29 +457,28 @@ namespace EasyMobile.Editor
                     else
                     {
                         // Record the new android Id.
-                        var newName = gpgsIds[newIndex];
+                        string newName = gpgsIds[newIndex];
                         androidId.stringValue = gpgsIdDict[newName];
                     }
                 }
             }
-
             EditorGUI.indentLevel--;
             EditorGUILayout.EndVertical();
 
             return gameServiceFoldoutStates[key];
         }
 
-        private void AddNewGameServiceItem(SerializedProperty property)
+        void AddNewGameServiceItem(SerializedProperty property)
         {
             if (property.isArray)
             {
                 property.InsertArrayElementAtIndex(property.arraySize);
 
                 // Reset the fields of newly added element or it will take the values of the preceding one.
-                var newProp = property.GetArrayElementAtIndex(property.arraySize - 1);
-                var name = newProp.FindPropertyRelative(GameServiceItem_NameProperty);
-                var iosId = newProp.FindPropertyRelative(GameServiceItem_IOSIdProperty);
-                var androidId = newProp.FindPropertyRelative(GameServiceItem_AndroidIdProperty);
+                SerializedProperty newProp = property.GetArrayElementAtIndex(property.arraySize - 1);
+                SerializedProperty name = newProp.FindPropertyRelative(GameServiceItem_NameProperty);
+                SerializedProperty iosId = newProp.FindPropertyRelative(GameServiceItem_IOSIdProperty);
+                SerializedProperty androidId = newProp.FindPropertyRelative(GameServiceItem_AndroidIdProperty);
                 name.stringValue = string.Empty;
                 iosId.stringValue = string.Empty;
                 androidId.stringValue = string.Empty;
@@ -512,3 +486,4 @@ namespace EasyMobile.Editor
         }
     }
 }
+

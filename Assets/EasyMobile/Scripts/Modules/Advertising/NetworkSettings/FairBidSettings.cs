@@ -12,8 +12,8 @@ namespace EasyMobile
         /// </summary>
         public string PublisherId
         {
-            get => mPublisherId;
-            set => mPublisherId = value;
+            get { return mPublisherId; }
+            set { mPublisherId = value; }
         }
 
         /// <summary>
@@ -21,8 +21,8 @@ namespace EasyMobile
         /// </summary>
         public string DefaultBannerId
         {
-            get => mDefaultBannerId;
-            set => mDefaultBannerId = value;
+            get { return mDefaultBannerId; }
+            set { mDefaultBannerId = value; }
         }
 
         /// <summary>
@@ -30,8 +30,8 @@ namespace EasyMobile
         /// </summary>
         public string DefaultInterstitialAdId
         {
-            get => mDefaultInterstitialAdId;
-            set => mDefaultInterstitialAdId = value;
+            get { return mDefaultInterstitialAdId; }
+            set { mDefaultInterstitialAdId = value; }
         }
 
         /// <summary>
@@ -39,8 +39,8 @@ namespace EasyMobile
         /// </summary>
         public string DefaultRewardedAdId
         {
-            get => mDefaultRewardedAdId;
-            set => mDefaultRewardedAdId = value;
+            get { return mDefaultRewardedAdId; }
+            set { mDefaultRewardedAdId = value; }
         }
 
         /// <summary>
@@ -48,8 +48,8 @@ namespace EasyMobile
         /// </summary>
         public AdPlacement[] CustomBannerPlacements
         {
-            get => mCustomBannerPlacements;
-            set => mCustomBannerPlacements = value;
+            get { return mCustomBannerPlacements; }
+            set { mCustomBannerPlacements = value; }
         }
 
         /// <summary>
@@ -57,8 +57,8 @@ namespace EasyMobile
         /// </summary>
         public AdPlacement[] CustomInterstitialPlacements
         {
-            get => mCustomInterstitialPlacements;
-            set => mCustomInterstitialPlacements = value;
+            get { return mCustomInterstitialPlacements; }
+            set { mCustomInterstitialPlacements = value; }
         }
 
         /// <summary>
@@ -66,8 +66,8 @@ namespace EasyMobile
         /// </summary>
         public AdPlacement[] CustomRewardedPlacements
         {
-            get => mCustomRewardedPlacements;
-            set => mCustomRewardedPlacements = value;
+            get { return mCustomRewardedPlacements; }
+            set { mCustomRewardedPlacements = value; }
         }
 
         /// <summary>
@@ -75,18 +75,26 @@ namespace EasyMobile
         /// </summary>
         public bool ShowTestSuite
         {
-            get => mShowTestSuite;
-            set => mShowTestSuite = value;
+            get { return mShowTestSuite; }
+            set { mShowTestSuite = value; }
         }
 
-        [SerializeField] private string mPublisherId;
-        [SerializeField] private bool mShowTestSuite;
+        [SerializeField]
+        private string mPublisherId;
+        [SerializeField]
+        private bool mShowTestSuite;
 
-        [SerializeField] private string mDefaultBannerId;
-        [SerializeField] private string mDefaultInterstitialAdId;
-        [SerializeField] private string mDefaultRewardedAdId;
-        [SerializeField] private AdPlacement[] mCustomBannerPlacements;
-        [SerializeField] private AdPlacement[] mCustomInterstitialPlacements;
-        [SerializeField] private AdPlacement[] mCustomRewardedPlacements;
+        [SerializeField]
+        private string mDefaultBannerId;
+        [SerializeField]
+        private string mDefaultInterstitialAdId;
+        [SerializeField]
+        private string mDefaultRewardedAdId;
+        [SerializeField]
+        private AdPlacement[] mCustomBannerPlacements;
+        [SerializeField]
+        private AdPlacement[] mCustomInterstitialPlacements;
+        [SerializeField]
+        private AdPlacement[] mCustomRewardedPlacements;
     }
 }

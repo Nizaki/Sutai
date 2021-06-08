@@ -7,15 +7,12 @@ namespace EasyMobile
 {
 #if EM_UNITY_ADS || UNITY_MONETIZATION
     using UnityEngine.Advertisements;
-
 #endif
 
     public class UnityAdsClientImpl : AdClientImpl
     {
         private const string NO_SDK_MESSAGE = "SDK missing. Please enable UnityAds service.";
-
-        private const string BANNER_UNSUPPORTED_MESSAGE =
-            "This version of UnityAds package does not support banner ad format.";
+        private const string BANNER_UNSUPPORTED_MESSAGE = "This version of UnityAds package does not support banner ad format.";
 
 #if EM_UNITY_ADS || UNITY_MONETIZATION
         private UnityAdsSettings mAdSettings;
@@ -62,15 +59,18 @@ namespace EasyMobile
         /// <returns>The client.</returns>
         public static UnityAdsClientImpl CreateClient()
         {
-            if (sInstance == null) sInstance = new UnityAdsClientImpl();
+            if (sInstance == null)
+            {
+                sInstance = new UnityAdsClientImpl();
+            }
             return sInstance;
         }
 
-        #endregion // Object Creators
+        #endregion  // Object Creators
 
         #region AdClient Overrides
 
-        public override AdNetwork Network => AdNetwork.UnityAds;
+        public override AdNetwork Network { get { return AdNetwork.UnityAds; } }
 
         public override bool IsBannerAdSupported
         {
@@ -84,9 +84,9 @@ namespace EasyMobile
             }
         }
 
-        public override bool IsInterstitialAdSupported => true;
+        public override bool IsInterstitialAdSupported { get { return true; } }
 
-        public override bool IsRewardedAdSupported => true;
+        public override bool IsRewardedAdSupported { get { return true; } }
 
         public override bool IsInitialized
         {
@@ -124,7 +124,7 @@ namespace EasyMobile
             }
         }
 
-        protected override string NoSdkMessage => NO_SDK_MESSAGE;
+        protected override string NoSdkMessage { get { return NO_SDK_MESSAGE; } }
 
         public override bool IsSdkAvail
         {
@@ -143,6 +143,7 @@ namespace EasyMobile
 #if EM_UNITY_ADS
             string id;
             if (placement == AdPlacement.Default)
+            {
                 switch (type)
                 {
                     case AdType.Rewarded:
@@ -154,7 +155,9 @@ namespace EasyMobile
                     default:
                         return false;
                 }
+            }
             else
+            {
                 switch (type)
                 {
                     case AdType.Rewarded:
@@ -166,6 +169,7 @@ namespace EasyMobile
                     default:
                         return false;
                 }
+            }
 
             if (string.IsNullOrEmpty(id))
                 return false;
@@ -191,7 +195,9 @@ namespace EasyMobile
 #if UNITY_MONETIZATION
                 Advertisement.AddListener(new UnityAdsListener(this));
                 if (string.IsNullOrEmpty(mAdSettings.AppId.Id))
+                {
                     Debug.LogWarning("Attempting to initialize UnityAds with an empty App ID.");
+                }
                 Advertisement.Initialize(mAdSettings.AppId.Id, mAdSettings.EnableTestMode);
 #endif
 
@@ -205,31 +211,32 @@ namespace EasyMobile
         //------------------------------------------------------------
 
 
-        protected override void InternalShowBannerAd(AdPlacement placement, BannerAdPosition position,
-            BannerAdSize size)
+        protected override void InternalShowBannerAd(AdPlacement placement, BannerAdPosition position, BannerAdSize size)
         {
 #if UNITY_MONETIZATION
-            var id = placement == AdPlacement.Default
-                ? mAdSettings.DefaultBannerAdId.Id
-                : FindIdForPlacement(mAdSettings.CustomBannerAdIds, placement);
+            string id = placement == AdPlacement.Default ?
+                mAdSettings.DefaultBannerAdId.Id :
+                FindIdForPlacement(mAdSettings.CustomBannerAdIds, placement);
 
             if (string.IsNullOrEmpty(id))
             {
-                Debug.Log("Attempting to show UnityAds banner ad with an undefined ID at placement " +
-                          AdPlacement.GetPrintableName(placement));
+                Debug.Log("Attempting to show UnityAds banner ad with an undefined ID at placement " + AdPlacement.GetPrintableName(placement));
                 return;
             }
 
             if (!Advertisement.Banner.isLoaded)
             {
-                var options = new BannerLoadOptions();
+                BannerLoadOptions options = new BannerLoadOptions();
 
-                options.errorCallback += (string message) =>
+                options.errorCallback += ((string message) =>
                 {
                     Debug.Log("Error loading Unity banner ad: " + message);
-                };
+                });
 
-                options.loadCallback += () => { DoShowBannerAd(id, placement); };
+                options.loadCallback += (() =>
+                {
+                    DoShowBannerAd(id, placement);
+                });
 
                 Advertisement.Banner.SetPosition(ToUnityAdsBannerPosition(position));
                 Advertisement.Banner.Load(id, options);
@@ -249,7 +256,10 @@ namespace EasyMobile
 #if UNITY_MONETIZATION
             var hideOptions = new BannerOptions
             {
-                hideCallback = () => { InternalHideBannerAdCallback(placement); }
+                hideCallback = () =>
+                {
+                    InternalHideBannerAdCallback(placement);
+                }
             };
             Advertisement.Banner.Hide(false);
 #else
@@ -262,7 +272,10 @@ namespace EasyMobile
 #if UNITY_MONETIZATION
             var hideOptions = new BannerOptions
             {
-                hideCallback = () => { InternalHideBannerAdCallback(placement); }
+                hideCallback = () =>
+                {
+                    InternalHideBannerAdCallback(placement);
+                }
             };
             Advertisement.Banner.Hide(true);
 #else
@@ -282,9 +295,8 @@ namespace EasyMobile
         protected override bool InternalIsInterstitialAdReady(AdPlacement placement)
         {
 #if EM_UNITY_ADS || UNITY_MONETIZATION
-            var placementId = placement == AdPlacement.Default
-                ? mAdSettings.DefaultInterstitialAdId.Id
-                : FindIdForPlacement(mAdSettings.CustomInterstitialAdIds, placement);
+            string placementId = placement == AdPlacement.Default ?
+                mAdSettings.DefaultInterstitialAdId.Id : FindIdForPlacement(mAdSettings.CustomInterstitialAdIds, placement);
 
             if (placementId == string.Empty)
                 return false;
@@ -298,9 +310,8 @@ namespace EasyMobile
         protected override void InternalShowInterstitialAd(AdPlacement placement)
         {
 #if EM_UNITY_ADS || UNITY_MONETIZATION
-            var id = placement == AdPlacement.Default
-                ? mAdSettings.DefaultInterstitialAdId.Id
-                : FindIdForPlacement(mAdSettings.CustomInterstitialAdIds, placement);
+            string id = placement == AdPlacement.Default ?
+                mAdSettings.DefaultInterstitialAdId.Id : FindIdForPlacement(mAdSettings.CustomInterstitialAdIds, placement);
 
             if (string.IsNullOrEmpty(id))
             {
@@ -337,9 +348,8 @@ namespace EasyMobile
         protected override bool InternalIsRewardedAdReady(AdPlacement placement)
         {
 #if EM_UNITY_ADS || UNITY_MONETIZATION
-            var placementId = placement == AdPlacement.Default
-                ? mAdSettings.DefaultRewardedAdId.Id
-                : FindIdForPlacement(mAdSettings.CustomRewardedAdIds, placement);
+            string placementId = placement == AdPlacement.Default ?
+                mAdSettings.DefaultRewardedAdId.Id : FindIdForPlacement(mAdSettings.CustomRewardedAdIds, placement);
 
             if (placementId == string.Empty)
                 return false;
@@ -353,9 +363,8 @@ namespace EasyMobile
         protected override void InternalShowRewardedAd(AdPlacement placement)
         {
 #if EM_UNITY_ADS || UNITY_MONETIZATION
-            var id = placement == AdPlacement.Default
-                ? mAdSettings.DefaultRewardedAdId.Id
-                : FindIdForPlacement(mAdSettings.CustomRewardedAdIds, placement);
+            string id = placement == AdPlacement.Default ?
+                mAdSettings.DefaultRewardedAdId.Id : FindIdForPlacement(mAdSettings.CustomRewardedAdIds, placement);
 
             if (string.IsNullOrEmpty(id))
             {
@@ -379,13 +388,13 @@ namespace EasyMobile
 #endif
         }
 
-        #endregion // AdClient Overrides
+        #endregion  // AdClient Overrides
 
         #region IConsentRequirable Overrides
 
         private const string DATA_PRIVACY_CONSENT_KEY = "EM_Ads_UnityAds_DataPrivacyConsent";
 
-        protected override string DataPrivacyConsentSaveKey => DATA_PRIVACY_CONSENT_KEY;
+        protected override string DataPrivacyConsentSaveKey { get { return DATA_PRIVACY_CONSENT_KEY; } }
 
         protected override void ApplyDataPrivacyConsent(ConsentStatus consent)
         {
@@ -419,7 +428,7 @@ namespace EasyMobile
         /// <param name="hasConsent">If set to <c>true</c> has consent.</param>
         private void SetGdprMetadata(bool hasConsent)
         {
-            var metaData = new MetaData("gdpr");
+            MetaData metaData = new MetaData("gdpr");
             metaData.Set("consent", hasConsent ? "true" : "false");
             Advertisement.SetMetaData(metaData);
         }
@@ -432,19 +441,19 @@ namespace EasyMobile
 
 #if EM_UNITY_ADS || UNITY_MONETIZATION
 
-        private void InternalShowBannerAdCallback(AdPlacement placement)
+        void InternalShowBannerAdCallback(AdPlacement placement)
         {
             if (BannerAdShownCallback != null)
                 BannerAdShownCallback(placement);
         }
 
-        private void InternalHideBannerAdCallback(AdPlacement placement)
+        void InternalHideBannerAdCallback(AdPlacement placement)
         {
             if (BannerAdHiddenCallback != null)
                 BannerAdHiddenCallback(placement);
         }
 
-        private void InternalInterstitialAdCallback(ShowResult result, AdPlacement placement)
+        void InternalInterstitialAdCallback(ShowResult result, AdPlacement placement)
         {
             switch (result)
             {
@@ -462,7 +471,7 @@ namespace EasyMobile
                 InterstitialAdCallback(result, placement);
         }
 
-        private void InternalRewardedAdCallback(ShowResult result, AdPlacement placement)
+        void InternalRewardedAdCallback(ShowResult result, AdPlacement placement)
         {
             switch (result)
             {
@@ -480,8 +489,7 @@ namespace EasyMobile
                 RewardedAdCallback(result, placement);
         }
 #endif
-
-        #endregion // Ad Event Handlers
+        #endregion  // Ad Event Handlers
 
         #region IUnityAdsListener implementation & UnityAds banner helpers
 
@@ -510,8 +518,13 @@ namespace EasyMobile
                 if (placement != null)
                 {
                     if (adType == AdType.Interstitial)
+                    {
                         mClient.InternalInterstitialAdCallback(showResult, placement);
-                    else if (adType == AdType.Rewarded) mClient.InternalRewardedAdCallback(showResult, placement);
+                    }
+                    else if (adType == AdType.Rewarded)
+                    {
+                        mClient.InternalRewardedAdCallback(showResult, placement);
+                    }
                 }
                 else
                 {
@@ -534,7 +547,10 @@ namespace EasyMobile
         {
             var showOptions = new BannerOptions
             {
-                showCallback = () => { InternalShowBannerAdCallback(placement); }
+                showCallback = () =>
+                {
+                    InternalShowBannerAdCallback(placement);
+                }
             };
             Advertisement.Banner.Show(id, showOptions);
         }
@@ -561,7 +577,6 @@ namespace EasyMobile
         }
 
 #endif
-
         #endregion
 
 
@@ -572,13 +587,21 @@ namespace EasyMobile
         private AdPlacement FindBannerPlacementWithId(string placementId)
         {
             if (string.IsNullOrEmpty(placementId))
+            {
                 return null;
+            }
             else if (mAdSettings.DefaultBannerAdId.Id.Equals(placementId))
+            {
                 return AdPlacement.Default;
+            }
             else
+            {
                 foreach (var pair in mAdSettings.CustomBannerAdIds)
+                {
                     if (pair.Value.Id.Equals(placementId))
                         return pair.Key;
+                }
+            }
 
             return null;
         }
@@ -586,13 +609,21 @@ namespace EasyMobile
         private AdPlacement FindInterstitialPlacementWithId(string placementId)
         {
             if (string.IsNullOrEmpty(placementId))
+            {
                 return null;
+            }
             else if (mAdSettings.DefaultInterstitialAdId.Id.Equals(placementId))
+            {
                 return AdPlacement.Default;
+            }
             else
+            {
                 foreach (var pair in mAdSettings.CustomInterstitialAdIds)
+                {
                     if (pair.Value.Id.Equals(placementId))
                         return pair.Key;
+                }
+            }
 
             return null;
         }
@@ -600,13 +631,21 @@ namespace EasyMobile
         private AdPlacement FindRewardedPlacementWithId(string placementId)
         {
             if (string.IsNullOrEmpty(placementId))
+            {
                 return null;
+            }
             else if (mAdSettings.DefaultRewardedAdId.Id.Equals(placementId))
+            {
                 return AdPlacement.Default;
+            }
             else
+            {
                 foreach (var pair in mAdSettings.CustomRewardedAdIds)
+                {
                     if (pair.Value.Id.Equals(placementId))
                         return pair.Key;
+                }
+            }
 
             return null;
         }
@@ -645,7 +684,6 @@ namespace EasyMobile
         }
 
 #endif
-
         #endregion
     }
 }

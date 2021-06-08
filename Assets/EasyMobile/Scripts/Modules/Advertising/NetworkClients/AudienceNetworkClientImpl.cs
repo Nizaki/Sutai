@@ -6,7 +6,6 @@ using EasyMobile;
 namespace EasyMobile
 {
     using System.Text;
-
 #if EM_FBAN
     using AudienceNetwork;
 #endif
@@ -16,6 +15,7 @@ namespace EasyMobile
         #region Inner classes
 
 #if EM_FBAN
+
         /// <summary>
         /// Hold data of a banner ad.
         /// </summary>
@@ -105,11 +105,12 @@ namespace EasyMobile
 
 #endif
 
-        #endregion // Inner Classes
+        #endregion  // Inner Classes
 
         #region FB Audience Events
 
 #if EM_FBAN
+
         /// <summary>
         /// Occurs when ad view did load.
         /// </summary>
@@ -234,7 +235,7 @@ namespace EasyMobile
 
 #endif
 
-        #endregion // FBAN-Specific events
+        #endregion  // FBAN-Specific events
 
         private const string NO_SDK_MESSAGE = "SDK missing. Please import the FB Audience Network plugin.";
 
@@ -244,6 +245,7 @@ namespace EasyMobile
         private const string AD_HANDLER_GO_NAME = "EM_Ads_FBAN_Handler";
 
 #if EM_FBAN
+
         /// <summary>
         /// The banner ad will be moved to this position when hiding.
         /// </summary>
@@ -291,7 +293,10 @@ namespace EasyMobile
 
         public static AudienceNetworkClientImpl CreateClient()
         {
-            if (sInstance == null) sInstance = new AudienceNetworkClientImpl();
+            if (sInstance == null)
+            {
+                sInstance = new AudienceNetworkClientImpl();
+            }
             return sInstance;
         }
 
@@ -299,13 +304,13 @@ namespace EasyMobile
 
         #region AdClient Overrides
 
-        public override AdNetwork Network => AdNetwork.AudienceNetwork;
+        public override AdNetwork Network { get { return AdNetwork.AudienceNetwork; } }
 
-        public override bool IsBannerAdSupported => true;
+        public override bool IsBannerAdSupported { get { return true; } }
 
-        public override bool IsInterstitialAdSupported => true;
+        public override bool IsInterstitialAdSupported { get { return true; } }
 
-        public override bool IsRewardedAdSupported => true;
+        public override bool IsRewardedAdSupported { get { return true; } }
 
         public override bool IsSdkAvail
         {
@@ -387,11 +392,12 @@ namespace EasyMobile
             }
         }
 
-        protected override string NoSdkMessage => NO_SDK_MESSAGE;
+        protected override string NoSdkMessage { get { return NO_SDK_MESSAGE; } }
 
         protected override void InternalInit()
         {
 #if EM_FBAN
+
             mIsInitialized = true;
             mAdSettings = EM_Settings.Advertising.AudienceNetwork;
 
@@ -415,8 +421,7 @@ namespace EasyMobile
 #endif
         }
 
-        protected override void InternalShowBannerAd(AdPlacement placement, BannerAdPosition position,
-            BannerAdSize size)
+        protected override void InternalShowBannerAd(AdPlacement placement, BannerAdPosition position, BannerAdSize size)
         {
 #if EM_FBAN
             string id = placement == AdPlacement.Default ?
@@ -506,8 +511,7 @@ namespace EasyMobile
             if (placement.Equals(AdPlacement.Default)) // Default interstitial ad...
             {
                 if (mDefaultInterstitial == null)
-                    mDefaultInterstitial =
- CreateNewInterstitialAd(mAdSettings.DefaultInterstitialAdId.Id, AdPlacement.Default);
+                    mDefaultInterstitial = CreateNewInterstitialAd(mAdSettings.DefaultInterstitialAdId.Id, AdPlacement.Default);
 
                 if (!mDefaultInterstitial.IsLoading && !mDefaultInterstitial.IsReady)
                 {
@@ -587,8 +591,7 @@ namespace EasyMobile
             if (placement.Equals(AdPlacement.Default)) // Default rewarded ad...
             {
                 if (mDefaultRewardedVideo == null)
-                    mDefaultRewardedVideo =
- CreateNewRewardedVideoAd(mAdSettings.DefaultRewardedAdId.Id, AdPlacement.Default);
+                    mDefaultRewardedVideo = CreateNewRewardedVideoAd(mAdSettings.DefaultRewardedAdId.Id, AdPlacement.Default);
 
                 mDefaultRewardedVideo.Ad.LoadAd();
             }
@@ -640,7 +643,7 @@ namespace EasyMobile
 
         private const string DATA_PRIVACY_CONSENT_KEY = "EM_Ads_FacebookAudience_DataPrivacyConsent";
 
-        protected override string DataPrivacyConsentSaveKey => DATA_PRIVACY_CONSENT_KEY;
+        protected override string DataPrivacyConsentSaveKey { get { return DATA_PRIVACY_CONSENT_KEY; } }
 
         protected override void ApplyDataPrivacyConsent(ConsentStatus consent)
         {
@@ -649,9 +652,10 @@ namespace EasyMobile
 
         #endregion
 
-        #region Ad Event Handlers
+        #region  Ad Event Handlers
 
 #if EM_FBAN
+
         private void OnBannerAdFailedWithError(string error)
         {
             if (AdViewDidFailWithError != null)
@@ -876,6 +880,7 @@ namespace EasyMobile
         #region Create & Setup Events methods
 
 #if EM_FBAN
+
         /// <summary>
         /// Create new banner ad.
         /// </summary>
@@ -929,8 +934,7 @@ namespace EasyMobile
             {
                 interstitialAd.InterstitialAdDidClose += () => OnInterstitialAdClosed(placement);
                 interstitialAd.InterstitialAdDidClick += () => OnInterstitialAdClicked(placement);
-                interstitialAd.InterstitialAdDidFailWithError +=
- (error) => OnInterstitialAdFailedWithError(placement, error);
+                interstitialAd.InterstitialAdDidFailWithError += (error) => OnInterstitialAdFailedWithError(placement, error);
                 interstitialAd.InterstitialAdDidLoad += () => OnInterstitialAdLoaded(placement);
                 interstitialAd.InterstitialAdWillClose += () => OnInterstitialWillClose(placement);
                 interstitialAd.InterstitialAdWillLogImpression += () => OnInterstitialWillLogImpression(placement);
@@ -965,8 +969,7 @@ namespace EasyMobile
                 rewardedVideoAd.RewardedVideoAdComplete += () => OnRewardVideoAdComplete(placement);
                 rewardedVideoAd.RewardedVideoAdDidClick += () => OnRewardedVideoAdClicked(placement);
                 rewardedVideoAd.RewardedVideoAdDidClose += () => OnRewaredVideoAdClosed(placement);
-                rewardedVideoAd.RewardedVideoAdDidFailWithError +=
- (error) => OnRewardedVideoAdFailedWithError(placement, error);
+                rewardedVideoAd.RewardedVideoAdDidFailWithError += (error) => OnRewardedVideoAdFailedWithError(placement, error);
                 rewardedVideoAd.RewardedVideoAdDidLoad += () => OnRewardVideoAdLoaded(placement);
                 rewardedVideoAd.RewardedVideoAdDidFail += () => OnRewardVideoAdFailed(placement);
                 rewardedVideoAd.RewardedVideoAdDidSucceed += () => OnRewardedVideoAdSucceeded(placement);
@@ -1012,6 +1015,7 @@ namespace EasyMobile
         #region Other stuff
 
 #if EM_FBAN
+
         protected virtual BannerAd ShowBannerAd(BannerAd banner, string bannerID, BannerAdPosition position, BannerAdSize size,
                                                 AdPlacement placement)
         {
@@ -1109,5 +1113,6 @@ namespace EasyMobile
 #endif
 
         #endregion
+
     }
 }

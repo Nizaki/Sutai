@@ -42,11 +42,11 @@ namespace EasyMobile
 
         public AnimatedClip(int width, int height, int fps, Texture[] frames)
         {
-            Width = width;
-            Height = height;
-            FramePerSecond = fps;
-            Frames = frames;
-            Length = (float) frames.Length / fps;
+            this.Width = width;
+            this.Height = height;
+            this.FramePerSecond = fps;
+            this.Frames = frames;
+            this.Length = (float)frames.Length / fps;
         }
 
         /// <summary>
@@ -93,12 +93,14 @@ namespace EasyMobile
                 return;
 
             foreach (var rt in frames)
+            {
                 if (rt != null)
                 {
                     if (rt is RenderTexture)
                         (rt as RenderTexture).Release();
                     UnityEngine.Object.Destroy(rt);
                 }
+            }
         }
     }
 }

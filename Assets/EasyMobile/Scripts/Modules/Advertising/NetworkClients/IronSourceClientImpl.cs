@@ -9,6 +9,7 @@ namespace EasyMobile
         private const string NO_SDK_MESSAGE = "SDK missing. Please import the ironSource plugin.";
 
 #if EM_IRONSOURCE
+
         protected IronSourceSettings mAdSettings;
         protected bool mIsBannerAdLoaded = false;
         protected IronSourceBannerSize mCurrentBannerAdSize = IronSourceBannerSize.SMART;
@@ -32,6 +33,7 @@ namespace EasyMobile
         #region IronSource Events
 
 #if EM_IRONSOURCE
+
         // ******************************* Rewarded Ad Events ******************************* //
 
         /// <summary>
@@ -229,7 +231,7 @@ namespace EasyMobile
 
 #endif
 
-        #endregion // ironSource-Specific Events
+        #endregion  // ironSource-Specific Events
 
         #region Singleton
 
@@ -241,7 +243,10 @@ namespace EasyMobile
 
         public static IronSourceClientImpl CreateClient()
         {
-            if (sInstance == null) sInstance = new IronSourceClientImpl();
+            if (sInstance == null)
+            {
+                sInstance = new IronSourceClientImpl();
+            }
             return sInstance;
         }
 
@@ -249,13 +254,13 @@ namespace EasyMobile
 
         #region AdClient Overrides
 
-        public override AdNetwork Network => AdNetwork.IronSource;
+        public override AdNetwork Network { get { return AdNetwork.IronSource; } }
 
-        public override bool IsBannerAdSupported => true;
+        public override bool IsBannerAdSupported { get { return true; } }
 
-        public override bool IsInterstitialAdSupported => true;
+        public override bool IsInterstitialAdSupported { get { return true; } }
 
-        public override bool IsRewardedAdSupported => true;
+        public override bool IsRewardedAdSupported { get { return true; } }
 
         public override bool IsSdkAvail
         {
@@ -278,15 +283,16 @@ namespace EasyMobile
 #endif
         }
 
-        protected override Dictionary<AdPlacement, AdId> CustomInterstitialAdsDict => null;
+        protected override Dictionary<AdPlacement, AdId> CustomInterstitialAdsDict { get { return null; } }
 
-        protected override Dictionary<AdPlacement, AdId> CustomRewardedAdsDict => null;
+        protected override Dictionary<AdPlacement, AdId> CustomRewardedAdsDict { get { return null; } }
 
-        protected override string NoSdkMessage => NO_SDK_MESSAGE;
+        protected override string NoSdkMessage { get { return NO_SDK_MESSAGE; } }
 
         protected override void InternalInit()
         {
 #if EM_IRONSOURCE
+
             mIsInitialized = true;
             mAdSettings = EM_Settings.Advertising.IronSource;
 
@@ -337,8 +343,7 @@ namespace EasyMobile
 #endif
         }
 
-        protected override void InternalShowBannerAd(AdPlacement placement, BannerAdPosition position,
-            BannerAdSize size)
+        protected override void InternalShowBannerAd(AdPlacement placement, BannerAdPosition position, BannerAdSize size)
         {
 #if EM_IRONSOURCE
             // If player requests a banner with different position or size,
@@ -458,7 +463,7 @@ namespace EasyMobile
 
         private const string DATA_PRIVACY_CONSENT_KEY = "EM_Ads_IronSource_DataPrivacyConsent";
 
-        protected override string DataPrivacyConsentSaveKey => DATA_PRIVACY_CONSENT_KEY;
+        protected override string DataPrivacyConsentSaveKey { get { return DATA_PRIVACY_CONSENT_KEY; } }
 
         protected override void ApplyDataPrivacyConsent(ConsentStatus consent)
         {
@@ -483,6 +488,7 @@ namespace EasyMobile
         #region Helper Methods
 
 #if EM_IRONSOURCE
+
         protected string ToIronSourcePlacementName(AdPlacement placement)
         {
             return placement == null || placement == AdPlacement.Default ? null : placement.Name;
@@ -579,6 +585,7 @@ namespace EasyMobile
         #region Ad Event Handlers
 
 #if EM_IRONSOURCE
+
         private void OnBannerAdClicked()
         {
 
@@ -698,6 +705,7 @@ namespace EasyMobile
 #endif
 
         #endregion
+
     }
 }
 

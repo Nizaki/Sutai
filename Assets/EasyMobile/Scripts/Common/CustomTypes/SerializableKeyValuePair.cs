@@ -11,9 +11,11 @@ namespace EasyMobile.Internal
     [Serializable]
     public class SerializableKeyValuePair<K, V>
     {
-        [SerializeField] private K key;
+        [SerializeField]
+        private K key;
 
-        [SerializeField] private V value;
+        [SerializeField]
+        private V value;
 
         public SerializableKeyValuePair(K key, V value)
         {
@@ -29,19 +31,19 @@ namespace EasyMobile.Internal
 
         public K Key
         {
-            get => key;
-            set => key = value;
+            get { return key; }
+            set { key = value; }
         }
 
         public V Value
         {
-            get => value;
-            set => this.value = value;
+            get { return value; }
+            set { this.value = value; }
         }
 
         public KeyValuePair<K, V> ToKeyValuePair()
         {
-            return new KeyValuePair<K, V>(key, value);
+            return new KeyValuePair<K, V>(key, value);  
         }
 
         public static SerializableKeyValuePair<K, V> FromKeyValuePair(KeyValuePair<K, V> pair)
@@ -57,8 +59,7 @@ namespace EasyMobile.Internal
             return SerializableKeyValuePair<K, V>.FromKeyValuePair(pair);
         }
 
-        public static IEnumerable<SerializableKeyValuePair<K, V>> ToSerializableKeyValuePairs<K, V>(
-            this IEnumerable<KeyValuePair<K, V>> pairs)
+        public static IEnumerable<SerializableKeyValuePair<K, V>> ToSerializableKeyValuePairs<K, V>(this IEnumerable<KeyValuePair<K, V>> pairs)
         {
             if (pairs == null)
                 return null;
@@ -66,8 +67,7 @@ namespace EasyMobile.Internal
             return pairs.Select(p => new SerializableKeyValuePair<K, V>(p.Key, p.Value));
         }
 
-        public static IEnumerable<KeyValuePair<K, V>> ToKeyValuePairs<K, V>(
-            this IEnumerable<SerializableKeyValuePair<K, V>> pairs)
+        public static IEnumerable<KeyValuePair<K, V>> ToKeyValuePairs<K, V>(this IEnumerable<SerializableKeyValuePair<K, V>> pairs)
         {
             if (pairs == null)
                 return null;

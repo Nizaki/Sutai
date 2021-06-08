@@ -1,5 +1,5 @@
-﻿using System;
-
+﻿﻿﻿using System;
+ 
 namespace ThreeDISevenZeroR.UnityGifDecoder.Decode
 {
     /// <summary>
@@ -12,7 +12,7 @@ namespace ThreeDISevenZeroR.UnityGifDecoder.Decode
         private byte[] dictionaryHeap;
         private int dictionarySize;
         private int dictionaryHeapPosition;
-
+        
         private int initialDictionarySize;
         private int initialLzwCodeSize;
         private int initialDictionaryHeapPosition;
@@ -47,7 +47,7 @@ namespace ThreeDISevenZeroR.UnityGifDecoder.Decode
                 currentMinLzwCodeSize = minLzwCodeSize;
                 dictionaryHeapPosition = 0;
                 dictionarySize = 0;
-
+            
                 var colorCount = 1 << minLzwCodeSize;
 
                 for (var i = 0; i < colorCount; i++)
@@ -56,7 +56,7 @@ namespace ThreeDISevenZeroR.UnityGifDecoder.Decode
                     dictionaryEntrySizes[i] = 1;
                     dictionaryHeap[dictionaryHeapPosition++] = (byte) i;
                 }
-
+            
                 initialDictionarySize = colorCount + 2;
                 initialLzwCodeSize = minLzwCodeSize + 1;
                 initialDictionaryHeapPosition = dictionaryHeapPosition;
@@ -89,21 +89,24 @@ namespace ThreeDISevenZeroR.UnityGifDecoder.Decode
             while (true)
             {
                 var entry = reader.ReadBits(codeSize);
-
+  
                 if (entry == clearCodeId)
                 {
                     Clear();
                     continue;
                 }
 
-                if (entry == stopCodeId) return;
+                if (entry == stopCodeId)
+                {
+                    return;
+                }
 
                 // Decode
                 if (entry < dictionarySize)
                 {
                     if (lastCodeId >= 0)
                         CreateNewCode(lastCodeId, entry);
-
+                
                     lastCodeId = entry;
                 }
                 else
@@ -133,10 +136,10 @@ namespace ThreeDISevenZeroR.UnityGifDecoder.Decode
             var newEntryOffset = dictionaryHeapPosition;
             var newEntrySize = entrySize + 1;
             var newHeapCapacity = newEntryOffset + newEntrySize;
-
+            
             if (dictionaryHeap.Length < newHeapCapacity)
                 Array.Resize(ref dictionaryHeap, Math.Max(dictionaryHeap.Length * 2, newHeapCapacity));
-
+ 
             if (entrySize < 12)
             {
                 // It is faster to just copy array manually for small values
@@ -152,8 +155,7 @@ namespace ThreeDISevenZeroR.UnityGifDecoder.Decode
             }
 
             dictionaryHeap[dictionaryHeapPosition++] = deriveEntry < initialDictionarySize
-                ? (byte) deriveEntry
-                : dictionaryHeap[dictionaryEntryOffsets[deriveEntry]];
+                ? (byte) deriveEntry : dictionaryHeap[dictionaryEntryOffsets[deriveEntry]];
 
             var insertPosition = dictionarySize++;
             dictionaryEntryOffsets[insertPosition] = newEntryOffset;

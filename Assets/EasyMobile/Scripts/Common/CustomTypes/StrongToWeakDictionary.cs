@@ -89,12 +89,12 @@ namespace EasyMobile.Internal
                 // A strong reference is being assigned to Target,
                 // safely excluding it from being GC'ed. IsAlive == true
                 // is fully trustable in this case!
-                value = weakValue.Target;
+                value = weakValue.Target;   
                 return weakValue.IsAlive;
             }
             else
             {
-                value = default;
+                value = default(TValue);
                 return false;
             }
         }
@@ -110,7 +110,7 @@ namespace EasyMobile.Internal
                     Debug.Log(typeof(TValue).ToString() + " StrongToWeakDict: GC has occurred. Start culling dict...");
 
                 CullDeadEntries();
-                mGcWatch = AllocWeakRef(); // spawn new watch
+                mGcWatch = AllocWeakRef();  // spawn new watch
             }
         }
 
@@ -125,7 +125,7 @@ namespace EasyMobile.Internal
                 Debug.Log(typeof(TValue).ToString() + " StrongToWeakDict: count BEFORE culling: " + mMap.Count);
 
             List<TKey> toRemove = null;
-            foreach (var pair in mMap)
+            foreach (KeyValuePair<TKey, WeakReference<TValue>> pair in mMap)
             {
                 var key = pair.Key;
                 var weakValue = pair.Value;
@@ -139,8 +139,10 @@ namespace EasyMobile.Internal
             }
 
             if (toRemove != null)
+            {
                 foreach (var key in toRemove)
                     mMap.Remove(key);
+            }
 
             if (VerboseDebug)
                 Debug.Log(typeof(TValue).ToString() + " StrongToWeakDict: count AFTER culling: " + mMap.Count);
@@ -177,7 +179,10 @@ namespace EasyMobile.Internal
             {
             }
 
-            public new T Target => (T) base.Target;
+            public new T Target
+            {
+                get { return (T)base.Target; }
+            }
         }
 
         // Provides a weak reference to a null target object, which, unlike
@@ -193,7 +198,10 @@ namespace EasyMobile.Internal
             {
             }
 
-            public override bool IsAlive => true;
+            public override bool IsAlive
+            {
+                get { return true; }
+            }
         }
     }
 }

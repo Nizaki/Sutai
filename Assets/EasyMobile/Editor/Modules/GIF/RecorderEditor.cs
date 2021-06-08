@@ -6,16 +6,17 @@ namespace EasyMobile.Editor
     [CustomEditor(typeof(Recorder))]
     public sealed class RecorderEditor : UnityEditor.Editor
     {
-        private SerializedProperty autoHeight;
-        private SerializedProperty width;
-        private SerializedProperty height;
-        private SerializedProperty framePerSecond;
-        private SerializedProperty length;
-        private SerializedProperty state;
 
-        private Camera attachedCam;
+        SerializedProperty autoHeight;
+        SerializedProperty width;
+        SerializedProperty height;
+        SerializedProperty framePerSecond;
+        SerializedProperty length;
+        SerializedProperty state;
 
-        private void OnEnable()
+        Camera attachedCam;
+
+        void OnEnable()
         {
             autoHeight = serializedObject.FindProperty("_autoHeight");
             width = serializedObject.FindProperty("_width");
@@ -23,7 +24,7 @@ namespace EasyMobile.Editor
             framePerSecond = serializedObject.FindProperty("_framePerSecond");
             length = serializedObject.FindProperty("_length");
             state = serializedObject.FindProperty("_state");
-            attachedCam = ((Recorder) serializedObject.targetObject).GetComponent<Camera>();
+            attachedCam = ((Recorder)serializedObject.targetObject).GetComponent<Camera>();
         }
 
         public override void OnInspectorGUI()
@@ -33,37 +34,24 @@ namespace EasyMobile.Editor
 
             // Not allow tweaking settings while playing as it may break everything.
             if (Application.isEditor && Application.isPlaying)
-                GUI.enabled = false;
+                GUI.enabled = false; 
 
-            EditorGUILayout.PropertyField(autoHeight,
-                new GUIContent("Auto Height",
-                    "Automatically calculate clip height based on clip width and camera's aspect ratio"));
+            EditorGUILayout.PropertyField(autoHeight, new GUIContent("Auto Height", "Automatically calculate clip height based on clip width and camera's aspect ratio"));
             EditorGUILayout.PropertyField(width, new GUIContent("Width", "Width in pixels"));
 
             if (!autoHeight.boolValue)
-            {
                 EditorGUILayout.PropertyField(height, new GUIContent("Height", "Height in pixels"));
-            }
             else
             {
-                height.intValue = Recorder.CalculateAutoHeight(width.intValue, (Camera) attachedCam);
-                EditorGUILayout.LabelField(
-                    new GUIContent("Height",
-                        "Height in pixels, computed automatically based on current width and camera's aspect ratio"),
-                    new GUIContent(height.intValue.ToString()));
+                height.intValue = Recorder.CalculateAutoHeight(width.intValue, (Camera)attachedCam);
+                EditorGUILayout.LabelField(new GUIContent("Height", "Height in pixels, computed automatically based on current width and camera's aspect ratio"), new GUIContent(height.intValue.ToString()));
             }
 
-            EditorGUILayout.PropertyField(framePerSecond,
-                new GUIContent("Frames Per Second", "The target FPS of the clip"));
-            EditorGUILayout.PropertyField(length,
-                new GUIContent("Length",
-                    "Clip length in seconds, the recorder automatically discards old content if needed to preserve this length"));
+            EditorGUILayout.PropertyField(framePerSecond, new GUIContent("Frames Per Second", "The target FPS of the clip"));
+            EditorGUILayout.PropertyField(length, new GUIContent("Length", "Clip length in seconds, the recorder automatically discards old content if needed to preserve this length"));
 
-            var memUsed = Recorder.EstimateMemoryUse(width.intValue, height.intValue, framePerSecond.intValue,
-                length.floatValue);
-            EditorGUILayout.LabelField(
-                new GUIContent("Estimated VRam Usage", "The estimated memory used for recording"),
-                new GUIContent(memUsed.ToString("F3") + " MB"));
+            float memUsed = Recorder.EstimateMemoryUse(width.intValue, height.intValue, framePerSecond.intValue, length.floatValue);
+            EditorGUILayout.LabelField(new GUIContent("Estimated VRam Usage", "The estimated memory used for recording"), new GUIContent(memUsed.ToString("F3") + " MB"));
 
             // Display current state
             EditorGUILayout.LabelField("Current State", state.enumDisplayNames[state.enumValueIndex]);

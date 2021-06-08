@@ -19,27 +19,30 @@ namespace EasyMobile
         public BannerAdSize(int width, int height)
         {
             IsSmartBanner = false;
-            Width = width;
-            Height = height;
+            this.Width = width;
+            this.Height = height;
         }
 
         private BannerAdSize(bool isSmartBanner)
         {
-            IsSmartBanner = isSmartBanner;
-            Width = 0;
-            Height = 0;
+            this.IsSmartBanner = isSmartBanner;
+            this.Width = 0;
+            this.Height = 0;
         }
 
         public override bool Equals(object obj)
         {
             var other = obj as BannerAdSize;
 
-            if (other == null) return false;
+            if (other == null)
+            {
+                return false;
+            }
 
-            if (IsSmartBanner)
+            if (this.IsSmartBanner)
                 return other.IsSmartBanner;
             else
-                return !other.IsSmartBanner && Width == other.Width && Height == other.Height;
+                return !other.IsSmartBanner && this.Width == other.Width && this.Height == other.Height;
         }
 
         public static bool operator ==(BannerAdSize a, BannerAdSize b)
@@ -59,7 +62,7 @@ namespace EasyMobile
         {
             unchecked
             {
-                var hash = 17;
+                int hash = 17;
                 hash = hash * 23 + IsSmartBanner.GetHashCode();
                 hash = hash * 23 + Width.GetHashCode();
                 hash = hash * 23 + Height.GetHashCode();
@@ -68,3 +71,4 @@ namespace EasyMobile
         }
     }
 }
+

@@ -5,28 +5,36 @@ using UnityEngine;
 public class PlayerStats : MonoBehaviour
 {
     public float moveSpeedBase = 5f;
-    public float speedModified = 0f;
+    public float speedModified;
     public float moveSpeed;
 
     public int hp = 5;
     public int maxHp;
     public int maxHpBase = 5;
-    public int maxHpModified = 0;
+    public int maxHpModified;
 
     public float attackDelay;
     public float attackDelayBase = 0.75f;
-    public float attackDelayModified = 0f;
+    public float attackDelayModified;
 
     public int attackLevel = 1;
     public GameObject attackObj;
 
     public float attackDamage;
     public float attackDamageBase = 1f;
-    public float attackDamageModified = 0f;
+    public float attackDamageModified;
 
     public bool barrier;
 
     public List<PowerUpObj> powerUps;
+
+
+    private Player.Player _player;
+
+    private void Start()
+    {
+        _player = GetComponent<Player.Player>();
+    }
 
     public void AddPu(PowerUpObj pu)
     {
@@ -35,9 +43,7 @@ public class PlayerStats : MonoBehaviour
             switch (pow.type)
             {
                 case PowerType.Heal:
-                    hp += Mathf.RoundToInt(pow.value);
-                    if (hp > maxHp)
-                        hp = maxHp;
+                    _player.Heal(Mathf.RoundToInt(pow.value));
                     break;
                 case PowerType.Barrier:
                     barrier = true;
@@ -64,7 +70,7 @@ public class PlayerStats : MonoBehaviour
         attackDelayModified = 0f;
         attackDamageModified = 0f;
         foreach (var pow in powerUps)
-            pow.power.ForEach((power) =>
+            pow.power.ForEach(power =>
             {
                 switch (power.type)
                 {
@@ -92,8 +98,8 @@ public class PlayerStats : MonoBehaviour
             });
 
         maxHp = maxHpBase + maxHpModified;
-        moveSpeed = moveSpeedBase + ((speedModified/100) * moveSpeedBase);
-        attackDelay = attackDelayBase - ((attackDelayModified/100) * attackDelayBase);
-        attackDamage = attackDamageBase + ((attackDamageModified/100) * attackDamageBase);
+        moveSpeed = moveSpeedBase + speedModified / 100 * moveSpeedBase;
+        attackDelay = attackDelayBase - attackDelayModified / 100 * attackDelayBase;
+        attackDamage = attackDamageBase + attackDamageModified / 100 * attackDamageBase;
     }
 }

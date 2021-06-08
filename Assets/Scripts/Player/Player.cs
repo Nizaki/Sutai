@@ -1,7 +1,6 @@
+using DG.Tweening;
 using UnityEngine;
 using UnityEngine.Events;
-using UnityEngine.Rendering.UI;
-using UnityEngine.SceneManagement;
 
 namespace Player
 {
@@ -9,12 +8,14 @@ namespace Player
     {
         public LayerMask enemyLayer;
         [SerializeField] private Joystick attackjoy;
-        private new Camera camera;
         [SerializeField] private GameObject bullet;
-        private float attackDelay;
-        private readonly Collider2D[] results = new Collider2D[2];
         public PlayerStats stats;
         public UnityEvent<int> onHealthChange;
+        public RoomTemplates rt;
+        private readonly Collider2D[] results = new Collider2D[2];
+        private float attackDelay;
+        private new Camera camera;
+        public GameObject deathPanel;
         private void Awake()
         {
             if (!camera) camera = Camera.main;
@@ -43,12 +44,28 @@ namespace Player
         public void TakeDamage(int damage)
         {
             Debug.Log("Take Damage");
-            if(stats.barrier)
+            if (stats.barrier)
+            {
+                stats.barrier = false;
                 return;
+            }
+
             stats.hp -= 1;
+            camera.DOShakePosition(0.25f);
             onHealthChange.Invoke(stats.hp);
             if (stats.hp <= 0)
-                Debug.Log("Death !");
+            {
+                stats.hp = 0;
+                Time.timeScale = 0;
+                deathPanel.SetActive(true);
+            }
+        }
+
+        public void Heal(int value)
+        {
+            stats.hp += value;
+            onHealthChange.Invoke(stats.hp);
+            if (stats.hp > stats.maxHp) stats.hp = stats.maxHp;
         }
     }
 }

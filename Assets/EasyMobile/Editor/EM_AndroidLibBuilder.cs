@@ -35,17 +35,13 @@ namespace EasyMobile.Editor
         public const string AndroidManifest_MinSdkVersion = "__AndroidManifest_MinSdkVersion__";
         public const string AndroidManifest_TargetSdkVersion = "__AndroidManifest_TargetSdkVersion__";
 
-        public static void BuildAndroidLibFromFolder(string folderPath, AndroidLibConfig config,
-            Action<float> progressCallback, Action<string> newStepCallback, Action completeCallback,
-            Action<string> customManifestMergeProcess = null)
+        public static void BuildAndroidLibFromFolder(string folderPath, AndroidLibConfig config, Action<float> progressCallback, Action<string> newStepCallback, Action completeCallback, Action<string> customManifestMergeProcess = null)
         {
-            if (config == null || string.IsNullOrEmpty(config.targetLibFolderName) ||
-                string.IsNullOrEmpty(config.packageName))
+            if (config == null || string.IsNullOrEmpty(config.targetLibFolderName) || string.IsNullOrEmpty(config.packageName))
             {
                 Debug.LogWarning("Failed to build Android library: invalid config.");
                 return;
             }
-
             /* Ignore empty resource folder
             if (string.IsNullOrEmpty(folderPath))
             {
@@ -72,7 +68,7 @@ namespace EasyMobile.Editor
             DoBuildAndroidLibFromFolder(job);
         }
 
-        private static void DoBuildAndroidLibFromFolder(object data)
+        private static void DoBuildAndroidLibFromFolder(System.Object data)
         {
             var job = data as AndroidLibBuildingJob;
 
@@ -81,9 +77,9 @@ namespace EasyMobile.Editor
                 Debug.LogWarning("Failed to build Android library: invalid job data.");
                 return;
             }
-
-            var totalSteps = 3;
-            var currentStep = 0;
+                
+            int totalSteps = 3;
+            int currentStep = 0;
 
             // -----------------------------------------------------------
             // Step 1: Create an Android lib template folder at Assets/Plugins/Android.
@@ -91,17 +87,21 @@ namespace EasyMobile.Editor
             RaiseNewStepEvent(job.newStepCallback, "Copying library template");
 
             // Copy the template lib folder to the Plugins/Android folder, removing the old folder if it exists.
-            var templateLibFolder = EM_Constants.TemplateFolder + "/" + AndroidLibTemplateFolder;
-            var targetLibFolder = EM_Constants.AssetsPluginsAndroidFolder + "/" + job.config.targetLibFolderName +
-                                  ".androidlib";
+            string templateLibFolder = EM_Constants.TemplateFolder + "/" + AndroidLibTemplateFolder;
+            string targetLibFolder = EM_Constants.AssetsPluginsAndroidFolder + "/" + job.config.targetLibFolderName + ".androidlib";
             if (!FileIO.FolderExists(EM_Constants.AssetsPluginsAndroidFolder))
+            {
                 FileIO.CreateFolder(EM_Constants.AssetsPluginsAndroidFolder);
+            }
             FileUtil.ReplaceDirectory(templateLibFolder, targetLibFolder);
 
             // Remove all .meta files in the newly copied folder to force Unity generate new GUIDs.
-            foreach (var fPath in FileIO.GetFiles(targetLibFolder, "*.meta")) System.IO.File.Delete(fPath);
+            foreach (string fPath in FileIO.GetFiles(targetLibFolder, "*.meta"))
+            {
+                System.IO.File.Delete(fPath);
+            }
 
-            RaiseProgressEvent(job.progressCallback, (float) ++currentStep / totalSteps);
+            RaiseProgressEvent(job.progressCallback, (float)(++currentStep) / totalSteps);
 
             // -----------------------------------------------------------
             // Step 2: Update AndroidManifest.xml
@@ -109,10 +109,10 @@ namespace EasyMobile.Editor
             RaiseNewStepEvent(job.newStepCallback, "Updating AndroidManifest.xml");
 
             // Read manifest template and replace placeholders with actual values.
-            var manifestPath = targetLibFolder + "/" + "AndroidManifest.xml";
+            string manifestPath = targetLibFolder + "/" + "AndroidManifest.xml";
             if (job.customManifestMergeProcess == null)
             {
-                var manifestContent = FileIO.ReadFile(manifestPath);
+                string manifestContent = FileIO.ReadFile(manifestPath);
                 manifestContent = manifestContent.Replace(AndroidManifest_Package, job.config.packageName)
                     .Replace(AndroidManifest_VersionCode, job.config.versionCode.ToString())
                     .Replace(AndroidManifest_VersionName, job.config.versionName)
@@ -127,7 +127,7 @@ namespace EasyMobile.Editor
                 job.customManifestMergeProcess(manifestPath);
             }
 
-            RaiseProgressEvent(job.progressCallback, (float) ++currentStep / totalSteps);
+            RaiseProgressEvent(job.progressCallback, (float)(++currentStep) / totalSteps);
 
             /*** Update project.properties if needed ***/
 
@@ -135,21 +135,17 @@ namespace EasyMobile.Editor
             // Step 3: Copy the content folder into place.
             // -----------------------------------------------------------
             RaiseNewStepEvent(job.newStepCallback, "Copying content folder into place");
-            if (!string.IsNullOrEmpty(job.contentFolder))
+            if (!String.IsNullOrEmpty(job.contentFolder))
             {
                 // If a valid target content folder name was provided, use it. Otherwise keep the source folder name.
-                var sourceContentFolderName = System.IO.Path.GetDirectoryName(job.contentFolder);
-                var targetContentFolderName = string.IsNullOrEmpty(job.config.targetContentFolderName)
-                    ? sourceContentFolderName
-                    : job.config.targetContentFolderName;
+                string sourceContentFolderName = System.IO.Path.GetDirectoryName(job.contentFolder);
+                string targetContentFolderName = string.IsNullOrEmpty(job.config.targetContentFolderName) ? sourceContentFolderName : job.config.targetContentFolderName;
                 FileUtil.ReplaceDirectory(job.contentFolder, targetLibFolder + "/" + targetContentFolderName);
             }
-
             // Make Unity aware of the new folder.
-            AssetDatabase.ImportAsset(targetLibFolder,
-                ImportAssetOptions.ImportRecursive | ImportAssetOptions.ForceUpdate);
+            AssetDatabase.ImportAsset(targetLibFolder, ImportAssetOptions.ImportRecursive | ImportAssetOptions.ForceUpdate);
 
-            RaiseProgressEvent(job.progressCallback, (float) ++currentStep / totalSteps);
+            RaiseProgressEvent(job.progressCallback, (float)(++currentStep) / totalSteps);
             RaiseCompleteEvent(job.completeCallback);
         }
 
@@ -172,3 +168,4 @@ namespace EasyMobile.Editor
         }
     }
 }
+

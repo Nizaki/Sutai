@@ -7,8 +7,8 @@ namespace Player
     {
         public Joystick moveJoy;
         [SerializeField] private float speed = 5f;
-        private Rigidbody2D rb;
         private Vector2 move;
+        private Rigidbody2D rb;
 
         private void Start()
         {

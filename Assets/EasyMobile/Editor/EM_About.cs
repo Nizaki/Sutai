@@ -6,32 +6,32 @@ namespace EasyMobile.Editor
 {
     public class EM_About : EditorWindow
     {
-        private const int WINDOW_WIDTH = 512;
-        private const int WINDOW_HEIGHT = 240;
-        private const int IMAGE_WIDTH = 512;
-        private const int IMAGE_HEIGHT = 200;
+        const int WINDOW_WIDTH = 512;
+        const int WINDOW_HEIGHT = 240;
+        const int IMAGE_WIDTH = 512;
+        const int IMAGE_HEIGHT = 200;
 
-        private Texture2D mainImage;
+        Texture2D mainImage;
 
-        private void OnEnable()
+        void OnEnable()
         {
             // Set the window title
-#if UNITY_PRE_5_1
+            #if UNITY_PRE_5_1
             title = "About";
-#else
-            titleContent = new GUIContent("About");
-#endif
+            #else
+            titleContent = new GUIContent("About");            
+            #endif
 
             // Load the main image
             mainImage = EM_GUIStyleManager.AboutEMTex;
 
             // Set sizes
-            var fixedSizes = new Vector2(WINDOW_WIDTH, WINDOW_HEIGHT);
+            Vector2 fixedSizes = new Vector2(WINDOW_WIDTH, WINDOW_HEIGHT);
             maxSize = fixedSizes;
             minSize = fixedSizes;
         }
 
-        private void OnGUI()
+        void OnGUI()
         {
             GUILayout.BeginVertical();
             if (mainImage != null)

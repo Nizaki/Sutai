@@ -22,7 +22,7 @@ MonoBehaviour:
       interstitialAdNetwork: 0
       rewardedAdNetwork: 0
     mAndroidDefaultAdNetworks:
-      bannerAdNetwork: 0
+      bannerAdNetwork: 10
       interstitialAdNetwork: 10
       rewardedAdNetwork: 10
     mAdColony:
@@ -205,7 +205,7 @@ MonoBehaviour:
     mUnityAds:
       mEnable: 1
       mAppId:
-        mIosId: 
+        mIosId: 4111061
         mAndroidId: 4111060
       mDefaultBannerAdId:
         mIosId: 
@@ -217,15 +217,19 @@ MonoBehaviour:
         mIosId: rewardedVideo
         mAndroidId: rewardedVideo
       mCustomBannerAdIds:
-        keys: []
-        values: []
+        keys:
+        - mName: MenuBanner
+          mUseCustomName: 1
+        values:
+        - mIosId: 
+          mAndroidId: 
       mCustomInterstitialAdIds:
         keys: []
         values: []
       mCustomRewardedAdIds:
         keys: []
         values: []
-      mEnableTestMode: 1
+      mEnableTestMode: 0
     mVungleAds:
       mEnable: 0
       mAppId:
@@ -332,6 +336,11 @@ MonoBehaviour:
       mToggleSelectedIndex: 0
       mButtonSelectedIndex: 0
       mEnableCopyPasteMode: 0
+    mIsAppTrackingEnabled: 0
+    mAppTrackingSettings:
+      mIOSInfoPlistKeys:
+      - mKey: NSUserTrackingUsageDescription
+        mValue: '[Your usage description]'
   mRatingRequestSettings:
     mDefaultRatingDialogContent:
       mTitle: Rate $PRODUCT_NAME
@@ -392,5 +401,5 @@ MonoBehaviour:
   mIsGameServiceModuleEnable: 0
   mIsNotificationModuleEnable: 0
   mIsSharingModuleEnable: 0
-  mActiveModuleIndex: 4
-  mIsSelectingModule: 1
+  mActiveModuleIndex: 0
+  mIsSelectingModule: 0

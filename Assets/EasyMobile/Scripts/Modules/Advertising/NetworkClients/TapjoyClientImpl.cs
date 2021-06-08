@@ -16,6 +16,7 @@ namespace EasyMobile
         private const string BANNER_UNSUPPORTED_MESSAGE = "TapJoy does not support banner ad format";
 
 #if EM_TAPJOY
+
         private TapjoySettings mAdSettings = null;
 
         private TJPlacement mDefaultInterstitialPlacement;
@@ -43,6 +44,7 @@ namespace EasyMobile
         #region TapJoy Events
 
 #if EM_TAPJOY
+
         /// <summary>
         /// Occurs on connect success.
         /// </summary>
@@ -261,7 +263,7 @@ namespace EasyMobile
 
 #endif
 
-        #endregion // TapJoy-Specific Events
+        #endregion  // TapJoy-Specific Events
 
         #region Singleton
 
@@ -273,7 +275,10 @@ namespace EasyMobile
 
         public static TapjoyClientImpl CreateClient()
         {
-            if (sInstance == null) sInstance = new TapjoyClientImpl();
+            if (sInstance == null)
+            {
+                sInstance = new TapjoyClientImpl();
+            }
 
             return sInstance;
         }
@@ -282,13 +287,13 @@ namespace EasyMobile
 
         #region AdClient Overrides
 
-        public override AdNetwork Network => AdNetwork.TapJoy;
+        public override AdNetwork Network { get { return AdNetwork.TapJoy; } }
 
-        public override bool IsBannerAdSupported => false;
+        public override bool IsBannerAdSupported { get { return false; } }
 
-        public override bool IsInterstitialAdSupported => true;
+        public override bool IsInterstitialAdSupported { get { return true; } }
 
-        public override bool IsRewardedAdSupported => true;
+        public override bool IsRewardedAdSupported { get { return true; } }
 
         public override bool IsSdkAvail
         {
@@ -368,11 +373,12 @@ namespace EasyMobile
             }
         }
 
-        protected override string NoSdkMessage => NO_SDK_MESSAGE;
+        protected override string NoSdkMessage { get { return NO_SDK_MESSAGE; } }
 
         protected override void InternalInit()
         {
 #if EM_TAPJOY
+
             mIsInitialized = true;
             mAdSettings = EM_Settings.Advertising.Tapjoy;
 
@@ -548,7 +554,7 @@ namespace EasyMobile
 
         private const string DATA_PRIVACY_CONSENT_KEY = "EM_Ads_TapJoy_DataPrivacyConsent";
 
-        protected override string DataPrivacyConsentSaveKey => DATA_PRIVACY_CONSENT_KEY;
+        protected override string DataPrivacyConsentSaveKey { get { return DATA_PRIVACY_CONSENT_KEY; } }
 
         protected override void ApplyDataPrivacyConsent(ConsentStatus consent)
         {
@@ -572,6 +578,7 @@ namespace EasyMobile
         #endregion
 
 #if EM_TAPJOY
+
         #region Protected methods
 
         protected IEnumerator AutoReconnectCoroutine(float interval)
@@ -643,8 +650,7 @@ namespace EasyMobile
         /// Loads a specific TapJoy placement if it's not null.
         /// </summary>
         /// <param name="nullMessage">This message will be logged to the console if the placement is null.</param>
-        protected virtual void LoadPlacement(TJPlacement placement, string nullMessage =
- "Attempting to load a null Tapjoy placement.")
+        protected virtual void LoadPlacement(TJPlacement placement, string nullMessage = "Attempting to load a null Tapjoy placement.")
         {
             if (!IsInitialized)
             {
@@ -665,8 +671,7 @@ namespace EasyMobile
         /// Shows a specific TapJoy placement if it's not null.
         /// </summary>
         /// <param name="nullMessage">This message will be logged to the console if the placement is null.</param>
-        protected virtual void ShowPlacement(TJPlacement placement, string nullMessage =
- "Attempting to show a null Tapjoy placement.")
+        protected virtual void ShowPlacement(TJPlacement placement, string nullMessage = "Attempting to show a null Tapjoy placement.")
         {
             if (!IsInitialized)
             {

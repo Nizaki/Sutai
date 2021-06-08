@@ -13,8 +13,8 @@ namespace EasyMobile
         /// </summary>
         public FBAudienceBannerAdSize BannerAdSize
         {
-            get => mBannerAdSize;
-            set => mBannerAdSize = value;
+            get { return mBannerAdSize; }
+            set { mBannerAdSize = value; }
         }
 
         /// <summary>
@@ -22,8 +22,8 @@ namespace EasyMobile
         /// </summary>
         public bool EnableTestMode
         {
-            get => mEnableTestMode;
-            set => mEnableTestMode = value;
+            get { return mEnableTestMode; }
+            set { mEnableTestMode = value; }
         }
 
         /// <summary>
@@ -31,8 +31,8 @@ namespace EasyMobile
         /// </summary>
         public string[] TestDevices
         {
-            get => mTestDevices;
-            set => mTestDevices = value;
+            get { return mTestDevices; }
+            set { mTestDevices = value; }
         }
 
         /// <summary>
@@ -40,8 +40,8 @@ namespace EasyMobile
         /// </summary>
         public AdId DefaultBannerId
         {
-            get => mDefaultBannerId;
-            set => mDefaultBannerId = value;
+            get { return mDefaultBannerId; }
+            set { mDefaultBannerId = value; }
         }
 
         /// <summary>
@@ -49,8 +49,8 @@ namespace EasyMobile
         /// </summary>
         public AdId DefaultInterstitialAdId
         {
-            get => mDefaultInterstitialAdId;
-            set => mDefaultInterstitialAdId = value;
+            get { return mDefaultInterstitialAdId; }
+            set { mDefaultInterstitialAdId = value; }
         }
 
         /// <summary>
@@ -58,8 +58,8 @@ namespace EasyMobile
         /// </summary>
         public AdId DefaultRewardedAdId
         {
-            get => mDefaultRewardedAdId;
-            set => mDefaultRewardedAdId = value;
+            get { return mDefaultRewardedAdId; }
+            set { mDefaultRewardedAdId = value; }
         }
 
         /// <summary>
@@ -68,8 +68,8 @@ namespace EasyMobile
         /// </summary>
         public Dictionary<AdPlacement, AdId> CustomBannerIds
         {
-            get => mCustomBannerIds;
-            set => mCustomBannerIds = value as Dictionary_AdPlacement_AdId;
+            get { return mCustomBannerIds; }
+            set { mCustomBannerIds = value as Dictionary_AdPlacement_AdId; }
         }
 
         /// <summary>
@@ -78,8 +78,8 @@ namespace EasyMobile
         /// </summary>
         public Dictionary<AdPlacement, AdId> CustomInterstitialAdIds
         {
-            get => mCustomInterstitialAdIds;
-            set => mCustomInterstitialAdIds = value as Dictionary_AdPlacement_AdId;
+            get { return mCustomInterstitialAdIds; }
+            set { mCustomInterstitialAdIds = value as Dictionary_AdPlacement_AdId; }
         }
 
         /// <summary>
@@ -88,26 +88,35 @@ namespace EasyMobile
         /// </summary>
         public Dictionary<AdPlacement, AdId> CustomRewardedAdIds
         {
-            get => mCustomRewardedAdIds;
-            set => mCustomRewardedAdIds = value as Dictionary_AdPlacement_AdId;
+            get { return mCustomRewardedAdIds; }
+            set { mCustomRewardedAdIds = value as Dictionary_AdPlacement_AdId; }
         }
 
-        [SerializeField] private FBAudienceBannerAdSize mBannerAdSize;
-        [SerializeField] private bool mEnableTestMode;
-        [SerializeField] private string[] mTestDevices;
+        [SerializeField]
+        private FBAudienceBannerAdSize mBannerAdSize;
+        [SerializeField]
+        private bool mEnableTestMode;
+        [SerializeField]
+        private string[] mTestDevices;
 
-        [SerializeField] private AdId mDefaultBannerId;
-        [SerializeField] private AdId mDefaultInterstitialAdId;
-        [SerializeField] private AdId mDefaultRewardedAdId;
-        [SerializeField] private Dictionary_AdPlacement_AdId mCustomBannerIds;
-        [SerializeField] private Dictionary_AdPlacement_AdId mCustomInterstitialAdIds;
-        [SerializeField] private Dictionary_AdPlacement_AdId mCustomRewardedAdIds;
+        [SerializeField]
+        private AdId mDefaultBannerId;
+        [SerializeField]
+        private AdId mDefaultInterstitialAdId;
+        [SerializeField]
+        private AdId mDefaultRewardedAdId;
+        [SerializeField]
+        private Dictionary_AdPlacement_AdId mCustomBannerIds;
+        [SerializeField]
+        private Dictionary_AdPlacement_AdId mCustomInterstitialAdIds;
+        [SerializeField]
+        private Dictionary_AdPlacement_AdId mCustomRewardedAdIds;
 
         public enum FBAudienceBannerAdSize
         {
             _50,
             _90,
-            _250
+            _250,
         }
     }
 }

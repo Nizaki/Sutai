@@ -20,7 +20,7 @@ namespace EasyMobile.Editor
 
         public static bool Foldout(bool foldout, GUIContent content)
         {
-            var rect = EditorGUILayout.GetControlRect();
+            Rect rect = EditorGUILayout.GetControlRect();
             return EditorGUI.Foldout(rect, foldout, content, true, EM_GUIStyleManager.ModuleFoldout);
         }
 
@@ -33,18 +33,21 @@ namespace EasyMobile.Editor
         {
             EditorGUI.BeginChangeCheck();
             if (GUILayout.Toggle(thisItem.Equals(activeItem), content, style))
-            {
+            { 
                 // Check if the toolbar active item has just changed.
-                if (EditorGUI.EndChangeCheck()) EditorGUI.FocusTextInControl(null);
+                if (EditorGUI.EndChangeCheck())
+                {                 
+                    EditorGUI.FocusTextInControl(null);
+                }
 
-                activeItem = thisItem;
-            }
+                activeItem = thisItem;   
+            }           
         }
 
         public static void ModuleLabel(string label)
         {
             EditorGUILayout.LabelField(
-                label,
+                label, 
                 EM_GUIStyleManager.GetCustomStyle("Module Toggle Label"),
                 GUILayout.ExpandWidth(true),
                 GUILayout.Height(MODULE_LABEL_HEIGHT)
@@ -53,12 +56,13 @@ namespace EasyMobile.Editor
 
         public static bool ModuleToggle(bool toggle, string label)
         {
-            var result = EditorGUILayout.Toggle(
-                toggle,
-                EM_GUIStyleManager.GetCustomStyle("Module Toggle"),
-                GUILayout.Width(44));
+            bool result = EditorGUILayout.Toggle(
+                              toggle, 
+                              EM_GUIStyleManager.GetCustomStyle("Module Toggle"),
+                              GUILayout.Width(44));
 
             return result;
         }
     }
 }
+

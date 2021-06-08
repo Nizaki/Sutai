@@ -13,7 +13,8 @@ namespace EasyMobile
         private const string NO_SDK_MESSAGE = "SDK missing. Please import the AppLovin plugin.";
         private const string DATA_PRIVACY_CONSENT_KEY = "EM_Ads_AppLovin_DataPrivacyConsent";
 
-#if EM_APPLOVIN
+#if EM_APPLOVIN       
+
         private AppLovinSettings mAdSettings = null;
         private AdPlacement currentShowingInterstitial = null;
         private AdPlacement currentShowingRewarded = null;
@@ -26,7 +27,6 @@ namespace EasyMobile
         /// Value: Loaded banner's position & size.
         private Dictionary<AdPlacement, KeyValuePair<BannerAdPosition, BannerAdSize>> mCreatedBanners;
 #endif
-
         #region Singleton
 
         private static AppLovinClientImpl sInstance;
@@ -41,21 +41,24 @@ namespace EasyMobile
         /// <returns>The client.</returns>
         public static AppLovinClientImpl CreateClient()
         {
-            if (sInstance == null) sInstance = new AppLovinClientImpl();
+            if (sInstance == null)
+            {
+                sInstance = new AppLovinClientImpl();
+            }
             return sInstance;
         }
 
-        #endregion // Object Creators
+        #endregion  // Object Creators
 
         #region IAdClient Overrides
 
-        public override AdNetwork Network => AdNetwork.AppLovin;
+        public override AdNetwork Network { get { return AdNetwork.AppLovin; } }
 
-        public override bool IsBannerAdSupported => true;
+        public override bool IsBannerAdSupported { get { return true; } }
 
-        public override bool IsInterstitialAdSupported => true;
+        public override bool IsInterstitialAdSupported { get { return true; } }
 
-        public override bool IsRewardedAdSupported => true;
+        public override bool IsRewardedAdSupported { get { return true; } }
 
         public override bool IsSdkAvail
         {
@@ -110,7 +113,10 @@ namespace EasyMobile
 #endif
         }
 
-        protected override string NoSdkMessage => NO_SDK_MESSAGE;
+        protected override string NoSdkMessage
+        {
+            get { return NO_SDK_MESSAGE; }
+        }
 
         protected override Dictionary<AdPlacement, AdId> CustomInterstitialAdsDict
         {
@@ -169,7 +175,7 @@ namespace EasyMobile
 #endif
         }
 
-        protected override string DataPrivacyConsentSaveKey => DATA_PRIVACY_CONSENT_KEY;
+        protected override string DataPrivacyConsentSaveKey { get { return DATA_PRIVACY_CONSENT_KEY; } }
 
         protected override void ApplyDataPrivacyConsent(ConsentStatus consent)
         {
@@ -193,8 +199,7 @@ namespace EasyMobile
         // Banner Ads.
         //------------------------------------------------------------
 
-        protected override void InternalShowBannerAd(AdPlacement placement, BannerAdPosition position,
-            BannerAdSize size)
+        protected override void InternalShowBannerAd(AdPlacement placement, BannerAdPosition position, BannerAdSize size)
         {
 #if EM_APPLOVIN
             string id = placement == AdPlacement.Default ?
@@ -347,7 +352,6 @@ namespace EasyMobile
             currentShowingRewarded = placement;
 #endif
         }
-
         #endregion
 
         #region Other Methods
@@ -377,8 +381,7 @@ namespace EasyMobile
 
         #endregion
 
-        #region Ad Event Handlers
-
+        #region  Ad Event Handlers
         private class RewardedAdEvents
         {
 #if EM_APPLOVIN
@@ -662,7 +665,6 @@ namespace EasyMobile
         }
 
 #endif
-
         #endregion
 
         #region AppLovin Raw Events

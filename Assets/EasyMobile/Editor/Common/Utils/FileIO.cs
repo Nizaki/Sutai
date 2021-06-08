@@ -56,7 +56,10 @@ namespace EasyMobile.Editor
         {
             path = SlashesToPlatformSeparator(path);
 
-            if (!Directory.Exists(path)) Directory.CreateDirectory(path);
+            if (!Directory.Exists(path))
+            {
+                Directory.CreateDirectory(path);
+            }
         }
 
         /// <summary>
@@ -105,10 +108,13 @@ namespace EasyMobile.Editor
         {
             path = SlashesToPlatformSeparator(path);
 
-            if (!File.Exists(path)) return null;
+            if (!File.Exists(path))
+            {
+                return null;
+            }
 
-            var sr = new StreamReader(path);
-            var body = sr.ReadToEnd();
+            StreamReader sr = new StreamReader(path);
+            string body = sr.ReadToEnd();
             sr.Close();
             return body;
         }
@@ -122,7 +128,10 @@ namespace EasyMobile.Editor
         {
             path = SlashesToPlatformSeparator(path);
 
-            if (!File.Exists(path)) return new string[0];
+            if (!File.Exists(path))
+            {
+                return new string[0];
+            }
 
             return File.ReadAllLines(path);
         }
@@ -135,7 +144,10 @@ namespace EasyMobile.Editor
         {
             path = SlashesToPlatformSeparator(path);
 
-            if (File.Exists(path)) File.Delete(path);
+            if (File.Exists(path))
+            {
+                File.Delete(path);
+            }
         }
 
         /// <summary>
@@ -147,7 +159,10 @@ namespace EasyMobile.Editor
         {
             path = SlashesToPlatformSeparator(path);
 
-            if (Directory.Exists(path)) Directory.Delete(path, recursive);
+            if (Directory.Exists(path))
+            {
+                Directory.Delete(path, recursive);
+            }
         }
 
         /// <summary>
@@ -158,7 +173,7 @@ namespace EasyMobile.Editor
         /// <param name="path">Path.</param>
         public static string ToAbsolutePath(string path)
         {
-            return SlashesToPlatformSeparator(Path.Combine(Application.dataPath, path));
+            return FileIO.SlashesToPlatformSeparator(Path.Combine(UnityEngine.Application.dataPath, path));
         }
 
         /// <summary>
@@ -174,3 +189,4 @@ namespace EasyMobile.Editor
         }
     }
 }
+

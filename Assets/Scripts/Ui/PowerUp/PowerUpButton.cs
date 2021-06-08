@@ -1,6 +1,4 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -8,13 +6,14 @@ using Random = UnityEngine.Random;
 
 public class PowerUpButton : MonoBehaviour
 {
-    private Button btn;
     public Image image;
     public TextMeshProUGUI title;
     public TextMeshProUGUI descriptionText;
     public PowerUpObj powerUp;
     public PlayerStats player;
     public PuList pl;
+    private Button btn;
+
     private void Start()
     {
         btn = GetComponent<Button>();
@@ -36,12 +35,8 @@ public class PowerUpButton : MonoBehaviour
 
     private void OnClick()
     {
-        if (!powerUp)
-        {
-            throw new Exception("PowerUp not defined");
-        }
-        
+        if (!powerUp) throw new Exception("PowerUp not defined");
+
         player.AddPu(powerUp);
     }
-    
 }

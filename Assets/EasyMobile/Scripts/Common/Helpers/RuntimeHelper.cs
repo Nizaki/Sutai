@@ -23,10 +23,13 @@ namespace EasyMobile.Internal
         /// </summary>
         /// <value>The instance.</value>
         public static RuntimeHelper Instance
-        {
+        { 
             get
             {
-                if (mInstance == null) Init();
+                if (mInstance == null)
+                {
+                    Init();
+                }
 
                 return mInstance;
             }
@@ -40,10 +43,10 @@ namespace EasyMobile.Internal
 
         // Member variable used to copy actions from mToMainThreadQueue and
         // execute them on the game thread.
-        private List<Action> localToMainThreadQueue = new List<Action>();
+        List<Action> localToMainThreadQueue = new List<Action>();
 
         // Flag indicating whether there's any action queued to be run on game thread.
-        private static volatile bool mIsToMainThreadQueueEmpty = true;
+        private volatile static bool mIsToMainThreadQueueEmpty = true;
 
         // List of actions to be invoked upon application pause event.
         private static List<Action<bool>> mPauseCallbackQueue =
@@ -69,7 +72,10 @@ namespace EasyMobile.Internal
         /// </summary>
         public static void Init()
         {
-            if (mInstance != null) return;
+            if (mInstance != null)
+            {
+                return;
+            }
 
             if (Application.isPlaying)
             {
@@ -148,7 +154,11 @@ namespace EasyMobile.Internal
         public static Action ToMainThread(Action act)
         {
             if (act == null)
-                return delegate { };
+            {
+                return delegate
+                {
+                };
+            }
 
             return () => RunOnMainThread(() => act());
         }
@@ -164,7 +174,11 @@ namespace EasyMobile.Internal
         public static Action<T> ToMainThread<T>(Action<T> act)
         {
             if (act == null)
-                return delegate { };
+            {
+                return delegate
+                {
+                };
+            }
 
             return (arg) => RunOnMainThread(() => act(arg));
         }
@@ -181,7 +195,11 @@ namespace EasyMobile.Internal
         public static Action<T1, T2> ToMainThread<T1, T2>(Action<T1, T2> act)
         {
             if (act == null)
-                return delegate { };
+            {
+                return delegate
+                {
+                };
+            }
 
             return (arg1, arg2) => RunOnMainThread(() => act(arg1, arg2));
         }
@@ -199,7 +217,11 @@ namespace EasyMobile.Internal
         public static Action<T1, T2, T3> ToMainThread<T1, T2, T3>(Action<T1, T2, T3> act)
         {
             if (act == null)
-                return delegate { };
+            {
+                return delegate
+                {
+                };
+            }
 
             return (arg1, arg2, arg3) => RunOnMainThread(() => act(arg1, arg2, arg3));
         }
@@ -212,9 +234,15 @@ namespace EasyMobile.Internal
         /// <param name="action">Action.</param>
         public static void RunOnMainThread(Action action)
         {
-            if (action == null) throw new ArgumentNullException("action");
+            if (action == null)
+            {
+                throw new ArgumentNullException("action");
+            }
 
-            if (mIsDummy) return;
+            if (mIsDummy)
+            {
+                return;
+            }
 
             // Note that this requires the singleton game object to be created first (for Update() to run).
             if (!IsInitialized())
@@ -238,7 +266,10 @@ namespace EasyMobile.Internal
         /// <param name="callback">Callback.</param>
         public static void AddFocusCallback(Action<bool> callback)
         {
-            if (!mFocusCallbackQueue.Contains(callback)) mFocusCallbackQueue.Add(callback);
+            if (!mFocusCallbackQueue.Contains(callback))
+            {
+                mFocusCallbackQueue.Add(callback);
+            }
         }
 
         /// <summary>
@@ -260,7 +291,10 @@ namespace EasyMobile.Internal
         /// <param name="callback">Callback.</param>
         public static void AddPauseCallback(Action<bool> callback)
         {
-            if (!mPauseCallbackQueue.Contains(callback)) mPauseCallbackQueue.Add(callback);
+            if (!mPauseCallbackQueue.Contains(callback))
+            {
+                mPauseCallbackQueue.Add(callback);
+            }
         }
 
         /// <summary>
@@ -284,11 +318,15 @@ namespace EasyMobile.Internal
         /// <typeparam name="TVal">The 2nd type parameter.</typeparam>
         public static TKey GetKeyForValue<TKey, TVal>(IDictionary<TKey, TVal> dict, TVal val)
         {
-            foreach (var entry in dict)
+            foreach (KeyValuePair<TKey, TVal> entry in dict)
+            {
                 if (entry.Value.Equals(val))
+                {
                     return entry.Key;
+                }
+            }
 
-            return default;
+            return default(TKey);
         }
 
         #endregion // Public API
@@ -296,7 +334,7 @@ namespace EasyMobile.Internal
         #region Internal Stuff
 
         // Destroys the proxy game object that carries the instance of this class if one exists.
-        private static void DestroyProxy()
+        static void DestroyProxy()
         {
             if (mInstance == null)
                 return;
@@ -310,19 +348,25 @@ namespace EasyMobile.Internal
             mInstance = null;
         }
 
-        private void Awake()
+        void Awake()
         {
             DontDestroyOnLoad(gameObject);
         }
 
-        private void OnDisable()
+        void OnDisable()
         {
-            if (mInstance == this) mInstance = null;
+            if (mInstance == this)
+            {
+                mInstance = null;
+            }
         }
 
-        private void Update()
+        void Update()
         {
-            if (mIsDummy || mIsToMainThreadQueueEmpty) return;
+            if (mIsDummy || mIsToMainThreadQueueEmpty)
+            {
+                return;
+            }
 
             // Copy the shared queue into a local queue while
             // preventing other threads to modify it.
@@ -335,12 +379,15 @@ namespace EasyMobile.Internal
             }
 
             // Execute queued actions (from local queue).
-            for (var i = 0; i < localToMainThreadQueue.Count; i++) localToMainThreadQueue[i].Invoke();
+            for (int i = 0; i < localToMainThreadQueue.Count; i++)
+            {
+                localToMainThreadQueue[i].Invoke();
+            }
         }
 
-        private void OnApplicationFocus(bool focused)
+        void OnApplicationFocus(bool focused)
         {
-            for (var i = 0; i < mFocusCallbackQueue.Count; i++)
+            for (int i = 0; i < mFocusCallbackQueue.Count; i++)
             {
                 var act = mFocusCallbackQueue[i];
                 try
@@ -350,14 +397,14 @@ namespace EasyMobile.Internal
                 catch (Exception e)
                 {
                     Debug.LogError("Exception executing action in OnApplicationFocus:" +
-                                   e.Message + "\n" + e.StackTrace);
+                        e.Message + "\n" + e.StackTrace);
                 }
             }
         }
 
-        private void OnApplicationPause(bool paused)
+        void OnApplicationPause(bool paused)
         {
-            for (var i = 0; i < mPauseCallbackQueue.Count; i++)
+            for (int i = 0; i < mPauseCallbackQueue.Count; i++)
             {
                 var act = mPauseCallbackQueue[i];
                 try
@@ -367,7 +414,7 @@ namespace EasyMobile.Internal
                 catch (Exception e)
                 {
                     Debug.LogError("Exception executing action in OnApplicationPause:" +
-                                   e.Message + "\n" + e.StackTrace);
+                        e.Message + "\n" + e.StackTrace);
                 }
             }
         }

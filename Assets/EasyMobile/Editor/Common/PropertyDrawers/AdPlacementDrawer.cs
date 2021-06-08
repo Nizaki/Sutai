@@ -37,37 +37,34 @@ namespace EasyMobile.Editor
 
             var labelWidth = EditorGUIUtility.labelWidth;
             var lineHeight = EditorGUIUtility.singleLineHeight;
-            var toggleWidth = position.width * 0.3f;
-            var toggleOffset = 15; // for the toggle to be drawn nearer the placement rect    
+            float toggleWidth = position.width * 0.3f;
+            var toggleOffset = 15;  // for the toggle to be drawn nearer the placement rect    
 
             var placementRect = new Rect(position.x, position.y, position.width - toggleWidth, lineHeight);
-            var toggleRect = new Rect(placementRect.x + placementRect.width - toggleOffset, placementRect.y,
-                toggleWidth + toggleOffset, lineHeight);
+            var toggleRect = new Rect(placementRect.x + placementRect.width - toggleOffset, placementRect.y, toggleWidth + toggleOffset, lineHeight);   
 
-            useCustomNameProp.boolValue = EditorGUI.ToggleLeft(toggleRect, new GUIContent("Custom Placement"),
-                useCustomNameProp.boolValue);
+            useCustomNameProp.boolValue = EditorGUI.ToggleLeft(toggleRect, new GUIContent("Custom Placement"), useCustomNameProp.boolValue);
 
-            if (useCustomNameProp.boolValue) // if the user wants to enter the placement's name manually.
+            if (useCustomNameProp.boolValue)  // if the user wants to enter the placement's name manually.
             {
                 EditorGUI.PropertyField(placementRect, nameProp, label);
             }
-            else // if the user wants to choose among one of the built-in placements.
+            else    // if the user wants to choose among one of the built-in placements.
             {
                 // Convert string[] to GUIContent[] to draw the popup.
                 if (sBuiltinPlacementPopupOptions == null)
-                    sBuiltinPlacementPopupOptions =
-                        Array.ConvertAll(BuiltinPlacementNames, name => new GUIContent(name));
+                    sBuiltinPlacementPopupOptions = Array.ConvertAll(BuiltinPlacementNames, name => new GUIContent(name));
 
                 // Find the index of the last selected built-in placement.
                 var lastIndex = Array.IndexOf(BuiltinPlacementNames, nameProp.stringValue);
 
                 // Now draw the popup and store the result.
                 var indexResult = EditorGUI.Popup(
-                    placementRect,
-                    label,
-                    lastIndex < 0 ? 0 : lastIndex,
-                    sBuiltinPlacementPopupOptions
-                );
+                                      placementRect,
+                                      label, 
+                                      lastIndex < 0 ? 0 : lastIndex, 
+                                      sBuiltinPlacementPopupOptions
+                                  );
                 nameProp.stringValue = BuiltinPlacementNames[indexResult];
             }
 

@@ -76,9 +76,7 @@ namespace EasyMobile.Editor
         public const string AssetStoreURL = "http://u3d.as/18pa";
 #endif
 
-        public const string VideoTutorialsURL =
-            "https://www.youtube.com/watch?v=NHg9efWJQyk&list=PLuy0qyrX_-GIqUxjT1PwvfiThmvtgytLL";
-
+        public const string VideoTutorialsURL = "https://www.youtube.com/watch?v=NHg9efWJQyk&list=PLuy0qyrX_-GIqUxjT1PwvfiThmvtgytLL";
         public const string SupportEmail = "support@sglibgames.com";
 
 #if EASY_MOBILE_PRO
@@ -100,3 +98,4 @@ namespace EasyMobile.Editor
         public const string PSK_ImportedPlayServicesResolver = "IMPORTED_PLAY_SERVICES_RESOLVER";
     }
 }
+
